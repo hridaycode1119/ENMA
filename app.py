@@ -228,6 +228,46 @@ CREATE TABLE IF NOT EXISTS aira_notes (id TEXT PRIMARY KEY, category TEXT, title
                     st.error(msg)
 
     st.divider()
+    st.markdown("#### ✉️ Resend Email API Integration")
+    from integrations.resend_client import ResendClient
+    resend_cli = ResendClient()
+
+    res_col1, res_col2 = st.columns([5, 4])
+    with res_col1:
+        if resend_cli.is_configured():
+            st.success("🟢 **Resend API Connected** (Active Email Dispatch Provider)")
+            st.caption(f"Sender Address: `{resend_cli.default_from}`")
+        else:
+            st.info("⚪ **Resend Inactive** (Enter API key to enable live transactional email dispatch)")
+
+        with st.form(key="resend_test_form"):
+            st.markdown("##### 🧪 Send Test Email via Resend")
+            test_to = st.text_input("Recipient Email", placeholder="your_email@domain.com")
+            test_btn = st.form_submit_button("⚡ Send Test Email", use_container_width=True)
+            if test_btn and test_to:
+                try:
+                    res = resend_cli.send_email(
+                        to=test_to.strip(),
+                        subject="AIRA AI Agent - Resend Integration Test",
+                        text="Congratulations! Your Resend API integration with AIRA Autonomous AI Agent is working perfectly.",
+                    )
+                    st.success(f"Email dispatched! ID: `{res.get('id')}` ({res.get('mode')} mode)")
+                except Exception as ex:
+                    st.error(f"Failed to send: {str(ex)}")
+
+    with res_col2:
+        with st.form(key="resend_config_form"):
+            st.markdown("##### Configure Resend API Key")
+            rk = st.text_input("Resend API Key", value=os.getenv("RESEND_API_KEY", ""), type="password", placeholder="re_123456789...")
+            rf = st.text_input("Sender Email / Domain", value=os.getenv("RESEND_FROM_EMAIL", "AIRA AI <onboarding@resend.dev>"), placeholder="AIRA <onboarding@resend.dev>")
+            
+            btn_save_resend = st.form_submit_button("💾 Save Resend Key", type="primary", use_container_width=True)
+            if btn_save_resend and rk:
+                resend_cli.configure(rk, rf)
+                st.success("Resend API key saved successfully!")
+                st.rerun()
+
+    st.divider()
     st.markdown("#### 🔗 Workspace Integrations")
     is_auth = oauth_handler.is_authenticated()
     if is_auth:

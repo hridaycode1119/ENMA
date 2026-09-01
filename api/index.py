@@ -70,6 +70,13 @@ class NoteRequest(BaseModel):
     content: str
     category: Optional[str] = "note"
 
+class ResendEmailRequest(BaseModel):
+    to: str
+    subject: str
+    body: str
+    from_email: Optional[str] = None
+    reply_to: Optional[str] = None
+
 # ------------------------------------------------------------------------------
 # 1. Health & Status
 # ------------------------------------------------------------------------------
@@ -200,6 +207,25 @@ def create_note(req: NoteRequest):
         category=req.category or "note",
     )
     return saved
+
+# ------------------------------------------------------------------------------
+# 7. Resend Email Delivery
+# ------------------------------------------------------------------------------
+@app.post("/api/resend/send")
+def send_resend_email(req: ResendEmailRequest):
+    from integrations.resend_client import ResendClient
+    client = ResendClient()
+    try:
+        res = client.send_email(
+            to=req.to,
+            subject=req.subject,
+            text=req.body,
+            from_email=req.from_email,
+            reply_to=req.reply_to,
+        )
+        return res
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=str(ex))
 
 # ------------------------------------------------------------------------------
 # 7. Web Dashboard UI Route

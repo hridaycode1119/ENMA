@@ -39,7 +39,7 @@ def render_draft_card(
 
             new_subject = st.text_input("Subject Line*", value=subject)
 
-            col_tone, col_priority = st.columns([1, 1])
+            col_tone, col_priority, col_provider = st.columns([1, 1, 1])
             with col_tone:
                 tone_options = ["formal", "professional", "urgent", "casual"]
                 tone_idx = tone_options.index(current_tone) if current_tone in tone_options else 1
@@ -48,6 +48,10 @@ def render_draft_card(
                 prio_options = ["low", "normal", "high"]
                 prio_idx = prio_options.index(current_priority) if current_priority in prio_options else 1
                 new_prio = st.selectbox("Priority", prio_options, index=prio_idx)
+            with col_provider:
+                from integrations.resend_client import ResendClient
+                default_prov_idx = 1 if ResendClient().is_configured() else 0
+                provider_choice = st.selectbox("Dispatch Provider", ["Gmail API", "Resend API"], index=default_prov_idx)
 
             new_body = st.text_area(
                 "Email Body Message*",
@@ -76,17 +80,27 @@ def render_draft_card(
                 )
 
             if approve_send:
-                updated_payload = {
-                    "recipient_email": new_to.strip(),
-                    "recipient_name": new_name.strip() if new_name else None,
-                    "subject": new_subject.strip(),
-                    "body_text": new_body.strip(),
-                    "tone": new_tone,
-                    "priority": new_prio,
-                }
+                if provider_choice == "Resend API":
+                    plan.target_tool = "resend_send_tool"
+                    updated_payload = {
+                        "to": new_to.strip(),
+                        "subject": new_subject.strip(),
+                        "body": new_body.strip(),
+                    }
+                else:
+                    plan.target_tool = "gmail_send_tool"
+                    updated_payload = {
+                        "recipient_email": new_to.strip(),
+                        "recipient_name": new_name.strip() if new_name else None,
+                        "subject": new_subject.strip(),
+                        "body_text": new_body.strip(),
+                        "tone": new_tone,
+                        "priority": new_prio,
+                    }
                 on_approve_send(updated_payload)
 
             if save_draft:
+                plan.target_tool = "gmail_draft_tool"
                 updated_payload = {
                     "recipient_email": new_to.strip(),
                     "recipient_name": new_name.strip() if new_name else None,

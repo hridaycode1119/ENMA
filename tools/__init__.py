@@ -3,6 +3,7 @@ from .registry import ToolRegistry
 from .gmail import GmailSendTool, GmailDraftTool
 from .documents import DocumentAnalyzeTool, DocumentEditTool, DocumentConvertTool
 from .calendar import CalendarScheduleTool
+from .resend import ResendSendTool
 
 __all__ = [
     "BaseTool",
@@ -16,4 +17,5 @@ __all__ = [
     "DocumentEditTool",
     "DocumentConvertTool",
     "CalendarScheduleTool",
+    "ResendSendTool",
 ]

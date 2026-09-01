@@ -10,6 +10,7 @@ from .base import BaseTool, ToolMetadata, ToolResult, ToolSafetyLevel
 from .gmail.gmail_tool import GmailDraftTool, GmailSendTool
 from .documents.document_tools import DocumentAnalyzeTool, DocumentEditTool, DocumentConvertTool
 from .calendar.calendar_tool import CalendarScheduleTool
+from .resend.resend_tool import ResendSendTool
 
 class ToolRegistry:
     """
@@ -35,6 +36,7 @@ class ToolRegistry:
         cls.register(DocumentEditTool())
         cls.register(DocumentConvertTool())
         cls.register(CalendarScheduleTool())
+        cls.register(ResendSendTool())
 
     @classmethod
     def register(cls, tool: BaseTool) -> BaseTool:
