@@ -24,6 +24,7 @@ from components.command_input import render_command_input
 from components.draft_card import render_draft_card
 from components.clarification_modal import render_clarification_card
 from components.timeline import render_timeline
+from components.email_composer import render_email_composer
 
 # 1. Streamlit Page Configuration
 st.set_page_config(
