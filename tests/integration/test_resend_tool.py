@@ -33,7 +33,7 @@ class TestResendToolIntegration(unittest.TestCase):
         result = self.registry.execute_tool(
             tool_name="resend_send_tool",
             parameters={
-                "to": "chetan@enterprise.com",
+                "to": "hriday.code1119@gmail.com",
                 "subject": "Sprint Update",
                 "body": "All deliverables are completed.",
             },

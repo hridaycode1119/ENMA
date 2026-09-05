@@ -77,47 +77,61 @@ if current_view == "dashboard":
     render_aira_dashboard(orchestrator, on_navigate_view=navigate_to_view)
 
 elif current_view in ("tasks", "assistant"):
-    st.markdown("### 🤖 AIRA AI Assistant & Email Task Automation")
-    st.caption("Conversational task execution with Google Workspace and Gmail API integration.")
+    st.markdown("### 🤖 AIRA AI Email Automation & Composer Studio")
+    st.caption("Compose custom emails, select prebuilt enterprise templates, or execute natural-language instructions via Resend & Gmail API.")
     
-    col_main, col_side = st.columns([7, 3])
-    with col_main:
-        if orchestrator.state in (WorkflowState.IDLE, WorkflowState.CANCELLED):
-            render_command_input(on_submit_callback=lambda ins: (orchestrator.submit_instruction(ins), st.rerun()))
-        elif orchestrator.state == WorkflowState.CLARIFICATION_REQUIRED:
-            render_clarification_card(
-                plan=orchestrator.current_plan,
-                on_resolve_callback=lambda res: (orchestrator.submit_clarification(res), st.rerun()),
-                on_cancel_callback=lambda: (orchestrator.cancel_current_task(), st.rerun()),
-            )
-        elif orchestrator.state == WorkflowState.AWAITING_APPROVAL:
-            render_draft_card(
-                plan=orchestrator.current_plan,
-                on_approve_send=lambda p: (orchestrator.execute_confirmed_task(p), st.rerun()),
-                on_save_draft=lambda p: (orchestrator.execute_confirmed_task(p), st.rerun()),
-                on_cancel=lambda: (orchestrator.cancel_current_task(), st.rerun()),
-            )
-        elif orchestrator.state in (WorkflowState.COMPLETED, WorkflowState.FAILED):
-            st.info("Task execution cycle finished. Inspect results below or start a new instruction.")
+    tab_composer, tab_ai_chat = st.tabs(["✍️ Custom Email Composer & Prebuilt Templates", "🤖 Conversational AI Task Assistant"])
 
-        st.divider()
-        render_timeline(
-            state=orchestrator.state,
-            last_result=orchestrator.last_result,
-            elapsed_ms=orchestrator.last_execution_time_ms,
-            on_reset_callback=lambda: (orchestrator.reset(), st.rerun()),
-        )
-    with col_side:
-        with st.container(border=True):
-            st.markdown("#### 🔗 Workspace Status")
-            is_auth = oauth_handler.is_authenticated()
-            if is_auth:
-                st.success(f"**Gmail API Active**\n`{oauth_handler.get_authenticated_user_email() or 'user@workspace.com'}`")
-            else:
-                st.warning("⚠️ **Gmail API Disconnected**")
-                if st.button("🧪 Mock Auth", use_container_width=True):
-                    oauth_handler.create_mock_authenticated_session("vaishnavi.d@example.com")
-                    st.rerun()
+    with tab_composer:
+        render_email_composer()
+
+    with tab_ai_chat:
+        col_main, col_side = st.columns([7, 3])
+        with col_main:
+            if orchestrator.state in (WorkflowState.IDLE, WorkflowState.CANCELLED):
+                render_command_input(on_submit_callback=lambda ins: (orchestrator.submit_instruction(ins), st.rerun()))
+            elif orchestrator.state == WorkflowState.CLARIFICATION_REQUIRED:
+                render_clarification_card(
+                    plan=orchestrator.current_plan,
+                    on_resolve_callback=lambda res: (orchestrator.submit_clarification(res), st.rerun()),
+                    on_cancel_callback=lambda: (orchestrator.cancel_current_task(), st.rerun()),
+                )
+            elif orchestrator.state == WorkflowState.AWAITING_APPROVAL:
+                render_draft_card(
+                    plan=orchestrator.current_plan,
+                    on_approve_send=lambda p: (orchestrator.execute_confirmed_task(p), st.rerun()),
+                    on_save_draft=lambda p: (orchestrator.execute_confirmed_task(p), st.rerun()),
+                    on_cancel=lambda: (orchestrator.cancel_current_task(), st.rerun()),
+                )
+            elif orchestrator.state in (WorkflowState.COMPLETED, WorkflowState.FAILED):
+                st.info("Task execution cycle finished. Inspect results below or start a new instruction.")
+
+            st.divider()
+            render_timeline(
+                state=orchestrator.state,
+                last_result=orchestrator.last_result,
+                elapsed_ms=orchestrator.last_execution_time_ms,
+                on_reset_callback=lambda: (orchestrator.reset(), st.rerun()),
+            )
+        with col_side:
+            with st.container(border=True):
+                st.markdown("#### 🔗 Workspace Status")
+                is_auth = oauth_handler.is_authenticated()
+                if is_auth:
+                    st.success(f"**Gmail API Active**\n`{oauth_handler.get_authenticated_user_email() or 'user@workspace.com'}`")
+                else:
+                    st.warning("⚠️ **Gmail API Disconnected**")
+                    if st.button("🧪 Mock Auth", use_container_width=True):
+                        oauth_handler.create_mock_authenticated_session("vaishnavi.d@example.com")
+                        st.rerun()
+
+            with st.container(border=True):
+                from integrations.resend_client import ResendClient
+                rc = ResendClient()
+                if rc.is_configured():
+                    st.success("**Resend API Active**\n`onboarding@resend.dev`")
+                else:
+                    st.info("⚪ **Resend Inactive**\n(Enter key in Settings)")
 
 elif current_view == "calendar":
     render_calendar_view()

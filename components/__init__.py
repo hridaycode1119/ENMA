@@ -9,6 +9,7 @@ from .aira_header import render_aira_header
 from .aira_dashboard import render_aira_dashboard
 from .calendar_view import render_calendar_view
 from .notes_journal_view import render_notes_view, render_journals_view, render_bookmarks_view
+from .email_composer import render_email_composer, PREBUILT_TEMPLATES
 
 __all__ = [
     "render_sidebar",
@@ -24,4 +25,6 @@ __all__ = [
     "render_notes_view",
     "render_journals_view",
     "render_bookmarks_view",
+    "render_email_composer",
+    "PREBUILT_TEMPLATES",
 ]

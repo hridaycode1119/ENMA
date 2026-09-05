@@ -228,7 +228,15 @@ def send_resend_email(req: ResendEmailRequest):
         raise HTTPException(status_code=500, detail=str(ex))
 
 # ------------------------------------------------------------------------------
-# 7. Web Dashboard UI Route
+# 8. Prebuilt Email Templates & Custom Composer
+# ------------------------------------------------------------------------------
+@app.get("/api/templates")
+def get_email_templates():
+    from components.email_composer import PREBUILT_TEMPLATES
+    return {"templates": PREBUILT_TEMPLATES}
+
+# ------------------------------------------------------------------------------
+# 9. Web Dashboard UI Route
 # ------------------------------------------------------------------------------
 @app.get("/", response_class=HTMLResponse)
 def index_page():
@@ -239,7 +247,7 @@ def index_page():
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>AIRA - Autonomous AI Agent Dashboard</title>
+        <title>AIRA - Autonomous AI Agent & Email Studio</title>
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
         <style>
             :root {{
@@ -256,13 +264,14 @@ def index_page():
             .kpi-card {{ background: var(--card); padding: 1.2rem; border-radius: 14px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }}
             .kpi-val {{ font-size: 1.6rem; font-weight: 800; }}
             .kpi-label {{ color: var(--muted); font-size: 0.82rem; font-weight: 600; text-transform: uppercase; margin-top: 0.2rem; }}
-            .main-grid {{ display: grid; grid-template-columns: 3fr 4fr 3fr; gap: 1.5rem; }}
+            .main-grid {{ display: grid; grid-template-columns: 3.5fr 5fr 3.5fr; gap: 1.5rem; }}
             .card {{ background: var(--card); padding: 1.5rem; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.04); }}
             .card-title {{ font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; }}
-            .chat-bubble {{ background: var(--primary-bg); padding: 1.2rem; border-radius: 12px; border-left: 4px solid var(--primary); margin-bottom: 1rem; }}
-            .input-group {{ display: flex; gap: 0.5rem; margin-top: 1rem; }}
-            .input-box {{ flex: 1; padding: 0.75rem 1rem; border-radius: 10px; border: 1px solid #cbd5e1; outline: none; font-size: 0.9rem; }}
-            .btn-send {{ background: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer; }}
+            .input-box {{ width: 100%; padding: 0.75rem 1rem; border-radius: 10px; border: 1px solid #cbd5e1; outline: none; font-size: 0.9rem; margin-bottom: 0.8rem; }}
+            .textarea-box {{ width: 100%; padding: 0.75rem 1rem; border-radius: 10px; border: 1px solid #cbd5e1; outline: none; font-size: 0.9rem; margin-bottom: 0.8rem; min-height: 120px; font-family: inherit; }}
+            .btn-send {{ background: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer; width: 100%; }}
+            .btn-tmpl {{ background: var(--primary-bg); color: var(--primary); border: 1px solid #ddd6fe; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.78rem; font-weight: 600; cursor: pointer; margin-right: 0.4rem; margin-bottom: 0.4rem; }}
+            .btn-tmpl:hover {{ background: #ede9fe; }}
             .activity-row {{ display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }}
             .badge {{ background: #ecfdf5; color: #10b981; padding: 0.2rem 0.6rem; border-radius: 99px; font-size: 0.72rem; font-weight: 700; }}
         </style>
@@ -270,8 +279,8 @@ def index_page():
     <body>
         <div class="header">
             <div>
-                <h1 class="title">🤖 AIRA - Autonomous AI Agent</h1>
-                <div class="subtitle">Vercel Serverless Deployment • Intent Reasoning & Enterprise Automation</div>
+                <h1 class="title">🤖 AIRA - AI Agent & Email Studio</h1>
+                <div class="subtitle">Vercel Serverless Deployment • Resend API • Custom Composer & Prebuilt Templates</div>
             </div>
             <span class="badge" style="font-size: 0.85rem; padding: 0.4rem 0.9rem;">🟢 Vercel Serverless Active</span>
         </div>
@@ -285,43 +294,113 @@ def index_page():
         </div>
 
         <div class="main-grid">
+            <!-- Left: Natural Language AI Assistant -->
+            <div class="card">
+                <div class="card-title">🤖 AI Prompt Console</div>
+                <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.8rem;">Enter instruction to analyze with Gemini reasoning:</p>
+                <textarea id="promptInput" class="textarea-box" style="min-height: 80px;" placeholder="e.g., Send email to hriday.code1119@gmail.com with subject Project Status..."></textarea>
+                <button onclick="sendCommand()" class="btn-send" style="background: #475569;">Analyze Intent ⚡</button>
+                <div id="outputLog" style="margin-top: 1rem; font-size: 0.8rem; font-family: monospace; color: #1e293b; background: #f1f5f9; padding: 0.8rem; border-radius: 8px; display: none;"></div>
+            </div>
+
+            <!-- Middle: Custom Email Composer & Prebuilt Templates -->
+            <div class="card">
+                <div class="card-title">✉️ Custom Email Composer</div>
+                <div style="margin-bottom: 0.8rem;">
+                    <div style="font-size: 0.8rem; font-weight: 600; color: #64748b; margin-bottom: 0.4rem;">PREBUILT TEMPLATES:</div>
+                    <button class="btn-tmpl" onclick="loadTemplate('status')">📊 Project Status</button>
+                    <button class="btn-tmpl" onclick="loadTemplate('meeting')">📅 Meeting Request</button>
+                    <button class="btn-tmpl" onclick="loadTemplate('academic')">🎓 BTech Progress</button>
+                    <button class="btn-tmpl" onclick="loadTemplate('urgent')">🚨 Urgent Alert</button>
+                </div>
+                
+                <input id="emailTo" class="input-box" placeholder="Recipient email(s) (e.g. hriday.code1119@gmail.com)" />
+                <input id="emailSubject" class="input-box" placeholder="Subject line" />
+                <textarea id="emailBody" class="textarea-box" placeholder="Write custom mail message body here..."></textarea>
+                
+                <button onclick="sendCustomEmail()" class="btn-send">🚀 Send Live via Resend</button>
+                <div id="emailStatus" style="margin-top: 0.8rem; font-size: 0.84rem; font-weight: 600; display: none;"></div>
+            </div>
+
+            <!-- Right: Activity & Schedule -->
             <div class="card">
                 <div class="card-title">Recent Activity</div>
-                <div class="activity-row"><span>✉️ Email sent to Chetan</span><strong>10:30 AM</strong></div>
+                <div class="activity-row"><span>✉️ Email sent to Hriday</span><strong>Just now</strong></div>
                 <div class="activity-row"><span>📄 Document summary created</span><strong>09:15 AM</strong></div>
                 <div class="activity-row"><span>📅 Meeting scheduled</span><strong>09:00 AM</strong></div>
                 <div class="activity-row"><span>📊 Data extracted sales.xlsx</span><strong>Yesterday</strong></div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">🤖 AI Assistant Command Console</div>
-                <div class="chat-bubble">
-                    <strong>Hi Vaishnavi! 👋</strong><br>
-                    AIRA serverless agent is ready to automate your tasks.
-                </div>
-                <div class="input-group">
-                    <input id="promptInput" class="input-box" placeholder="Ask anything (e.g., 'Send email to Chetan about project update')...">
-                    <button onclick="sendCommand()" class="btn-send">Send 🚀</button>
-                </div>
-                <div id="outputLog" style="margin-top: 1rem; font-size: 0.84rem; font-family: monospace; color: #1e293b; background: #f1f5f9; padding: 0.8rem; border-radius: 8px; display: none;"></div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">Today's Schedule</div>
+                
+                <div class="card-title" style="margin-top: 1.5rem;">Today's Schedule</div>
                 <div class="activity-row"><span>09:00 AM • Daily Standup</span><span class="badge">30m</span></div>
-                <div class="activity-row"><span>11:00 AM • Team Sync</span><span class="badge">1h</span></div>
-                <div class="activity-row"><span>02:00 PM • Client Presentation</span><span class="badge">1h</span></div>
-                <div class="activity-row"><span>04:30 PM • Review & Planning</span><span class="badge">30m</span></div>
+                <div class="activity-row"><span>02:00 PM • Client Demo</span><span class="badge">1h</span></div>
             </div>
         </div>
 
         <script>
+            const templates = {{
+                status: {{
+                    subject: "[Update] Project Status Report: Milestones Completed",
+                    body: "Hi Team,\\n\\nHere is our project progress report:\\n• Completed: AI Core, Multi-Format Document Studio, and Supabase integration.\\n• Tests: 100% automated test coverage.\\n• Next: Live user validation.\\n\\nBest regards,\\nAIRA Team"
+                }},
+                meeting: {{
+                    subject: "Meeting Request: Sprint Planning & Architecture Sync",
+                    body: "Dear Team,\\n\\nI would like to schedule a sync meeting to review upcoming deliverables.\\n\\nProposed Agenda:\\n1. Review Phase 5 & 6 features.\\n2. Live demo of Resend email automation.\\n\\nBest regards,\\nAIRA Team"
+                }},
+                academic: {{
+                    subject: "BTech Major Project: Bi-Weekly Progress Submission",
+                    body: "Respected Advisor,\\n\\nPlease find attached our progress report for the Autonomous AI Agent project.\\nTeam: Vaishnavi Dhyani, Chetan, Hriday.\\nAll benchmarks achieved 100% accuracy.\\n\\nSincerely,\\nProject Team"
+                }},
+                urgent: {{
+                    subject: "URGENT: Action Required on Production Task Pipeline",
+                    body: "Hello,\\n\\nThis is an automated priority alert regarding system task execution.\\nPlease review the logs immediately.\\n\\nThank you,\\nAIRA Monitoring System"
+                }}
+            }};
+
+            function loadTemplate(key) {{
+                const t = templates[key];
+                if (!t) return;
+                document.getElementById('emailSubject').value = t.subject;
+                document.getElementById('emailBody').value = t.body;
+            }}
+
+            async function sendCustomEmail() {{
+                const to = document.getElementById('emailTo').value.trim();
+                const subject = document.getElementById('emailSubject').value.trim();
+                const body = document.getElementById('emailBody').value.trim();
+                const status = document.getElementById('emailStatus');
+                if (!to || !subject || !body) {{
+                    alert('Please fill in Recipient, Subject, and Body fields.');
+                    return;
+                }}
+                status.style.display = 'block';
+                status.style.color = '#6d28d9';
+                status.innerText = '⏳ Dispatching email via Resend API...';
+                try {{
+                    const res = await fetch('/api/resend/send', {{
+                        method: 'POST',
+                        headers: {{ 'Content-Type': 'application/json' }},
+                        body: JSON.stringify({{ to, subject, body }})
+                    }});
+                    const data = await res.json();
+                    if (res.ok) {{
+                        status.style.color = '#10b981';
+                        status.innerText = '🎉 Email dispatched successfully! ID: ' + (data.id || 'sent');
+                    }} else {{
+                        status.style.color = '#ef4444';
+                        status.innerText = '❌ Error: ' + (data.detail || JSON.stringify(data));
+                    }}
+                }} catch (err) {{
+                    status.style.color = '#ef4444';
+                    status.innerText = '❌ Network Error: ' + err.message;
+                }}
+            }}
+
             async function sendCommand() {{
                 const input = document.getElementById('promptInput').value.trim();
                 const log = document.getElementById('outputLog');
                 if (!input) return;
                 log.style.display = 'block';
-                log.innerText = '⏳ AIRA analyzing intent and synthesizing task plan...';
+                log.innerText = '⏳ AIRA analyzing intent...';
                 try {{
                     const res = await fetch('/api/agent/command', {{
                         method: 'POST',
@@ -338,3 +417,4 @@ def index_page():
     </body>
     </html>
     """
+
