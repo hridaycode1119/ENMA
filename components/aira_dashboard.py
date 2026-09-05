@@ -11,6 +11,7 @@ from agent.orchestrator import AgentOrchestrator, WorkflowState
 from components.draft_card import render_draft_card
 from components.clarification_modal import render_clarification_card
 from components.timeline import render_timeline
+from components.email_composer import render_email_composer
 from database.repository import AIRARepository
 
 def render_aira_dashboard(orchestrator: AgentOrchestrator, on_navigate_view) -> None:
@@ -290,9 +291,13 @@ def render_aira_dashboard(orchestrator: AgentOrchestrator, on_navigate_view) -> 
             unsafe_allow_html=True,
         )
 
-        # Interactive Mini-Calendar
-        today = datetime.date.today()
-        st.date_input("Select Date", value=today, label_visibility="collapsed", key="mini_cal_picker")
+    st.write("")
+
+    # --------------------------------------------------------------------------
+    # 2.5 Quick Email Automation & Template Studio
+    # --------------------------------------------------------------------------
+    with st.expander("✉️ **Quick Email Automation & AI Composer Studio**", expanded=True):
+        render_email_composer()
 
     st.write("")
 

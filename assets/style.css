@@ -36,31 +36,7 @@
     --radius-pill: 9999px;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-main: #0b0f17;
-        --card-bg: #131823;
-        --card-border: #1e2638;
-        --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
-        --card-shadow-hover: 0 10px 25px -3px rgba(0, 0, 0, 0.6);
-        
-        --text-primary: #f8fafc;
-        --text-secondary: #94a3b8;
-        --text-muted: #64748b;
-        
-        --primary: #8b5cf6;
-        --primary-light: #a78bfa;
-        --primary-bg: #1e1b4b;
-        --primary-glow: rgba(139, 92, 246, 0.35);
-
-        --success-bg: rgba(16, 185, 129, 0.15);
-        --warning-bg: rgba(245, 158, 11, 0.15);
-        --danger-bg: rgba(239, 68, 68, 0.15);
-        --info-bg: rgba(59, 130, 246, 0.15);
-    }
-}
-
-/* Global Reset & Typography */
+/* Global Light Theme Enforcement */
 html, body, [class*="css"], .stApp {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
     background-color: var(--bg-main) !important;
@@ -565,4 +541,38 @@ header[data-testid="stHeader"] {
 .user-email {
     font-size: 0.7rem;
     color: var(--text-muted);
+}
+
+/* Light Mode Input & Tab Controls */
+.stTextInput > div > div > input,
+.stTextArea > div > div > textarea,
+.stSelectbox > div > div {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+}
+
+.stTextInput > div > div > input:focus,
+.stTextArea > div > div > textarea:focus {
+    border-color: #6d28d9 !important;
+    box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.15) !important;
+}
+
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+    background-color: transparent !important;
+}
+
+.stTabs [data-baseweb="tab"] {
+    background-color: #f1f5f9 !important;
+    color: #475569 !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    padding: 0.5rem 1.2rem !important;
+}
+
+.stTabs [aria-selected="true"] {
+    background-color: #ede9fe !important;
+    color: #6d28d9 !important;
 }
