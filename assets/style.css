@@ -1,824 +1,164 @@
 /* ==============================================================================
-   ENMA Luxury Wine / Crimson Design System
-   Modern Dark Glassmorphism with Rose Glow & Ambient Wave Background
+   ENMA by LUCORA - Enterprise AI Workspace Design System
+   Exact Tailwind Wine/Plum/Ruby Palette & Glassmorphic Custom Decorations
    ============================================================================== */
 
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Caveat:wght@600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 :root {
-    --bg-canvas: #f8edf0;
-    --bg-surface: #ffffff;
-    --bg-surface-elevated: #ffffff;
+    /* Exact Wine Palette from designe/code.html */
+    --wine-950: #14060d;
+    --wine-900: #1a0b12;
+    --wine-850: #230c18;
+    --wine-800: #2b101f;
+    --wine-750: #341426;
+    --wine-700: #3f172e;
+    --wine-600: #521f3d;
+    --wine-500: #752b57;
     
-    --wine-darkest: #13030b;
-    --wine-dark: #1f0511;
-    --wine-card: #280716;
-    --wine-surface: #360b1f;
-    --wine-border: rgba(244, 63, 94, 0.22);
-    --wine-glow: rgba(225, 29, 72, 0.25);
+    /* Exact Ruby Palette */
+    --ruby-400: #fb719e;
+    --ruby-500: #f43f76;
+    --ruby-600: #e11d5e;
+    --ruby-700: #be124c;
     
-    --rose-50: #fff1f2;
-    --rose-100: #ffe4e6;
-    --rose-200: #fecdd3;
-    --rose-300: #fda4af;
-    --rose-400: #fb7185;
-    --rose-500: #f43f5e;
-    --rose-600: #e11d48;
-    --rose-700: #be123c;
-    --rose-800: #9f1239;
-    --rose-900: #881337;
+    /* Exact Accent Palette */
+    --accent-pink: #ff4d8d;
+    --accent-glow: #e23c72;
+    --accent-soft: #fce7f3;
+    --accent-muted: #a88094;
     
-    --primary-gradient: linear-gradient(135deg, #be123c 0%, #881337 100%);
-    --rose-gradient: linear-gradient(135deg, #f43f5e 0%, #be123c 100%);
-    --peach-rose-gradient: linear-gradient(135deg, #fda4af 0%, #f43f5e 100%);
-    --dark-wine-gradient: linear-gradient(135deg, #2b0716 0%, #16030c 100%);
-    
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --text-muted: #94a3b8;
-    --text-light: #ffffff;
-    --text-light-muted: #e2cad2;
-    --text-rose: #fecdd3;
-    
-    --radius-sm: 8px;
-    --radius-md: 14px;
-    --radius-lg: 20px;
-    --radius-pill: 9999px;
-    
-    --shadow-wine: 0 10px 30px -4px rgba(31, 5, 17, 0.35);
-    --shadow-glow: 0 0 20px rgba(244, 63, 94, 0.35);
+    /* Gradients */
+    --gradient-ruby-pink: linear-gradient(135deg, #e11d5e 0%, #ff4d8d 100%);
+    --gradient-hero: linear-gradient(135deg, #230c18 0%, #2c0e1e 50%, #2b101f 100%);
+    --gradient-card: linear-gradient(135deg, rgba(35, 12, 24, 0.75) 0%, rgba(26, 11, 18, 0.85) 100%);
 }
 
-/* Base Canvas */
+/* Base Canvas & Streamlit Overrides */
 html, body, [class*="css"], .stApp {
-    font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif !important;
-    background-color: var(--bg-canvas) !important;
-    background: radial-gradient(circle at 10% 20%, #fae8eb 0%, #f4dbe0 50%, #edd3d9 100%) !important;
-    color: var(--text-primary) !important;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    background-color: var(--wine-900) !important;
+    background: linear-gradient(180deg, #1a0b12 0%, #1a0b12 60%, #12050c 100%) !important;
+    color: var(--accent-soft) !important;
     -webkit-font-smoothing: antialiased;
 }
 
-/* Hide default streamlit clutter */
+/* Hide default streamlit header clutter */
 header[data-testid="stHeader"] {
     background-color: transparent !important;
 }
 
 [data-testid="stSidebar"] {
-    background: transparent !important;
-    border-right: none !important;
+    background-color: rgba(20, 6, 13, 0.9) !important;
+    border-right: 1px solid var(--wine-800) !important;
 }
 
-/* ==============================================================================
-   1. Luxury Dark Wine Sidebar Styling
-   ============================================================================== */
-.enma-sidebar-container {
-    background: url("__WALLPAPER_BASE64__") center center / cover no-repeat, var(--wine-darkest);
-    background-blend-mode: overlay;
-    border: 1px solid var(--wine-border);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem 1.1rem;
-    color: var(--text-light);
-    box-shadow: var(--shadow-wine);
-    position: relative;
-    overflow: hidden;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: var(--wine-900);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--wine-700);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--wine-600);
 }
 
-.enma-sidebar-container::before {
-    content: "";
+/* Fluid Glowing Waves from designe/code.html */
+.hero-wave {
+    background: radial-gradient(circle at 75% 45%, rgba(244, 63, 118, 0.45) 0%, rgba(225, 29, 94, 0.25) 35%, rgba(43, 16, 31, 0) 70%),
+                linear-gradient(135deg, transparent 40%, rgba(255, 77, 141, 0.2) 65%, rgba(226, 60, 114, 0.35) 85%);
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(180deg, rgba(20, 3, 11, 0.82) 0%, rgba(33, 6, 18, 0.88) 100%);
+    inset: 0;
     pointer-events: none;
+    border-radius: 1rem;
 }
 
-.enma-sidebar-content {
-    position: relative;
-    z-index: 2;
+.sidebar-wave {
+    background: radial-gradient(ellipse at bottom right, rgba(226, 60, 114, 0.4) 0%, rgba(190, 18, 76, 0.25) 40%, transparent 75%);
+    position: absolute;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+    height: 140px;
+    pointer-events: none;
+    filter: blur(14px);
 }
 
-.enma-sidebar-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1.6rem;
-    padding-left: 0.2rem;
+.footer-wave {
+    background: radial-gradient(ellipse at 85% 100%, rgba(244, 63, 118, 0.45) 0%, rgba(190, 18, 76, 0.15) 50%, transparent 75%);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 480px;
+    height: 100px;
+    pointer-events: none;
+    filter: blur(12px);
 }
 
-.enma-brand-spark {
-    color: var(--rose-400);
-    font-size: 1.6rem;
-    filter: drop-shadow(0 0 8px var(--rose-500));
+/* Soundwave Bar Animation */
+@keyframes wave-bounce {
+    0%, 100% { height: 6px; }
+    50% { height: 28px; }
 }
-
-.enma-brand-title {
-    font-family: "Outfit", sans-serif;
-    font-size: 1.45rem;
-    font-weight: 800;
-    color: #ffffff;
-    letter-spacing: 0.04em;
-    line-height: 1;
+.wave-bar {
+    animation: wave-bounce 1.2s ease-in-out infinite;
 }
+.wave-bar:nth-child(2) { animation-delay: 0.1s; }
+.wave-bar:nth-child(3) { animation-delay: 0.2s; }
+.wave-bar:nth-child(4) { animation-delay: 0.3s; }
+.wave-bar:nth-child(5) { animation-delay: 0.4s; }
+.wave-bar:nth-child(6) { animation-delay: 0.5s; }
+.wave-bar:nth-child(7) { animation-delay: 0.6s; }
+.wave-bar:nth-child(8) { animation-delay: 0.5s; }
+.wave-bar:nth-child(9) { animation-delay: 0.35s; }
+.wave-bar:nth-child(10) { animation-delay: 0.15s; }
 
-.enma-brand-sub {
-    font-size: 0.75rem;
-    color: var(--rose-300);
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    margin-top: 2px;
-}
-
-.enma-sidebar-section {
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #a77c8d;
-    margin: 1.4rem 0 0.5rem 0.5rem;
-}
-
-.enma-nav-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    width: 100%;
-    padding: 0.65rem 0.95rem;
-    border-radius: 12px;
-    color: var(--text-light-muted);
-    font-size: 0.88rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    margin-bottom: 0.3rem;
-    border: 1px solid transparent;
-    cursor: pointer;
-    background: transparent;
-}
-
-.enma-nav-btn:hover {
-    background: rgba(255, 255, 255, 0.07);
-    color: #ffffff;
-    border-color: rgba(255, 255, 255, 0.1);
-}
-
-.enma-nav-btn-active {
-    background: linear-gradient(135deg, #4d1024 0%, #2f0815 100%) !important;
-    border: 1px solid #7c1a3b !important;
+/* Streamlit Button & Widget Theme Overrides */
+.stButton > button {
+    background-color: var(--wine-800) !important;
     color: #ffffff !important;
-    box-shadow: 0 4px 14px rgba(124, 26, 59, 0.45) !important;
-    border-left: 3.5px solid var(--rose-500) !important;
+    border: 1px solid rgba(244, 63, 118, 0.2) !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    transition: all 0.2s ease !important;
 }
 
-/* ENMA Pro Upgrade Banner */
-.enma-pro-card {
-    background: linear-gradient(135deg, rgba(68, 14, 33, 0.85) 0%, rgba(30, 5, 15, 0.95) 100%);
-    border: 1px solid rgba(244, 63, 94, 0.35);
-    border-radius: 16px;
-    padding: 1.1rem;
-    margin-top: 1.6rem;
-    box-shadow: 0 8px 24px rgba(22, 3, 11, 0.4);
+.stButton > button:hover {
+    background-color: var(--wine-750) !important;
+    border-color: var(--ruby-500) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 14px rgba(244, 63, 118, 0.25) !important;
 }
 
-.enma-pro-title {
-    font-size: 0.88rem;
-    font-weight: 700;
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin-bottom: 0.35rem;
+.stButton > button[kind="primary"] {
+    background: linear-gradient(135deg, var(--ruby-600) 0%, var(--accent-pink) 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(225, 29, 94, 0.35) !important;
 }
 
-.enma-pro-desc {
-    font-size: 0.75rem;
-    color: var(--rose-200);
-    line-height: 1.4;
-    margin-bottom: 0.8rem;
+.stButton > button[kind="primary"]:hover {
+    background: linear-gradient(135deg, var(--ruby-500) 0%, var(--ruby-400) 100%) !important;
+    box-shadow: 0 6px 20px rgba(225, 29, 94, 0.5) !important;
 }
 
-.enma-pro-btn {
-    display: block;
-    width: 100%;
-    text-align: center;
-    background: linear-gradient(135deg, #f43f5e 0%, #fda4af 100%);
-    color: #4c0519;
-    font-size: 0.78rem;
-    font-weight: 700;
-    padding: 0.5rem;
-    border-radius: var(--radius-pill);
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
-    transition: transform 0.15s ease;
+/* Streamlit Input Fields */
+input, textarea, select, [data-baseweb="input"], [data-baseweb="base-input"] {
+    background-color: rgba(20, 6, 13, 0.8) !important;
+    color: #ffffff !important;
+    border-color: var(--wine-800) !important;
+    border-radius: 12px !important;
 }
 
-.enma-pro-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(244, 63, 94, 0.45);
-}
-
-/* User Profile Footer */
-.enma-user-footer {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-top: 1.4rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.enma-user-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--rose-600);
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 0.82rem;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 0 10px rgba(225, 29, 72, 0.4);
-}
-
-.enma-user-name {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #ffffff;
-    line-height: 1.2;
-}
-
-.enma-user-email {
-    font-size: 0.72rem;
-    color: var(--rose-300);
-}
-
-/* ==============================================================================
-   2. Top Bar Navigation
-   ============================================================================== */
-.enma-topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.2rem;
-    gap: 1rem;
-}
-
-.enma-workspace-pill {
-    background: rgba(43, 9, 23, 0.88);
-    border: 1px solid rgba(244, 63, 94, 0.3);
-    color: var(--rose-200);
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-pill);
-    font-size: 0.84rem;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    box-shadow: 0 4px 14px rgba(35, 7, 18, 0.15);
-}
-
-.enma-search-bar {
-    background: rgba(43, 9, 23, 0.88);
-    border: 1px solid rgba(244, 63, 94, 0.3);
-    color: #ffffff;
-    border-radius: var(--radius-pill);
-    padding: 0.5rem 1.1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 440px;
-    box-shadow: 0 4px 14px rgba(35, 7, 18, 0.15);
-}
-
-.enma-search-input {
-    background: transparent;
-    border: none;
-    outline: none;
-    color: #ffffff;
-    font-size: 0.86rem;
-    width: 100%;
-}
-
-.enma-search-input::placeholder {
-    color: var(--rose-300);
-    opacity: 0.85;
-}
-
-.enma-kbd-badge {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: var(--rose-200);
-    font-size: 0.72rem;
-    font-weight: 600;
-    padding: 0.15rem 0.45rem;
-    border-radius: 6px;
-    font-family: "JetBrains Mono", monospace;
-}
-
-.enma-topbar-right {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.enma-bell-btn {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: rgba(43, 9, 23, 0.88);
-    border: 1px solid rgba(244, 63, 94, 0.3);
-    color: var(--rose-200);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    cursor: pointer;
-    font-size: 1.05rem;
-}
-
-.enma-bell-dot {
-    position: absolute;
-    top: 7px;
-    right: 8px;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--rose-500);
-    box-shadow: 0 0 6px var(--rose-500);
-}
-
-/* ==============================================================================
-   3. Hero Greeting Card
-   ============================================================================== */
-.enma-hero-banner {
-    background: url("__WALLPAPER_BASE64__") right center / cover no-repeat, linear-gradient(135deg, #240512 0%, #3e0a20 50%, #59102f 100%);
-    background-blend-mode: overlay;
-    border: 1px solid rgba(244, 63, 94, 0.32);
-    border-radius: 22px;
-    padding: 1.8rem 2.2rem 1.6rem 2.2rem;
-    color: #ffffff;
-    box-shadow: 0 14px 40px rgba(35, 6, 19, 0.35);
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 1.4rem;
-}
-
-.enma-hero-banner::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(135deg, rgba(25, 4, 13, 0.75) 0%, rgba(45, 8, 25, 0.4) 100%);
-    pointer-events: none;
-}
-
-.enma-hero-inner {
-    position: relative;
-    z-index: 2;
-}
-
-.enma-status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    background: rgba(225, 29, 72, 0.2);
-    border: 1px solid rgba(244, 63, 94, 0.35);
-    padding: 0.2rem 0.75rem;
-    border-radius: var(--radius-pill);
-    font-size: 0.74rem;
-    font-weight: 600;
-    color: #fecdd3;
-    margin-bottom: 0.8rem;
-}
-
-.enma-cursive-note {
-    font-family: "Caveat", cursive !important;
-    font-size: 1.45rem;
-    color: var(--rose-300);
-    position: absolute;
-    top: 1.5rem;
-    right: 2.2rem;
-    transform: rotate(-3deg);
-    text-shadow: 0 0 10px rgba(244, 63, 94, 0.4);
-}
-
-.enma-hero-headline {
-    font-family: "Outfit", sans-serif !important;
-    font-size: 1.85rem;
-    font-weight: 800;
-    color: #ffffff;
-    letter-spacing: -0.01em;
-    margin-bottom: 0.4rem;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-}
-
-.enma-hero-subtext {
-    font-size: 0.92rem;
-    color: var(--rose-200);
-    max-width: 650px;
-    line-height: 1.5;
-    margin-bottom: 1.3rem;
-}
-
-/* Hero Embedded Command Bar */
-.enma-command-bar {
-    background: #ffffff;
-    border-radius: 14px;
-    padding: 0.5rem 0.8rem 0.5rem 1.1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    margin-bottom: 1rem;
-}
-
-.enma-command-spark {
-    color: var(--rose-600);
-    font-size: 1.2rem;
-}
-
-.enma-command-input-field {
-    border: none;
-    outline: none;
-    width: 100%;
-    font-size: 0.92rem;
-    color: #0f172a;
-    font-family: inherit;
-}
-
-.enma-command-input-field::placeholder {
-    color: #94a3b8;
-}
-
-.enma-command-action-btn {
-    background: var(--primary-gradient);
-    color: #ffffff;
-    border: none;
-    border-radius: 10px;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(190, 18, 60, 0.35);
-    transition: transform 0.15s ease;
-}
-
-.enma-command-action-btn:hover {
-    transform: scale(1.04);
-}
-
-/* Quick Action Chips */
-.enma-chips-row {
-    display: flex;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-.enma-chip {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    color: #ffffff;
-    border-radius: 10px;
-    padding: 0.45rem 0.95rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    cursor: pointer;
-    transition: all 0.15s ease;
-}
-
-.enma-chip:hover {
-    background: rgba(255, 255, 255, 0.22);
-    border-color: rgba(255, 255, 255, 0.35);
-    transform: translateY(-1px);
-}
-
-/* ==============================================================================
-   4. Dark Wine Content Cards (Middle & Right Column)
-   ============================================================================== */
-.enma-dark-card {
-    background: linear-gradient(135deg, #280716 0%, #17030d 100%);
-    border: 1px solid var(--wine-border);
-    border-radius: 18px;
-    padding: 1.3rem;
-    color: #ffffff;
-    box-shadow: 0 10px 30px rgba(25, 4, 13, 0.3);
-    margin-bottom: 1.2rem;
-    position: relative;
-    overflow: hidden;
-}
-
-.enma-card-header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.enma-card-title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
-}
-
-.enma-card-link {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--rose-300);
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.enma-card-link:hover {
-    color: #ffffff;
-}
-
-/* AI Task Progress */
-.enma-progress-bar-wrap {
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 9999px;
-    height: 7px;
-    width: 100%;
-    margin-bottom: 1.1rem;
-    overflow: hidden;
-}
-
-.enma-progress-bar-fill {
-    height: 100%;
-    width: 60%;
-    background: linear-gradient(90deg, #f43f5e 0%, #fda4af 100%);
-    border-radius: 9999px;
-    box-shadow: 0 0 12px rgba(244, 63, 94, 0.6);
-}
-
-.enma-task-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.45rem 0;
-    font-size: 0.82rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.enma-task-item:last-child {
-    border-bottom: none;
-}
-
-.enma-dot-green { width: 7px; height: 7px; border-radius: 50%; background: #10b981; display: inline-block; margin-right: 6px; box-shadow: 0 0 6px #10b981; }
-.enma-dot-purple { width: 7px; height: 7px; border-radius: 50%; background: #a855f7; display: inline-block; margin-right: 6px; box-shadow: 0 0 6px #a855f7; }
-.enma-dot-gray { width: 7px; height: 7px; border-radius: 50%; background: #64748b; display: inline-block; margin-right: 6px; }
-
-.enma-status-tag {
-    font-size: 0.72rem;
-    padding: 0.15rem 0.5rem;
-    border-radius: 9999px;
-    font-weight: 600;
-}
-
-.enma-tag-purple { background: rgba(168, 85, 247, 0.18); color: #d8b4fe; }
-.enma-tag-gray { background: rgba(255, 255, 255, 0.08); color: #94a3b8; }
-.enma-tag-green { background: rgba(16, 185, 129, 0.18); color: #6ee7b7; }
-.enma-tag-orange { background: rgba(245, 158, 11, 0.18); color: #fcd34d; }
-
-/* Productivity Snapshot */
-.enma-metrics-3grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.6rem;
-    margin-bottom: 1rem;
-}
-
-.enma-metric-mini-tile {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    padding: 0.75rem 0.5rem;
-    text-align: center;
-}
-
-.enma-metric-mini-icon {
-    font-size: 1.1rem;
-    margin-bottom: 0.25rem;
-}
-
-.enma-metric-mini-val {
-    font-size: 1.35rem;
-    font-weight: 800;
-    color: #ffffff;
-    line-height: 1.1;
-}
-
-.enma-metric-mini-label {
-    font-size: 0.68rem;
-    color: var(--rose-200);
-    margin-top: 2px;
-}
-
-.enma-metric-mini-delta {
-    font-size: 0.65rem;
-    color: #34d399;
-    font-weight: 700;
-    margin-top: 4px;
-}
-
-.enma-quote-banner {
-    background: rgba(244, 63, 94, 0.1);
-    border: 1px solid rgba(244, 63, 94, 0.2);
-    border-radius: 10px;
-    padding: 0.5rem 0.8rem;
-    text-align: center;
-    font-size: 0.78rem;
-    color: var(--rose-200);
-    font-weight: 500;
-}
-
-/* AI Suggested Next */
-.enma-suggestion-tile {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    padding: 0.75rem 0.9rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.55rem;
-    cursor: pointer;
-    transition: all 0.15s ease;
-}
-
-.enma-suggestion-tile:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(244, 63, 94, 0.3);
-    transform: translateX(2px);
-}
-
-.enma-suggestion-text {
-    font-size: 0.8rem;
-    color: #f1f5f9;
-    font-weight: 500;
-    line-height: 1.3;
-}
-
-/* ==============================================================================
-   5. Email Studio & Templates Card (Clean Light Luxury Card)
-   ============================================================================== */
-.enma-email-studio-card {
-    background: #ffffff;
-    border: 1px solid #fecdd3;
-    border-radius: 20px;
-    padding: 1.6rem;
-    box-shadow: 0 10px 30px rgba(50, 8, 24, 0.06);
-    margin-bottom: 1.4rem;
-}
-
-.enma-studio-top-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.1rem;
-}
-
-.enma-studio-title {
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: #0f172a;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.enma-templates-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.75rem;
-    margin-bottom: 1.4rem;
-}
-
-.enma-tmpl-box {
-    background: #fff8f9;
-    border: 1px solid #ffe4e6;
-    border-radius: 12px;
-    padding: 0.8rem;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-}
-
-.enma-tmpl-box:hover {
-    background: #ffe4e6;
-    border-color: #f43f5e;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(244, 63, 94, 0.15);
-}
-
-.enma-tmpl-icon {
-    font-size: 1.25rem;
-}
-
-.enma-tmpl-title {
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: #0f172a;
-    line-height: 1.2;
-}
-
-.enma-tmpl-sub {
-    font-size: 0.7rem;
-    color: #64748b;
-}
-
-/* ==============================================================================
-   6. Soundwave & Voice Command Visualizer
-   ============================================================================== */
-.enma-voice-card {
-    background: url("__WALLPAPER_BASE64__") center center / cover no-repeat, var(--dark-wine-gradient);
-    background-blend-mode: overlay;
-    border: 1px solid var(--wine-border);
-    border-radius: 18px;
-    padding: 1.3rem;
-    color: #ffffff;
-    box-shadow: 0 10px 30px rgba(25, 4, 13, 0.3);
-    margin-bottom: 1.2rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.enma-voice-card::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(20, 3, 11, 0.8);
-    pointer-events: none;
-}
-
-.enma-voice-inner {
-    position: relative;
-    z-index: 2;
-}
-
-.enma-soundwave-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    height: 48px;
-    margin: 1rem 0;
-}
-
-.enma-wave-bar {
-    width: 4px;
-    background: linear-gradient(180deg, #fda4af 0%, #f43f5e 100%);
-    border-radius: 9999px;
-    animation: enmaWave 1.4s ease-in-out infinite alternate;
-    box-shadow: 0 0 8px rgba(244, 63, 94, 0.5);
-}
-
-.enma-wave-bar:nth-child(1) { height: 16px; animation-delay: 0.1s; }
-.enma-wave-bar:nth-child(2) { height: 28px; animation-delay: 0.3s; }
-.enma-wave-bar:nth-child(3) { height: 42px; animation-delay: 0.2s; }
-.enma-wave-bar:nth-child(4) { height: 20px; animation-delay: 0.4s; }
-.enma-wave-bar:nth-child(5) { height: 36px; animation-delay: 0.15s; }
-.enma-wave-bar:nth-child(6) { height: 44px; animation-delay: 0.35s; }
-.enma-wave-bar:nth-child(7) { height: 24px; animation-delay: 0.25s; }
-.enma-wave-bar:nth-child(8) { height: 14px; animation-delay: 0.05s; }
-
-@keyframes enmaWave {
-    0% { transform: scaleY(0.4); }
-    100% { transform: scaleY(1.2); }
-}
-
-.enma-mic-btn-circle {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%);
-    color: #ffffff;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    box-shadow: 0 0 20px rgba(244, 63, 94, 0.5);
-    border: 3px solid rgba(255, 255, 255, 0.2);
-    cursor: pointer;
-    transition: transform 0.15s ease;
-}
-
-.enma-mic-btn-circle:hover {
-    transform: scale(1.08);
+input:focus, textarea:focus, select:focus {
+    border-color: var(--ruby-500) !important;
+    box-shadow: 0 0 0 1px var(--ruby-500) !important;
 }
