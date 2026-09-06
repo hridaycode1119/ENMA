@@ -49,9 +49,9 @@ header[data-testid="stHeader"] {
 }
 
 /* ==============================================================================
-   1. AIRA Top Header Bar
+   1. LUCORA Top Header Bar
    ============================================================================== */
-.aira-header {
+.lucora-header, .aira-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -59,7 +59,7 @@ header[data-testid="stHeader"] {
     margin-bottom: 0.5rem;
 }
 
-.aira-greeting-title {
+.lucora-greeting-title, .aira-greeting-title {
     font-size: 1.6rem;
     font-weight: 800;
     color: var(--text-primary);
@@ -67,14 +67,14 @@ header[data-testid="stHeader"] {
     letter-spacing: -0.02em;
 }
 
-.aira-greeting-sub {
+.lucora-greeting-sub, .aira-greeting-sub {
     font-size: 0.88rem;
     color: var(--text-secondary);
     margin-top: 0.2rem;
     font-weight: 500;
 }
 
-.aira-search-box {
+.lucora-search-box, .aira-search-box {
     display: flex;
     align-items: center;
     background: var(--card-bg);
@@ -86,7 +86,7 @@ header[data-testid="stHeader"] {
     width: 320px;
 }
 
-.aira-search-box input {
+.lucora-search-box input, .aira-search-box input {
     border: none;
     background: transparent;
     outline: none;
@@ -95,13 +95,13 @@ header[data-testid="stHeader"] {
     width: 100%;
 }
 
-.aira-kbd {
+.lucora-kbd, .aira-kbd {
     background: var(--card-border);
     color: var(--text-secondary);
     font-size: 0.72rem;
-    font-weight: 600;
     padding: 0.15rem 0.45rem;
     border-radius: 4px;
+    font-weight: 600;
     font-family: 'JetBrains Mono', monospace;
 }
 

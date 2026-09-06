@@ -1,6 +1,6 @@
 """
 AIRA Email Composer & Prebuilt Templates Component for Streamlit.
-Provides dedicated fields for recipient emails, subject, custom body, prebuilt templates, and AI generation.
+Provides dedicated fields for recipient emails, subject, custom body, prebuilt templates, and AI generation with instant on_click callbacks.
 """
 
 from __future__ import annotations
@@ -125,23 +125,80 @@ PREBUILT_TEMPLATES: Dict[str, Dict[str, str]] = {
     },
 }
 
-def render_email_composer(on_email_sent_callback=None, default_to: str = "") -> None:
-    """Renders the comprehensive Email Composer with template selector and working AI assistance."""
+def render_email_composer(on_email_sent_callback=None, default_to: str = "", key_prefix: str = "") -> None:
+    """Renders the comprehensive Email Composer with template selector and instant on_click AI callbacks."""
     st.markdown("### ✉️ Custom Email Composer & AI Studio")
-    st.caption("Compose custom emails, load prebuilt enterprise templates, or let AI generate the full content.")
+    st.caption("Compose custom emails, load prebuilt enterprise templates, or let AI generate and polish content automatically.")
 
     resend_client = ResendClient()
     registry = ToolRegistry()
     repo = AIRARepository()
     doc_editor = DocumentEditor()
 
-    # Initialize session state keys for the widgets
-    if "input_composer_to" not in st.session_state:
-        st.session_state.input_composer_to = default_to or "hriday.code1119@gmail.com"
-    if "input_composer_subject" not in st.session_state:
-        st.session_state.input_composer_subject = ""
-    if "input_composer_body" not in st.session_state:
-        st.session_state.input_composer_body = ""
+    # Form keys
+    k_to = f"{key_prefix}composer_to"
+    k_subject = f"{key_prefix}composer_subject"
+    k_body = f"{key_prefix}composer_body"
+    k_provider = f"{key_prefix}composer_provider"
+
+    # Initialize state keys
+    if k_to not in st.session_state:
+        st.session_state[k_to] = default_to or "hriday.code1119@gmail.com"
+    if k_subject not in st.session_state:
+        st.session_state[k_subject] = ""
+    if k_body not in st.session_state:
+        st.session_state[k_body] = ""
+
+    # Callback Handlers (executed BEFORE render cycle)
+    def apply_template(tmpl_key: str):
+        tmpl = PREBUILT_TEMPLATES.get(tmpl_key)
+        if tmpl:
+            st.session_state[k_subject] = tmpl["subject"]
+            st.session_state[k_body] = tmpl["body"]
+
+    def action_generate_full_email():
+        curr_text = st.session_state.get(k_body, "").strip()
+        curr_subj = st.session_state.get(k_subject, "").strip()
+        raw_prompt = curr_text if curr_text else curr_subj
+        if not raw_prompt:
+            raw_prompt = "Project status update and next deliverables for the team"
+
+        instruction = (
+            f"Write a complete, professional, beautifully structured enterprise email based on this input: '{raw_prompt}'. "
+            "Include an appropriate greeting, clearly written paragraphs with bullet points for key details, and a professional sign-off. "
+            "Do not include meta-text or explanation."
+        )
+        full_email, _ = doc_editor.execute_ai_command(
+            document_text=raw_prompt,
+            instruction=instruction,
+            tone="professional",
+        )
+        st.session_state[k_body] = full_email
+        if not curr_subj:
+            st.session_state[k_subject] = f"[Update] {raw_prompt.split('.')[0][:50]}"
+
+    def action_polish_executive():
+        curr_text = st.session_state.get(k_body, "").strip()
+        if curr_text:
+            polished, _ = doc_editor.execute_ai_command(curr_text, "Rewrite in a formal, highly articulate executive tone")
+            st.session_state[k_body] = polished
+
+    def action_make_concise():
+        curr_text = st.session_state.get(k_body, "").strip()
+        if curr_text:
+            concise, _ = doc_editor.execute_ai_command(curr_text, "Rewrite into concise bullet points and direct action items")
+            st.session_state[k_body] = concise
+
+    def action_fix_grammar():
+        curr_text = st.session_state.get(k_body, "").strip()
+        if curr_text:
+            fixed, _ = doc_editor.execute_ai_command(curr_text, "Fix all spelling, punctuation, and grammatical mistakes")
+            st.session_state[k_body] = fixed
+
+    def action_clear_form():
+        st.session_state[k_to] = ""
+        st.session_state[k_subject] = ""
+        st.session_state[k_body] = ""
 
     # 1. Prebuilt Templates Quick Selection Bar
     st.markdown("#### 📋 Prebuilt Enterprise Templates")
@@ -151,11 +208,13 @@ def render_email_composer(on_email_sent_callback=None, default_to: str = "") -> 
     for idx, (tmpl_name, tmpl_data) in enumerate(PREBUILT_TEMPLATES.items()):
         col_idx = idx % 4
         with t_cols[col_idx]:
-            if st.button(tmpl_name, key=f"tmpl_btn_{idx}", use_container_width=True):
-                st.session_state["input_composer_subject"] = tmpl_data["subject"]
-                st.session_state["input_composer_body"] = tmpl_data["body"]
-                st.toast(f"Loaded: {tmpl_name}", icon="📋")
-                st.rerun()
+            st.button(
+                tmpl_name,
+                key=f"{key_prefix}tmpl_btn_{idx}",
+                use_container_width=True,
+                on_click=apply_template,
+                args=(tmpl_name,),
+            )
 
     st.write("")
 
@@ -167,131 +226,98 @@ def render_email_composer(on_email_sent_callback=None, default_to: str = "") -> 
         with col_recipients:
             st.text_input(
                 "Recipient Email Address(es)*",
-                key="input_composer_to",
+                key=k_to,
                 placeholder="e.g., hriday.code1119@gmail.com, chetan@enterprise.com",
                 help="Enter single email or comma-separated email addresses.",
             )
         with col_provider:
             default_prov = 0 if resend_client.is_configured() else 1
-            selected_provider = st.selectbox(
+            st.selectbox(
                 "Dispatch Provider*",
                 ["Resend Email API", "Gmail REST API"],
                 index=default_prov,
                 help="Choose email dispatch backend.",
-                key="input_composer_provider",
+                key=k_provider,
             )
 
         st.text_input(
             "Subject Line*",
-            key="input_composer_subject",
+            key=k_subject,
             placeholder="e.g., Meeting Request: Sprint Review & Architecture Sync",
         )
 
-        # AI Generator Banner & Button right above the body box
+        # AI Generator Banner & Button
         st.markdown("**Custom Email Body Message:***")
         
         col_ai_btn, col_ai_hint = st.columns([2, 3])
         with col_ai_btn:
-            if st.button("🤖 ✨ Write / Generate Full Email with AI", type="secondary", use_container_width=True):
-                current_text = st.session_state.get("input_composer_body", "").strip()
-                current_subj = st.session_state.get("input_composer_subject", "").strip()
-                prompt_input = current_text if current_text else current_subj
-                
-                if not prompt_input:
-                    prompt_input = "Write a professional project progress update email to team"
-
-                with st.spinner("🤖 AIRA AI generating full professional email..."):
-                    try:
-                        instruction = (
-                            f"Write a complete, professional, beautifully structured enterprise email based on this input: '{prompt_input}'. "
-                            "Include an appropriate greeting, clearly written paragraphs with bullet points for key details, and a professional sign-off. "
-                            "Do not include meta-text or explanation."
-                        )
-                        generated_body, _ = doc_editor.execute_ai_command(
-                            document_text=current_text or prompt_input,
-                            instruction=instruction,
-                            tone="professional",
-                        )
-                        st.session_state["input_composer_body"] = generated_body
-                        
-                        if not current_subj:
-                            st.session_state["input_composer_subject"] = f"[Update] {prompt_input.split('.')[0][:50]}"
-                            
-                        st.toast("Full email generated with AI!", icon="✨")
-                        st.rerun()
-                    except Exception as ex:
-                        st.error(f"AI Generation Error: {str(ex)}")
+            st.button(
+                "🤖 ✨ Write / Generate Full Email with AI",
+                key=f"{key_prefix}btn_ai_generate_full",
+                type="secondary",
+                use_container_width=True,
+                on_click=action_generate_full_email,
+            )
 
         with col_ai_hint:
-            st.caption("💡 *Type rough notes or instructions in the box below, then click the AI button above to expand into a complete email!*")
+            st.caption("💡 *Type rough notes or instructions in the box below, then click the AI button to expand into a complete email!*")
 
         st.text_area(
             "Email Message Content",
-            key="input_composer_body",
+            key=k_body,
             height=240,
-            placeholder="Type your message or rough notes here (e.g., 'Tell Chetan that Phase 5 is finished and schedule demo tomorrow at 4pm')...",
+            placeholder="Type your message or rough notes here (e.g., 'i is hriday and i want to schedule meeting')...",
             label_visibility="collapsed",
         )
 
-        # AI Transformation Action Toolbar
-        st.markdown("**✨ AI Writing & Editing Tools:**")
+        # AI Transformation Action Toolbar with instant on_click callbacks
+        st.markdown("**✨ AI Writing & Editing Tools (Takes input body data automatically):**")
         ai_col1, ai_col2, ai_col3, ai_col4 = st.columns(4)
         with ai_col1:
-            if st.button("👔 Polish (Executive)", key="btn_ai_polish", use_container_width=True):
-                curr = st.session_state.get("input_composer_body", "")
-                if curr.strip():
-                    with st.spinner("Polishing tone..."):
-                        polished, _ = doc_editor.execute_ai_command(curr, "Rewrite in a formal, highly articulate executive tone")
-                        st.session_state["input_composer_body"] = polished
-                        st.toast("Draft polished in executive tone!", icon="👔")
-                        st.rerun()
-                else:
-                    st.warning("Please type some email content first.")
+            st.button(
+                "👔 Polish (Executive)",
+                key=f"{key_prefix}btn_ai_polish",
+                use_container_width=True,
+                on_click=action_polish_executive,
+            )
 
         with ai_col2:
-            if st.button("✂️ Make Concise", key="btn_ai_concise", use_container_width=True):
-                curr = st.session_state.get("input_composer_body", "")
-                if curr.strip():
-                    with st.spinner("Condensing content..."):
-                        concise, _ = doc_editor.execute_ai_command(curr, "Rewrite into concise bullet points and direct action items")
-                        st.session_state["input_composer_body"] = concise
-                        st.toast("Draft condensed into concise points!", icon="✂️")
-                        st.rerun()
-                else:
-                    st.warning("Please type some email content first.")
+            st.button(
+                "✂️ Make Concise",
+                key=f"{key_prefix}btn_ai_concise",
+                use_container_width=True,
+                on_click=action_make_concise,
+            )
 
         with ai_col3:
-            if st.button("🧹 Fix Grammar", key="btn_ai_grammar", use_container_width=True):
-                curr = st.session_state.get("input_composer_body", "")
-                if curr.strip():
-                    with st.spinner("Fixing grammar..."):
-                        fixed, _ = doc_editor.execute_ai_command(curr, "Fix all spelling, punctuation, and grammatical mistakes while retaining original meaning")
-                        st.session_state["input_composer_body"] = fixed
-                        st.toast("Grammar and punctuation polished!", icon="🧹")
-                        st.rerun()
-                else:
-                    st.warning("Please type some email content first.")
+            st.button(
+                "🧹 Fix Grammar",
+                key=f"{key_prefix}btn_ai_grammar",
+                use_container_width=True,
+                on_click=action_fix_grammar,
+            )
 
         with ai_col4:
-            if st.button("🗑️ Clear Form", key="btn_clear_composer", use_container_width=True):
-                st.session_state["input_composer_to"] = ""
-                st.session_state["input_composer_subject"] = ""
-                st.session_state["input_composer_body"] = ""
-                st.toast("Form cleared", icon="🗑️")
-                st.rerun()
+            st.button(
+                "🗑️ Clear Form",
+                key=f"{key_prefix}btn_clear_composer",
+                use_container_width=True,
+                on_click=action_clear_form,
+            )
 
         st.divider()
 
         # Send Action Buttons
         btn_send_col, btn_draft_col, _ = st.columns([2, 2, 3])
         with btn_send_col:
-            send_btn = st.button("🚀 Send Email Live", type="primary", use_container_width=True)
+            send_btn = st.button("🚀 Send Email Live", key=f"{key_prefix}btn_send_live", type="primary", use_container_width=True)
         with btn_draft_col:
-            draft_btn = st.button("💾 Save as Draft", use_container_width=True)
+            draft_btn = st.button("💾 Save as Draft", key=f"{key_prefix}btn_save_draft", use_container_width=True)
 
-        recipient_val = st.session_state.get("input_composer_to", "").strip()
-        subject_val = st.session_state.get("input_composer_subject", "").strip()
-        body_val = st.session_state.get("input_composer_body", "").strip()
+        recipient_val = st.session_state.get(k_to, "").strip()
+        subject_val = st.session_state.get(k_subject, "").strip()
+        body_val = st.session_state.get(k_body, "").strip()
+        selected_provider = st.session_state.get(k_provider, "Resend Email API")
 
         if send_btn:
             if not recipient_val:
@@ -345,9 +371,9 @@ def render_email_composer(on_email_sent_callback=None, default_to: str = "") -> 
             st.toast("Draft saved", icon="💾")
 
     with tab_preview:
-        recipient_val = st.session_state.get("input_composer_to", "")
-        subject_val = st.session_state.get("input_composer_subject", "")
-        body_val = st.session_state.get("input_composer_body", "")
+        recipient_val = st.session_state.get(k_to, "")
+        subject_val = st.session_state.get(k_subject, "")
+        body_val = st.session_state.get(k_body, "")
 
         st.markdown(
             f"""

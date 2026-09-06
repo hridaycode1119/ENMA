@@ -1,4 +1,4 @@
-# Autonomous AI Agent for Enterprise Task Automation
+# LUCORA — Autonomous Enterprise AI Task Automation
 
 [![Python Version](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.14-blue.svg)](https://www.python.org/)
 [![Framework](https://img.shields.io/badge/framework-Streamlit%201.37+-FF4B4B.svg)](https://streamlit.io/)
@@ -7,7 +7,8 @@
 [![Architecture](https://img.shields.io/badge/architecture-Clean%20Hexagonal-orange.svg)](docs/02-ARCHITECTURE.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-> **An action-oriented autonomous agent that converts natural-language enterprise instructions into validated, real-world actions using LLM reasoning, APIs, and Human-in-the-Loop guardrails.**
+> **LUCORA: Intelligence That Gets Work Done**
+> *An action-oriented autonomous agent that converts natural-language enterprise instructions into validated, real-world actions using LLM reasoning, APIs, and Human-in-the-Loop guardrails.*
 
 ---
 

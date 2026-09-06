@@ -52,6 +52,11 @@ class BaseLLMAdapter(ABC):
         """Executes reasoning and returns structured AgentDecision."""
         pass
 
+    @abstractmethod
+    def generate_text(self, prompt: str) -> str:
+        """Generates raw text response for arbitrary prompting."""
+        pass
+
 class MockLLMAdapter(BaseLLMAdapter):
     """
     Deterministic cognitive reasoning engine for offline development,
@@ -210,6 +215,10 @@ class MockLLMAdapter(BaseLLMAdapter):
         body_content = f"I am writing to communicate the following update regarding our workflow:\n\n{clean_msg}"
         return f"{salutation}\n\n{body_content}\n\nPlease let us know if you need any additional information.\n\n{signoff}"
 
+    def generate_text(self, prompt: str) -> str:
+        """Offline fallback text generator."""
+        return ""
+
 class GeminiLLMAdapter(BaseLLMAdapter):
     """
     Production adapter interfacing with Google Gemini 1.5 API using strict JSON formatting.
@@ -276,6 +285,10 @@ class GeminiLLMAdapter(BaseLLMAdapter):
         except Exception as ex:
             raise LLMReasoningError(f"Unexpected error communicating with Gemini API: {str(ex)}")
 
+    def generate_text(self, prompt: str) -> str:
+        """Offline fallback text generation."""
+        return ""
+
     @staticmethod
     def _clean_json_output(raw_output: str) -> str:
         """Strips markdown ```json and ``` ticks if emitted."""
@@ -287,6 +300,41 @@ class GeminiLLMAdapter(BaseLLMAdapter):
         if text.endswith("```"):
             text = text[:-3]
         return text.strip()
+
+    def generate_text(self, prompt: str) -> str:
+        """Generates raw text response using Google Gemini 1.5 API."""
+        if not self.api_key:
+            return ""
+
+        endpoint_url = (
+            f"https://generativelanguage.googleapis.com/v1beta/models/"
+            f"{self.model_name}:generateContent?key={self.api_key}"
+        )
+
+        payload = {
+            "contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {
+                "temperature": self.temperature,
+                "maxOutputTokens": 2048,
+            },
+        }
+
+        req = urllib.request.Request(
+            endpoint_url,
+            data=json.dumps(payload).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+
+        try:
+            with urllib.request.urlopen(req, timeout=15) as response:
+                resp_data = json.loads(response.read().decode("utf-8"))
+                candidates = resp_data.get("candidates", [])
+                if candidates:
+                    return candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "").strip()
+        except Exception:
+            pass
+        return ""
 
 class LLMAdapter:
     """

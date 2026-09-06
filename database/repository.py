@@ -1,5 +1,5 @@
 """
-AIRA Enterprise Database Repository.
+LUCORA / AIRA Enterprise Database Repository.
 Unified data access layer providing Supabase PostgreSQL cloud sync with resilient local fallback.
 """
 
@@ -374,3 +374,6 @@ class AIRARepository:
                 pass
 
         return record
+
+# Modern Rebranded Alias
+LUCORARepository = AIRARepository

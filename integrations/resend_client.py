@@ -1,5 +1,5 @@
 """
-Resend Email API Client for AIRA Autonomous AI Agent.
+Resend Email API Client for LUCORA Autonomous AI Agent.
 Provides modern, reliable transactional & automated email delivery with HTML template rendering.
 """
 
@@ -37,7 +37,7 @@ class ResendClient:
 
     def _init_client(self, api_key: Optional[str] = None, from_email: Optional[str] = None) -> None:
         self.api_key = (api_key or os.getenv("RESEND_API_KEY", "")).strip()
-        self.default_from = (from_email or os.getenv("RESEND_FROM_EMAIL", "AIRA AI <onboarding@resend.dev>")).strip()
+        self.default_from = (from_email or os.getenv("RESEND_FROM_EMAIL", "LUCORA AI <onboarding@resend.dev>")).strip()
         if HAS_RESEND_LIB and self.api_key:
             resend.api_key = self.api_key
 
@@ -82,7 +82,7 @@ class ResendClient:
                 <div style="font-size: 16px; line-height: 1.6; color: #1a1a1a; white-space: pre-wrap;">{text}</div>
                 <hr style="border: none; border-top: 1px solid #eaeaea; margin: 24px 0;" />
                 <div style="font-size: 12px; color: #888888; text-align: center;">
-                    ⚡ Sent autonomously via <strong>AIRA Enterprise AI Agent</strong> powered by <strong>Resend</strong>
+                    ⚡ Sent autonomously via <strong>LUCORA Enterprise AI Agent</strong> powered by <strong>Resend</strong>
                 </div>
             </div>
             """

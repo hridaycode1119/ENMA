@@ -21,7 +21,8 @@ class TestVercelServerlessAPI(unittest.TestCase):
     def test_index_html_dashboard_endpoint(self):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
-        self.assertIn("AIRA - Autonomous AI Agent", response.text)
+        self.assertIn("LUCORA - Autonomous AI Agent", response.text)
+        self.assertIn("Intelligence That Gets Work Done", response.text)
 
     def test_agent_command_endpoint(self):
         response = self.client.post(

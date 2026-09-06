@@ -1,5 +1,6 @@
 """
-AIRA: Autonomous Intelligent Robotic Assistant & Enterprise Task Automation Platform.
+LUCORA: Autonomous Enterprise AI Task Automation Platform.
+Tagline: Intelligence That Gets Work Done
 Main Streamlit Application Entrypoint.
 """
 
@@ -10,9 +11,9 @@ import streamlit as st
 from agent.orchestrator import AgentOrchestrator, WorkflowState
 from integrations.oauth_handler import GoogleOAuthHandler
 from tools.registry import ToolRegistry
-from components.aira_sidebar import render_aira_sidebar
-from components.aira_header import render_aira_header
-from components.aira_dashboard import render_aira_dashboard
+from components.lucora_sidebar import render_lucora_sidebar
+from components.lucora_header import render_lucora_header
+from components.lucora_dashboard import render_lucora_dashboard
 from components.calendar_view import render_calendar_view
 from components.document_studio import render_document_studio
 from components.notes_journal_view import (
@@ -28,8 +29,8 @@ from components.email_composer import render_email_composer
 
 # 1. Streamlit Page Configuration
 st.set_page_config(
-    page_title="AIRA | AI Agent Enterprise Platform",
-    page_icon="🤖",
+    page_title="LUCORA | Intelligence That Gets Work Done",
+    page_icon="✨",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -51,40 +52,43 @@ if "orchestrator" not in st.session_state:
         registry=st.session_state.tool_registry,
         oauth_handler=st.session_state.oauth_handler,
     )
-if "aira_active_view" not in st.session_state:
-    st.session_state.aira_active_view = "dashboard"
+
+if "lucora_active_view" not in st.session_state:
+    st.session_state.lucora_active_view = st.session_state.get("aira_active_view", "dashboard")
 
 orchestrator: AgentOrchestrator = st.session_state.orchestrator
 oauth_handler: GoogleOAuthHandler = st.session_state.oauth_handler
 tool_registry: ToolRegistry = st.session_state.tool_registry
 
-# 4. Render Master AIRA Sidebar
-selected_view = render_aira_sidebar(st.session_state.aira_active_view)
-if selected_view != st.session_state.aira_active_view:
+# 4. Render Master LUCORA Sidebar
+selected_view = render_lucora_sidebar(st.session_state.lucora_active_view)
+if selected_view != st.session_state.lucora_active_view:
+    st.session_state.lucora_active_view = selected_view
     st.session_state.aira_active_view = selected_view
     st.rerun()
 
 # 5. Render Top Header Bar
 def navigate_to_view(v: str):
+    st.session_state.lucora_active_view = v
     st.session_state.aira_active_view = v
     st.rerun()
 
-render_aira_header(on_new_task_click=lambda: navigate_to_view("assistant"))
+render_lucora_header(on_new_task_click=lambda: navigate_to_view("assistant"))
 
 # 6. View Routing
-current_view = st.session_state.aira_active_view
+current_view = st.session_state.lucora_active_view
 
 if current_view == "dashboard":
-    render_aira_dashboard(orchestrator, on_navigate_view=navigate_to_view)
+    render_lucora_dashboard(orchestrator, on_navigate_view=navigate_to_view)
 
 elif current_view in ("tasks", "assistant"):
-    st.markdown("### 🤖 AIRA AI Email Automation & Composer Studio")
+    st.markdown("### ✨ LUCORA AI Email Automation & Composer Studio")
     st.caption("Compose custom emails, select prebuilt enterprise templates, or execute natural-language instructions via Resend & Gmail API.")
     
     tab_composer, tab_ai_chat = st.tabs(["✍️ Custom Email Composer & Prebuilt Templates", "🤖 Conversational AI Task Assistant"])
 
     with tab_composer:
-        render_email_composer()
+        render_email_composer(key_prefix="main_")
 
     with tab_ai_chat:
         col_main, col_side = st.columns([7, 3])
@@ -155,7 +159,7 @@ elif current_view in ("voice", "voice_commands"):
     
     st.markdown(
         """
-        <div class="aira-card" style="max-width: 600px; margin: 2rem auto; text-align: center;">
+        <div class="aira-card lucora-card" style="max-width: 600px; margin: 2rem auto; text-align: center;">
             <div class="soundwave-container" style="height: 60px;">
                 <div class="wave-bar" style="width: 4px;"></div>
                 <div class="wave-bar" style="width: 4px;"></div>
@@ -170,7 +174,7 @@ elif current_view in ("voice", "voice_commands"):
                 <div class="wave-bar" style="width: 4px;"></div>
                 <div class="wave-bar" style="width: 4px;"></div>
             </div>
-            <h4 style="margin: 0.5rem 0;">AIRA Voice Engine Active</h4>
+            <h4 style="margin: 0.5rem 0;">LUCORA Voice Engine Active</h4>
             <p style="color: #64748b; font-size: 0.88rem;">Say a natural language command to execute tasks across Gmail, Calendar, and Documents.</p>
         </div>
         """,
@@ -192,7 +196,7 @@ elif current_view in ("terminal", "integrations", "settings"):
     st.markdown(
         """
         <div class="terminal-container" style="height: 200px;">
-            <span class="terminal-prompt">></span> <span class="terminal-cmd">AIRA v2.4 initialized on Linux</span><br>
+            <span class="terminal-prompt">></span> <span class="terminal-cmd">LUCORA v2.4 initialized on Linux</span><br>
             <span class="terminal-prompt">></span> <span class="terminal-success">ToolRegistry loaded 6 dynamic tools</span><br>
             <span class="terminal-prompt">></span> <span class="terminal-cmd">Loaded Gemini 1.5 Flash Cognitive Core</span><br>
             <span class="terminal-prompt">></span> <span class="terminal-success">OAuth 2.0 PKCE session active</span>
@@ -263,8 +267,8 @@ CREATE TABLE IF NOT EXISTS aira_notes (id TEXT PRIMARY KEY, category TEXT, title
                 try:
                     res = resend_cli.send_email(
                         to=test_to.strip(),
-                        subject="AIRA AI Agent - Resend Integration Test",
-                        text="Congratulations! Your Resend API integration with AIRA Autonomous AI Agent is working perfectly.",
+                        subject="LUCORA AI Agent - Resend Integration Test",
+                        text="Congratulations! Your Resend API integration with LUCORA Autonomous AI Agent is working perfectly.",
                     )
                     st.success(f"Email dispatched! ID: `{res.get('id')}` ({res.get('mode')} mode)")
                 except Exception as ex:
@@ -274,7 +278,7 @@ CREATE TABLE IF NOT EXISTS aira_notes (id TEXT PRIMARY KEY, category TEXT, title
         with st.form(key="resend_config_form"):
             st.markdown("##### Configure Resend API Key")
             rk = st.text_input("Resend API Key", value=os.getenv("RESEND_API_KEY", ""), type="password", placeholder="re_123456789...")
-            rf = st.text_input("Sender Email / Domain", value=os.getenv("RESEND_FROM_EMAIL", "AIRA AI <onboarding@resend.dev>"), placeholder="AIRA <onboarding@resend.dev>")
+            rf = st.text_input("Sender Email / Domain", value=os.getenv("RESEND_FROM_EMAIL", "LUCORA AI <onboarding@resend.dev>"), placeholder="LUCORA <onboarding@resend.dev>")
             
             btn_save_resend = st.form_submit_button("💾 Save Resend Key", type="primary", use_container_width=True)
             if btn_save_resend and rk:

@@ -1,5 +1,6 @@
 """
-AIRA Enterprise AI Agent - Vercel Serverless Application Entrypoint.
+LUCORA Enterprise AI Agent - Vercel Serverless Application Entrypoint.
+Tagline: Intelligence That Gets Work Done
 FastAPI ASGI application exposing REST endpoints and web UI for Vercel deployment.
 """
 
@@ -17,15 +18,15 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from agent.orchestrator import AgentOrchestrator, WorkflowState
 from agent.parser import IntentParser
 from tools.registry import ToolRegistry
-from database.repository import AIRARepository
+from database.repository import LUCORARepository, AIRARepository
 from database.supabase_client import SupabaseManager
 from modules.documents.parsers import DocumentParserFactory
 from modules.documents.editor import DocumentEditor
 
 # Initialize FastAPI App (Top-Level ASGI variable for Vercel)
 app = FastAPI(
-    title="AIRA Autonomous AI Agent API",
-    description="Serverless REST API and Cognitive Engine for Enterprise Task Automation",
+    title="LUCORA Autonomous AI Agent API",
+    description="Serverless REST API and Cognitive Engine for Enterprise Task Automation — Intelligence That Gets Work Done",
     version="2.4.0",
 )
 
@@ -40,7 +41,7 @@ app.add_middleware(
 
 # Singletons
 orchestrator = AgentOrchestrator()
-repo = AIRARepository()
+repo = LUCORARepository()
 doc_editor = DocumentEditor()
 
 # Request Schemas
@@ -86,7 +87,8 @@ def health_check():
     is_sb, sb_msg = sb_mgr.ping()
     return {
         "status": "healthy",
-        "service": "AIRA Autonomous AI Agent",
+        "service": "LUCORA Autonomous AI Agent",
+        "tagline": "Intelligence That Gets Work Done",
         "version": "2.4.0",
         "engine": "Gemini 1.5 Flash + Tool Registry",
         "supabase_connected": is_sb,
@@ -247,7 +249,7 @@ def index_page():
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>AIRA - Autonomous AI Agent & Email Studio</title>
+        <title>LUCORA - Autonomous AI Agent & Email Studio</title>
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
         <style>
             :root {{
@@ -279,8 +281,8 @@ def index_page():
     <body>
         <div class="header">
             <div>
-                <h1 class="title">🤖 AIRA - AI Agent & Email Studio</h1>
-                <div class="subtitle">Vercel Serverless Deployment • Resend API • Custom Composer & Prebuilt Templates</div>
+                <h1 class="title">✨ LUCORA - AI Agent & Email Studio</h1>
+                <div class="subtitle"><strong>Intelligence That Gets Work Done</strong> • Vercel Serverless Deployment • Resend API • Custom Composer</div>
             </div>
             <span class="badge" style="font-size: 0.85rem; padding: 0.4rem 0.9rem;">🟢 Vercel Serverless Active</span>
         </div>
@@ -340,19 +342,19 @@ def index_page():
             const templates = {{
                 status: {{
                     subject: "[Update] Project Status Report: Milestones Completed",
-                    body: "Hi Team,\\n\\nHere is our project progress report:\\n• Completed: AI Core, Multi-Format Document Studio, and Supabase integration.\\n• Tests: 100% automated test coverage.\\n• Next: Live user validation.\\n\\nBest regards,\\nAIRA Team"
+                    body: "Hi Team,\\n\\nHere is our project progress report:\\n• Completed: AI Core, Multi-Format Document Studio, and Supabase integration.\\n• Tests: 100% automated test coverage.\\n• Next: Live user validation.\\n\\nBest regards,\\nLUCORA Team"
                 }},
                 meeting: {{
                     subject: "Meeting Request: Sprint Planning & Architecture Sync",
-                    body: "Dear Team,\\n\\nI would like to schedule a sync meeting to review upcoming deliverables.\\n\\nProposed Agenda:\\n1. Review Phase 5 & 6 features.\\n2. Live demo of Resend email automation.\\n\\nBest regards,\\nAIRA Team"
+                    body: "Dear Team,\\n\\nI would like to schedule a sync meeting to review upcoming deliverables.\\n\\nProposed Agenda:\\n1. Review Phase 5 & 6 features.\\n2. Live demo of Resend email automation.\\n\\nBest regards,\\nLUCORA Team"
                 }},
                 academic: {{
                     subject: "BTech Major Project: Bi-Weekly Progress Submission",
-                    body: "Respected Advisor,\\n\\nPlease find attached our progress report for the Autonomous AI Agent project.\\nTeam: Vaishnavi Dhyani, Chetan, Hriday.\\nAll benchmarks achieved 100% accuracy.\\n\\nSincerely,\\nProject Team"
+                    body: "Respected Advisor,\\n\\nPlease find attached our progress report for the Autonomous AI Agent project.\\nTeam: Vaishnavi Dhyani, Chetan, Hriday.\\nAll benchmarks achieved 100% accuracy.\\n\\nSincerely,\\nLUCORA Project Team"
                 }},
                 urgent: {{
                     subject: "URGENT: Action Required on Production Task Pipeline",
-                    body: "Hello,\\n\\nThis is an automated priority alert regarding system task execution.\\nPlease review the logs immediately.\\n\\nThank you,\\nAIRA Monitoring System"
+                    body: "Hello,\\n\\nThis is an automated priority alert regarding system task execution.\\nPlease review the logs immediately.\\n\\nThank you,\\nLUCORA Monitoring System"
                 }}
             }};
 
@@ -400,7 +402,7 @@ def index_page():
                 const log = document.getElementById('outputLog');
                 if (!input) return;
                 log.style.display = 'block';
-                log.innerText = '⏳ AIRA analyzing intent...';
+                log.innerText = '⏳ LUCORA analyzing intent...';
                 try {{
                     const res = await fetch('/api/agent/command', {{
                         method: 'POST',
