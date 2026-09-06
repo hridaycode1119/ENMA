@@ -1,34 +1,50 @@
 /* ==============================================================================
-   AIRA AI Agent Enterprise Design System
-   Modern Neumorphic Soft UI with Purple / Indigo Accents
+   LUCORA AI Enterprise Design System
+   Modern Minimalist Aesthetic with Indigo / Violet Gradients & Editorial Accents
    ============================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap');
 
 :root {
-    --bg-main: #f8fafc;
-    --card-bg: #ffffff;
-    --card-border: #f1f5f9;
-    --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
-    --card-shadow-hover: 0 10px 25px -3px rgba(0, 0, 0, 0.08), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
+    --bg-canvas: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-surface-elevated: #ffffff;
+    --bg-subtle: #f1f5f9;
+    
+    --border-subtle: #eef2f6;
+    --border-medium: #e2e8f0;
+    --border-focus: #6366f1;
     
     --text-primary: #0f172a;
-    --text-secondary: #64748b;
+    --text-secondary: #475569;
     --text-muted: #94a3b8;
     
-    --primary: #6d28d9;
-    --primary-light: #7c3aed;
-    --primary-bg: #f5f3ff;
-    --primary-glow: rgba(109, 40, 217, 0.25);
+    --primary: #4f46e5;
+    --primary-light: #6366f1;
+    --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    --primary-subtle: #f5f3ff;
+    --primary-border: #ddd6fe;
+    
+    --accent: #8b5cf6;
+    --accent-subtle: #faf5ff;
     
     --success: #10b981;
-    --success-bg: #ecfdf5;
+    --success-subtle: #ecfdf5;
+    --success-border: #a7f3d0;
+    
     --warning: #f59e0b;
-    --warning-bg: #fffbeb;
+    --warning-subtle: #fffbeb;
+    
     --danger: #ef4444;
-    --danger-bg: #fef2f2;
-    --info: #3b82f6;
-    --info-bg: #eff6ff;
+    --danger-subtle: #fef2f2;
+    
+    --info: #0284c7;
+    --info-subtle: #f0f9ff;
+
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 2px 8px -1px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
+    --shadow-lg: 0 10px 25px -3px rgba(15, 23, 42, 0.05), 0 4px 10px -2px rgba(15, 23, 42, 0.02);
+    --shadow-hover: 0 14px 28px -4px rgba(15, 23, 42, 0.08), 0 6px 12px -2px rgba(15, 23, 42, 0.03);
 
     --radius-sm: 8px;
     --radius-md: 14px;
@@ -36,353 +52,409 @@
     --radius-pill: 9999px;
 }
 
-/* Global Light Theme Enforcement */
+/* Base Light Canvas */
 html, body, [class*="css"], .stApp {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
-    background-color: var(--bg-main) !important;
+    background-color: var(--bg-canvas) !important;
     color: var(--text-primary) !important;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* Hide default streamlit header decoration */
+/* Hide Streamlit default header clutter */
 header[data-testid="stHeader"] {
     background-color: transparent !important;
 }
 
 /* ==============================================================================
-   1. LUCORA Top Header Bar
+   1. Clean Top Header Bar
    ============================================================================== */
 .lucora-header, .aira-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 0 1.2rem 0;
+    padding: 0.2rem 0 1rem 0;
     margin-bottom: 0.5rem;
 }
 
 .lucora-greeting-title, .aira-greeting-title {
-    font-size: 1.6rem;
-    font-weight: 800;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 1.65rem;
+    font-weight: 700;
     color: var(--text-primary);
     margin: 0;
     letter-spacing: -0.02em;
+    line-height: 1.2;
 }
 
-.lucora-greeting-sub, .aira-greeting-sub {
-    font-size: 0.88rem;
-    color: var(--text-secondary);
-    margin-top: 0.2rem;
-    font-weight: 500;
-}
-
-.lucora-search-box, .aira-search-box {
-    display: flex;
+.lucora-tagline-badge {
+    display: inline-flex;
     align-items: center;
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
+    gap: 0.35rem;
+    background: var(--primary-subtle);
+    border: 1px solid var(--primary-border);
+    padding: 0.2rem 0.65rem;
     border-radius: var(--radius-pill);
-    padding: 0.45rem 1rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    gap: 0.5rem;
-    width: 320px;
-}
-
-.lucora-search-box input, .aira-search-box input {
-    border: none;
-    background: transparent;
-    outline: none;
-    font-size: 0.85rem;
-    color: var(--text-primary);
-    width: 100%;
-}
-
-.lucora-kbd, .aira-kbd {
-    background: var(--card-border);
-    color: var(--text-secondary);
-    font-size: 0.72rem;
-    padding: 0.15rem 0.45rem;
-    border-radius: 4px;
+    font-size: 0.76rem;
     font-weight: 600;
-    font-family: 'JetBrains Mono', monospace;
+    color: var(--primary);
+    margin-top: 0.35rem;
+}
+
+.lucora-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #ffffff;
+    border: 1px solid var(--border-medium);
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    box-shadow: var(--shadow-sm);
+}
+
+.status-dot-active {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
 }
 
 /* ==============================================================================
-   2. KPI Metric Cards (5 Cards)
+   2. Sleek KPI Metrics Cards
    ============================================================================== */
 .kpi-container {
-    background: var(--card-bg);
+    background: var(--bg-surface);
     border-radius: var(--radius-md);
-    padding: 1.1rem 1.2rem;
-    border: 1px solid var(--card-border);
-    box-shadow: var(--card-shadow);
-    transition: all 0.2s ease;
+    padding: 1.15rem 1.25rem;
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-md);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     height: 100%;
+    position: relative;
+    overflow: hidden;
 }
 
 .kpi-container:hover {
     transform: translateY(-2px);
-    box-shadow: var(--card-shadow-hover);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--primary-border);
 }
 
-.kpi-icon-wrapper {
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.15rem;
-    margin-bottom: 0.75rem;
+.kpi-accent-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--primary-gradient);
 }
 
-.kpi-val {
-    font-size: 1.55rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    line-height: 1.1;
-}
-
-.kpi-label {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin-top: 0.2rem;
-}
-
-.kpi-delta {
-    font-size: 0.74rem;
-    font-weight: 600;
-    margin-top: 0.4rem;
-    display: flex;
-    align-items: center;
-    gap: 0.2rem;
-}
-
-.delta-green { color: var(--success); }
-.delta-purple { color: var(--primary); }
-.delta-orange { color: var(--warning); }
-.delta-blue { color: var(--info); }
-
-/* ==============================================================================
-   3. Universal AIRA Cards
-   ============================================================================== */
-.aira-card {
-    background: var(--card-bg);
-    border-radius: var(--radius-md);
-    padding: 1.3rem;
-    border: 1px solid var(--card-border);
-    box-shadow: var(--card-shadow);
-    margin-bottom: 1.2rem;
-    height: 100%;
-}
-
-.aira-card-header {
+.kpi-top-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.6rem;
 }
 
-.aira-card-title {
-    font-size: 0.98rem;
+.kpi-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.kpi-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-pill);
+}
+
+.badge-green { background: var(--success-subtle); color: var(--success); }
+.badge-purple { background: var(--primary-subtle); color: var(--primary); }
+.badge-blue { background: var(--info-subtle); color: var(--info); }
+.badge-orange { background: var(--warning-subtle); color: var(--warning); }
+
+.kpi-val {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+
+.kpi-delta {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+}
+
+/* ==============================================================================
+   3. Universal Clean Cards
+   ============================================================================== */
+.lucora-card, .aira-card {
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    padding: 1.4rem;
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 1.2rem;
+    height: 100%;
+    transition: all 0.2s ease;
+}
+
+.lucora-card:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+.lucora-card-header, .aira-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.lucora-card-title, .aira-card-title {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 1.05rem;
     font-weight: 700;
     color: var(--text-primary);
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
+    letter-spacing: -0.01em;
 }
 
-.aira-card-link {
-    font-size: 0.76rem;
+.lucora-card-link, .aira-card-link {
+    font-size: 0.78rem;
     font-weight: 600;
     color: var(--primary);
     cursor: pointer;
     text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.lucora-card-link:hover {
+    color: var(--accent);
 }
 
 /* ==============================================================================
-   4. Recent Activity Feed
+   4. Hero AI Prompt Console
    ============================================================================== */
-.activity-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    padding: 0.65rem 0;
-    border-bottom: 1px solid var(--card-border);
-}
-
-.activity-item:last-child {
-    border-bottom: none;
-}
-
-.activity-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.95rem;
-    flex-shrink: 0;
-}
-
-.activity-title {
-    font-size: 0.84rem;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.activity-sub {
-    font-size: 0.74rem;
-    color: var(--text-muted);
-}
-
-.activity-time {
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    margin-left: auto;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-}
-
-.status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-}
-
-/* ==============================================================================
-   5. AI Assistant Center Chat Card
-   ============================================================================== */
-.ai-assistant-bubble {
-    background: var(--primary-bg);
+.hero-prompt-card {
+    background: linear-gradient(180deg, #ffffff 0%, #fbfbfe 100%);
     border-radius: var(--radius-md);
-    padding: 1.1rem 1.25rem;
-    margin-bottom: 1rem;
-    border-left: 4px solid var(--primary);
+    border: 1px solid var(--border-subtle);
+    padding: 1.4rem;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 1.2rem;
 }
 
-.ai-assistant-bubble p {
-    margin: 0;
-    font-size: 0.88rem;
-    color: var(--text-primary);
-    line-height: 1.45;
-}
-
-.chip-action-btn {
+.hero-welcome-badge {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    padding: 0.4rem 0.85rem;
+    background: var(--primary-subtle);
+    color: var(--primary);
+    font-size: 0.76rem;
+    font-weight: 700;
+    padding: 0.25rem 0.75rem;
     border-radius: var(--radius-pill);
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    margin-bottom: 0.6rem;
+}
+
+.hero-welcome-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.3rem 0;
+}
+
+.hero-welcome-sub {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.1rem;
+    line-height: 1.5;
+}
+
+/* Minimalist Suggestion Chips */
+.suggestion-chip {
+    display: inline-flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid var(--border-medium);
+    color: var(--text-secondary);
     font-size: 0.78rem;
     font-weight: 600;
-    color: var(--text-primary);
+    padding: 0.35rem 0.8rem;
+    border-radius: var(--radius-pill);
     cursor: pointer;
     transition: all 0.15s ease;
     margin-right: 0.4rem;
     margin-bottom: 0.4rem;
 }
 
-.chip-action-btn:hover {
+.suggestion-chip:hover {
     border-color: var(--primary);
     color: var(--primary);
-    transform: translateY(-1px);
+    background: var(--primary-subtle);
 }
 
 /* ==============================================================================
-   6. Today's Schedule & Timeline
+   5. Clean Activity Feed
    ============================================================================== */
-.schedule-item {
+.activity-row-clean {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.6rem 0;
-    border-bottom: 1px solid var(--card-border);
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-subtle);
 }
 
-.schedule-item:last-child {
+.activity-row-clean:last-child {
     border-bottom: none;
 }
 
-.schedule-time {
-    font-size: 0.76rem;
-    font-weight: 700;
-    color: var(--text-secondary);
-    min-width: 65px;
+.activity-main {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
 }
 
-.schedule-title {
-    font-size: 0.84rem;
+.activity-bullet {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.activity-name {
+    font-size: 0.86rem;
     font-weight: 600;
     color: var(--text-primary);
 }
 
-.schedule-duration {
-    font-size: 0.72rem;
+.activity-detail {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+}
+
+.activity-timestamp {
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* ==============================================================================
+   6. Clean Schedule Timeline
+   ============================================================================== */
+.timeline-item-clean {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.timeline-item-clean:last-child {
+    border-bottom: none;
+}
+
+.timeline-time-badge {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-subtle);
+    padding: 0.2rem 0.55rem;
+    border-radius: 6px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+    min-width: 68px;
+    text-align: center;
+}
+
+.timeline-title {
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.timeline-sub {
+    font-size: 0.74rem;
     color: var(--text-muted);
 }
 
 /* ==============================================================================
-   7. Quick Tools 2x4 Grid
+   7. Sleek Tools Action Cards
    ============================================================================== */
-.quick-tool-btn {
-    background: var(--bg-main);
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 0.75rem 0.5rem;
-    text-align: center;
-    cursor: pointer;
+.tool-action-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1rem;
     transition: all 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.35rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    text-align: left;
 }
 
-.quick-tool-btn:hover {
-    background: var(--primary-bg);
-    border-color: var(--primary-light);
+.tool-action-card:hover {
+    border-color: var(--primary-border);
     transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
-.quick-tool-icon {
-    font-size: 1.25rem;
-}
-
-.quick-tool-label {
-    font-size: 0.72rem;
-    font-weight: 600;
+.tool-action-title {
+    font-size: 0.86rem;
+    font-weight: 700;
     color: var(--text-primary);
+    margin-bottom: 0.2rem;
+}
+
+.tool-action-desc {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    line-height: 1.4;
 }
 
 /* ==============================================================================
-   8. Voice Assistant Soundwave Animation
+   8. Minimalist Voice Waveform
    ============================================================================== */
+.voice-wave-capsule {
+    background: var(--primary-subtle);
+    border: 1px solid var(--primary-border);
+    border-radius: var(--radius-md);
+    padding: 1.2rem;
+    text-align: center;
+    margin-bottom: 0.8rem;
+}
+
 .soundwave-container {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 4px;
-    height: 40px;
-    margin: 1rem 0;
+    height: 32px;
+    margin: 0.5rem auto;
 }
 
 .wave-bar {
     width: 3px;
-    background: var(--primary-light);
+    background: var(--primary);
     border-radius: 3px;
     animation: soundWave 1.2s ease-in-out infinite alternate;
 }
 
 @keyframes soundWave {
-    0% { height: 6px; }
-    100% { height: 32px; }
+    0% { height: 4px; opacity: 0.4; }
+    100% { height: 26px; opacity: 1; }
 }
 
 .wave-bar:nth-child(2) { animation-delay: 0.1s; }
@@ -392,187 +464,178 @@ header[data-testid="stHeader"] {
 .wave-bar:nth-child(6) { animation-delay: 0.5s; }
 .wave-bar:nth-child(7) { animation-delay: 0.6s; }
 .wave-bar:nth-child(8) { animation-delay: 0.7s; }
-.wave-bar:nth-child(9) { animation-delay: 0.8s; }
-.wave-bar:nth-child(10) { animation-delay: 0.9s; }
 
-.mic-circle-btn {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+/* ==============================================================================
+   9. Clean Sidebar Menu
+   ============================================================================== */
+[data-testid="stSidebar"] {
+    background-color: var(--bg-surface) !important;
+    border-right: 1px solid var(--border-subtle) !important;
+    padding-top: 0.8rem !important;
+}
+
+.sidebar-brand-box {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.2rem 1.4rem 0.2rem;
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: 1rem;
+}
+
+.sidebar-logo-badge {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--primary-gradient);
     color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
-    margin: 0 auto;
-    box-shadow: 0 4px 14px var(--primary-glow);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.mic-circle-btn:hover {
-    transform: scale(1.08);
-}
-
-/* ==============================================================================
-   9. Command Center Terminal Card
-   ============================================================================== */
-.terminal-container {
-    background: #0d1117;
-    border-radius: var(--radius-md);
-    padding: 1rem 1.2rem;
-    font-family: 'JetBrains Mono', monospace;
-    color: #38ef7d;
-    font-size: 0.78rem;
-    line-height: 1.6;
-    border: 1px solid #1f2937;
-    box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
-    height: 160px;
-    overflow-y: auto;
-}
-
-.terminal-prompt { color: #8b949e; }
-.terminal-cmd { color: #58a6ff; }
-.terminal-success { color: #3fb950; }
-
-/* ==============================================================================
-   10. Sidebar Categorized Menu
-   ============================================================================== */
-[data-testid="stSidebar"] {
-    background-color: var(--card-bg) !important;
-    border-right: 1px solid var(--card-border) !important;
-    padding-top: 1rem !important;
-}
-
-.sidebar-brand-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.5rem 0.2rem 1.2rem 0.2rem;
-}
-
-.sidebar-logo-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
-    background: var(--primary-bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-}
-
-.sidebar-brand-title {
     font-size: 1.15rem;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.sidebar-title {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 1.25rem;
     font-weight: 800;
     color: var(--text-primary);
+    letter-spacing: 0.02em;
     line-height: 1.1;
 }
 
-.sidebar-brand-sub {
-    font-size: 0.72rem;
-    color: var(--text-secondary);
+.sidebar-tagline {
+    font-size: 0.65rem;
     font-weight: 600;
+    color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
 }
 
-.sidebar-category-header {
-    font-size: 0.68rem;
+.sidebar-section-label {
+    font-size: 0.66rem;
     font-weight: 700;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    margin: 1.1rem 0 0.4rem 0.4rem;
+    margin: 1.2rem 0 0.35rem 0.4rem;
 }
 
-.upgrade-pro-card {
-    background: linear-gradient(135deg, rgba(109, 40, 217, 0.06) 0%, rgba(124, 58, 237, 0.12) 100%);
-    border: 1px solid rgba(109, 40, 217, 0.2);
-    border-radius: var(--radius-md);
-    padding: 1rem;
-    margin: 1.5rem 0 1rem 0;
+/* User Card */
+.user-card-clean {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.8rem 0.4rem;
+    border-top: 1px solid var(--border-subtle);
+    margin-top: 1.5rem;
 }
 
-.upgrade-title {
-    font-size: 0.84rem;
-    font-weight: 700;
+.user-avatar-circle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #e0e7ff;
     color: var(--primary);
     display: flex;
     align-items: center;
-    gap: 0.35rem;
-}
-
-.upgrade-sub {
-    font-size: 0.72rem;
-    color: var(--text-secondary);
-    margin: 0.3rem 0 0.6rem 0;
-}
-
-.user-profile-card {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    padding: 0.75rem 0.4rem;
-    border-top: 1px solid var(--card-border);
-    margin-top: 1rem;
-}
-
-.user-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: #e0e7ff;
-    display: flex;
-    align-items: center;
     justify-content: center;
-    font-size: 1rem;
-    flex-shrink: 0;
-}
-
-.user-name {
-    font-size: 0.82rem;
     font-weight: 700;
+    font-size: 0.85rem;
+}
+
+/* ==============================================================================
+   10. Editorial & Notes Typography
+   ============================================================================== */
+.editorial-card {
+    font-family: 'Lora', Georgia, serif !important;
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    line-height: 1.7;
+}
+
+.editorial-card h3, .editorial-card h4 {
+    font-family: 'Outfit', sans-serif !important;
     color: var(--text-primary);
-    line-height: 1.2;
+    margin-bottom: 0.5rem;
 }
 
-.user-email {
-    font-size: 0.7rem;
-    color: var(--text-muted);
+/* ==============================================================================
+   11. Streamlit Widget Overrides for Polished UI
+   ============================================================================== */
+.stButton > button {
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    border: 1px solid var(--border-medium) !important;
 }
 
-/* Light Mode Input & Tab Controls */
+.stButton > button:hover {
+    border-color: var(--primary-light) !important;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.stButton > button[kind="primary"] {
+    background: var(--primary-gradient) !important;
+    border: none !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.25) !important;
+}
+
+.stButton > button[kind="primary"]:hover {
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35) !important;
+}
+
 .stTextInput > div > div > input,
-.stTextArea > div > div > textarea,
-.stSelectbox > div > div {
+.stTextArea > div > div > textarea {
     background-color: #ffffff !important;
     color: #0f172a !important;
-    border: 1px solid #cbd5e1 !important;
+    border: 1px solid var(--border-medium) !important;
     border-radius: 10px !important;
+    font-size: 0.88rem !important;
+    box-shadow: var(--shadow-sm) !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 
 .stTextInput > div > div > input:focus,
 .stTextArea > div > div > textarea:focus {
-    border-color: #6d28d9 !important;
-    box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.15) !important;
+    border-color: var(--primary-light) !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15) !important;
 }
 
 .stTabs [data-baseweb="tab-list"] {
     gap: 8px;
     background-color: transparent !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+    padding-bottom: 4px !important;
 }
 
 .stTabs [data-baseweb="tab"] {
-    background-color: #f1f5f9 !important;
-    color: #475569 !important;
-    border-radius: 10px !important;
-    font-weight: 700 !important;
-    padding: 0.5rem 1.2rem !important;
+    background-color: var(--bg-subtle) !important;
+    color: var(--text-secondary) !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 0.82rem !important;
+    padding: 0.4rem 1rem !important;
+    border: 1px solid transparent !important;
+    transition: all 0.15s ease !important;
 }
 
 .stTabs [aria-selected="true"] {
-    background-color: #ede9fe !important;
-    color: #6d28d9 !important;
+    background-color: var(--primary-subtle) !important;
+    color: var(--primary) !important;
+    border: 1px solid var(--primary-border) !important;
+}
+
+.stExpander {
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: var(--radius-md) !important;
+    background-color: #ffffff !important;
+    box-shadow: var(--shadow-sm) !important;
 }

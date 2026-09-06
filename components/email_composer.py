@@ -1,6 +1,7 @@
 """
-AIRA Email Composer & Prebuilt Templates Component for Streamlit.
-Provides dedicated fields for recipient emails, subject, custom body, prebuilt templates, and AI generation with instant on_click callbacks.
+LUCORA Email Composer & Prebuilt Templates Component for Streamlit.
+Provides clean fields for recipient emails, subject, custom body, prebuilt templates,
+and instant on_click AI writing & polishing callbacks.
 """
 
 from __future__ import annotations
@@ -9,11 +10,11 @@ from typing import Dict, Any, Optional
 
 from integrations.resend_client import ResendClient
 from tools.registry import ToolRegistry
-from database.repository import AIRARepository
+from database.repository import LUCORARepository, AIRARepository
 from modules.documents.editor import DocumentEditor
 
 PREBUILT_TEMPLATES: Dict[str, Dict[str, str]] = {
-    "📅 Meeting Request": {
+    "Meeting Request": {
         "subject": "Meeting Request: Sprint Review & Architecture Sync",
         "body": (
             "Dear Team,\n\n"
@@ -25,14 +26,14 @@ PREBUILT_TEMPLATES: Dict[str, Dict[str, str]] = {
             "Proposed Time: Tomorrow at 3:00 PM IST (Google Meet)\n\n"
             "Please let me know if this time works for you.\n\n"
             "Best regards,\n"
-            "AIRA Project Team"
+            "LUCORA Project Team"
         ),
     },
-    "🏖️ Holiday / Leave": {
+    "Leave Application": {
         "subject": "Leave Application: Request for Absence from [Start Date] to [End Date]",
         "body": (
-            "Dear [Manager / Team Lead],\n\n"
-            "I am writing to formally request leave from [Start Date] to [End Date] due to [personal reasons / medical emergency / family vacation].\n\n"
+            "Dear Team Lead,\n\n"
+            "I am writing to formally request leave from [Start Date] to [End Date] due to personal commitments.\n\n"
             "During my absence:\n"
             "• Pending Tasks: All current milestone deliverables have been committed and documented.\n"
             "• Work Coverage: My team members have been briefed to handle urgent inquiries.\n"
@@ -42,7 +43,7 @@ PREBUILT_TEMPLATES: Dict[str, Dict[str, str]] = {
             "[Your Name]"
         ),
     },
-    "📊 Project Progress": {
+    "Project Status": {
         "subject": "[Update] Project Status Report: Milestones Completed & Next Steps",
         "body": (
             "Hi Team,\n\n"
@@ -55,7 +56,7 @@ PREBUILT_TEMPLATES: Dict[str, Dict[str, str]] = {
             "Project Automation Team"
         ),
     },
-    "🎓 BTech Major Project": {
+    "BTech Major Project": {
         "subject": "BTech Major Project: Bi-Weekly Progress Report Submission",
         "body": (
             "Respected Advisor / Project Coordinator,\n\n"
@@ -68,7 +69,7 @@ PREBUILT_TEMPLATES: Dict[str, Dict[str, str]] = {
             "Project Team"
         ),
     },
-    "💼 Client Proposal": {
+    "Client Proposal": {
         "subject": "Partnership Proposal: Autonomous Task Automation Solutions for Enterprise",
         "body": (
             "Dear [Client Name],\n\n"
@@ -82,7 +83,7 @@ PREBUILT_TEMPLATES: Dict[str, Dict[str, str]] = {
             "Business Development Team"
         ),
     },
-    "🚨 Urgent Escalation": {
+    "Urgent Alert": {
         "subject": "URGENT: Production Alert & Immediate Action Required",
         "body": (
             "Hello Team,\n\n"
@@ -93,119 +94,128 @@ PREBUILT_TEMPLATES: Dict[str, Dict[str, str]] = {
             "• Affected Component: Enterprise Task Worker\n"
             "• Action Required: Please verify credentials and restore worker process.\n\n"
             "Thank you,\n"
-            "AIRA Monitoring System"
+            "LUCORA Monitoring System"
         ),
     },
-    "📝 Document Review": {
+    "Document Review": {
         "subject": "Document Review: System Architecture & Technical Specifications",
         "body": (
-            "Hello,\n\n"
-            "Please review the updated technical documentation for our project.\n"
-            "Kindly share your comments, suggestions, or approvals by the end of this week.\n\n"
-            "Key Sections for Review:\n"
-            "1. Architectural DFD & Class Diagrams\n"
-            "2. Security & Zero-Bypass Action Guard\n"
-            "3. Database Persistence Layer\n\n"
-            "Thank you for your time and assistance.\n\n"
-            "Regards,\n"
-            "Engineering Team"
+            "Hi Team,\n\n"
+            "I have updated the system architecture and technical documentation for our AI automation platform.\n\n"
+            "Please review the attached document sections regarding:\n"
+            "1. Cognitive intent parser and Human-in-the-Loop approval workflows.\n"
+            "2. Multi-format document parser specifications.\n"
+            "3. Cloud database synchronization schema.\n\n"
+            "Kindly submit your comments by tomorrow evening.\n\n"
+            "Best regards,\n"
+            "Engineering Lead"
         ),
     },
-    "💰 Payment Reminder": {
-        "subject": "Invoice Follow-Up: Milestone Completion & Payment Processing",
+    "Weekly Sync Agenda": {
+        "subject": "Agenda: Weekly Engineering Sprint Sync & Milestone Planning",
         "body": (
-            "Dear Accounts Team,\n\n"
-            "I hope this email finds you well.\n\n"
-            "This is a gentle reminder regarding Invoice #[Invoice Number] for completed project milestones, which was submitted on [Date].\n\n"
-            "Please let us know if you require any additional documents or approvals to process the payment.\n\n"
-            "Thank you for your prompt assistance.\n\n"
+            "Dear Colleagues,\n\n"
+            "Please find the proposed agenda for our upcoming weekly engineering sync:\n\n"
+            "1. Sprint retrospectives and milestone achievements.\n"
+            "2. Demonstration of autonomous Resend email dispatches.\n"
+            "3. Multi-format document editor live benchmarking.\n"
+            "4. Q&A and next action item assignments.\n\n"
+            "Looking forward to our discussion.\n\n"
             "Best regards,\n"
-            "Finance & Operations Team"
+            "Project Coordinator"
         ),
     },
 }
 
-def render_email_composer(on_email_sent_callback=None, default_to: str = "", key_prefix: str = "") -> None:
-    """Renders the comprehensive Email Composer with template selector and instant on_click AI callbacks."""
-    st.markdown("### ✉️ Custom Email Composer & AI Studio")
-    st.caption("Compose custom emails, load prebuilt enterprise templates, or let AI generate and polish content automatically.")
-
+def render_email_composer(
+    key_prefix: str = "",
+    on_email_sent_callback=None,
+) -> None:
+    """
+    Renders an elegant, clean email composer with prebuilt templates,
+    instant AI generation callbacks, and multi-provider dispatch.
+    """
+    repo = LUCORARepository()
     resend_client = ResendClient()
     registry = ToolRegistry()
-    repo = AIRARepository()
-    doc_editor = DocumentEditor()
+    editor = DocumentEditor()
 
-    # Form keys
-    k_to = f"{key_prefix}composer_to"
-    k_subject = f"{key_prefix}composer_subject"
-    k_body = f"{key_prefix}composer_body"
-    k_provider = f"{key_prefix}composer_provider"
+    k_to = f"{key_prefix}email_to"
+    k_subject = f"{key_prefix}email_subject"
+    k_body = f"{key_prefix}email_body"
+    k_provider = f"{key_prefix}email_provider"
 
-    # Initialize state keys
     if k_to not in st.session_state:
-        st.session_state[k_to] = default_to or "hriday.code1119@gmail.com"
+        st.session_state[k_to] = ""
     if k_subject not in st.session_state:
         st.session_state[k_subject] = ""
     if k_body not in st.session_state:
         st.session_state[k_body] = ""
 
-    # Callback Handlers (executed BEFORE render cycle)
-    def apply_template(tmpl_key: str):
-        tmpl = PREBUILT_TEMPLATES.get(tmpl_key)
+    # Instant on_click action callbacks
+    def apply_template(tmpl_title: str):
+        tmpl = PREBUILT_TEMPLATES.get(tmpl_title)
         if tmpl:
             st.session_state[k_subject] = tmpl["subject"]
             st.session_state[k_body] = tmpl["body"]
 
     def action_generate_full_email():
-        curr_text = st.session_state.get(k_body, "").strip()
-        curr_subj = st.session_state.get(k_subject, "").strip()
-        raw_prompt = curr_text if curr_text else curr_subj
-        if not raw_prompt:
-            raw_prompt = "Project status update and next deliverables for the team"
-
-        instruction = (
-            f"Write a complete, professional, beautifully structured enterprise email based on this input: '{raw_prompt}'. "
-            "Include an appropriate greeting, clearly written paragraphs with bullet points for key details, and a professional sign-off. "
-            "Do not include meta-text or explanation."
-        )
-        full_email, _ = doc_editor.execute_ai_command(
-            document_text=raw_prompt,
-            instruction=instruction,
+        current_text = st.session_state.get(k_body, "").strip()
+        current_sub = st.session_state.get(k_subject, "").strip()
+        to_email = st.session_state.get(k_to, "").strip()
+        
+        recipient_name = to_email.split("@")[0].capitalize() if to_email and "@" in to_email else "Team"
+        prompt_input = current_text if current_text else (current_sub if current_sub else "project update and schedule sync")
+        
+        new_body = editor.generate_email_content(
+            instruction=f"Write a comprehensive, professional email about: '{prompt_input}'.",
+            recipient_name=recipient_name,
             tone="professional",
         )
-        st.session_state[k_body] = full_email
-        if not curr_subj:
-            st.session_state[k_subject] = f"[Update] {raw_prompt.split('.')[0][:50]}"
+        st.session_state[k_body] = new_body
+        if not st.session_state.get(k_subject):
+            st.session_state[k_subject] = f"Update regarding {prompt_input[:40].strip()}"
 
     def action_polish_executive():
-        curr_text = st.session_state.get(k_body, "").strip()
-        if curr_text:
-            polished, _ = doc_editor.execute_ai_command(curr_text, "Rewrite in a formal, highly articulate executive tone")
-            st.session_state[k_body] = polished
+        current_text = st.session_state.get(k_body, "").strip()
+        if current_text:
+            polished_text, _ = editor.execute_ai_command(
+                document_text=current_text,
+                instruction="Rewrite and polish this email in an authoritative, clear, and executive tone.",
+                tone="professional",
+            )
+            st.session_state[k_body] = polished_text
 
     def action_make_concise():
-        curr_text = st.session_state.get(k_body, "").strip()
-        if curr_text:
-            concise, _ = doc_editor.execute_ai_command(curr_text, "Rewrite into concise bullet points and direct action items")
-            st.session_state[k_body] = concise
+        current_text = st.session_state.get(k_body, "").strip()
+        if current_text:
+            concise_text, _ = editor.execute_ai_command(
+                document_text=current_text,
+                instruction="Condense this email into a concise, direct, high-impact message with clear bullet points.",
+                tone="concise",
+            )
+            st.session_state[k_body] = concise_text
 
     def action_fix_grammar():
-        curr_text = st.session_state.get(k_body, "").strip()
-        if curr_text:
-            fixed, _ = doc_editor.execute_ai_command(curr_text, "Fix all spelling, punctuation, and grammatical mistakes")
-            st.session_state[k_body] = fixed
+        current_text = st.session_state.get(k_body, "").strip()
+        if current_text:
+            fixed_text, _ = editor.execute_ai_command(
+                document_text=current_text,
+                instruction="Fix all grammar, spelling, punctuation, and capitalization errors while preserving original intent.",
+                tone="professional",
+            )
+            st.session_state[k_body] = fixed_text
 
     def action_clear_form():
         st.session_state[k_to] = ""
         st.session_state[k_subject] = ""
         st.session_state[k_body] = ""
 
-    # 1. Prebuilt Templates Quick Selection Bar
-    st.markdown("#### 📋 Prebuilt Enterprise Templates")
-    st.caption("Click any template to auto-populate the subject and body:")
-
+    # 1. Prebuilt Templates Selection
+    st.markdown("##### Select a Template")
     t_cols = st.columns(4)
-    for idx, (tmpl_name, tmpl_data) in enumerate(PREBUILT_TEMPLATES.items()):
+    tmpl_list = list(PREBUILT_TEMPLATES.keys())
+    for idx, tmpl_name in enumerate(tmpl_list):
         col_idx = idx % 4
         with t_cols[col_idx]:
             st.button(
@@ -219,7 +229,7 @@ def render_email_composer(on_email_sent_callback=None, default_to: str = "", key
     st.write("")
 
     # 2. Main Composer Interface (Tabs: Edit vs Preview)
-    tab_compose, tab_preview = st.tabs(["✏️ Compose & AI Assistant", "📄 Live HTML Preview"])
+    tab_compose, tab_preview = st.tabs(["Compose & AI Assistant", "Live HTML Preview"])
 
     with tab_compose:
         col_recipients, col_provider = st.columns([3, 1])
@@ -228,15 +238,13 @@ def render_email_composer(on_email_sent_callback=None, default_to: str = "", key
                 "Recipient Email Address(es)*",
                 key=k_to,
                 placeholder="e.g., hriday.code1119@gmail.com, chetan@enterprise.com",
-                help="Enter single email or comma-separated email addresses.",
             )
         with col_provider:
             default_prov = 0 if resend_client.is_configured() else 1
             st.selectbox(
-                "Dispatch Provider*",
+                "Provider*",
                 ["Resend Email API", "Gmail REST API"],
                 index=default_prov,
-                help="Choose email dispatch backend.",
                 key=k_provider,
             )
 
@@ -246,13 +254,13 @@ def render_email_composer(on_email_sent_callback=None, default_to: str = "", key
             placeholder="e.g., Meeting Request: Sprint Review & Architecture Sync",
         )
 
-        # AI Generator Banner & Button
-        st.markdown("**Custom Email Body Message:***")
+        # AI Generator Toolbar
+        st.markdown("**Email Message Content:***")
         
         col_ai_btn, col_ai_hint = st.columns([2, 3])
         with col_ai_btn:
             st.button(
-                "🤖 ✨ Write / Generate Full Email with AI",
+                "✦ Write Full Email with AI",
                 key=f"{key_prefix}btn_ai_generate_full",
                 type="secondary",
                 use_container_width=True,
@@ -260,22 +268,22 @@ def render_email_composer(on_email_sent_callback=None, default_to: str = "", key
             )
 
         with col_ai_hint:
-            st.caption("💡 *Type rough notes or instructions in the box below, then click the AI button to expand into a complete email!*")
+            st.caption("Type rough notes below, then click to auto-expand into a polished email.")
 
         st.text_area(
             "Email Message Content",
             key=k_body,
-            height=240,
-            placeholder="Type your message or rough notes here (e.g., 'i is hriday and i want to schedule meeting')...",
+            height=200,
+            placeholder="Type your message or rough notes here (e.g., 'i want to schedule meeting with team tomorrow at 3pm')...",
             label_visibility="collapsed",
         )
 
-        # AI Transformation Action Toolbar with instant on_click callbacks
-        st.markdown("**✨ AI Writing & Editing Tools (Takes input body data automatically):**")
+        # AI Writing Tools Toolbar
+        st.caption("Refine text with AI:")
         ai_col1, ai_col2, ai_col3, ai_col4 = st.columns(4)
         with ai_col1:
             st.button(
-                "👔 Polish (Executive)",
+                "Executive Polish",
                 key=f"{key_prefix}btn_ai_polish",
                 use_container_width=True,
                 on_click=action_polish_executive,
@@ -283,7 +291,7 @@ def render_email_composer(on_email_sent_callback=None, default_to: str = "", key
 
         with ai_col2:
             st.button(
-                "✂️ Make Concise",
+                "Make Concise",
                 key=f"{key_prefix}btn_ai_concise",
                 use_container_width=True,
                 on_click=action_make_concise,
@@ -291,7 +299,7 @@ def render_email_composer(on_email_sent_callback=None, default_to: str = "", key
 
         with ai_col3:
             st.button(
-                "🧹 Fix Grammar",
+                "Fix Grammar",
                 key=f"{key_prefix}btn_ai_grammar",
                 use_container_width=True,
                 on_click=action_fix_grammar,
@@ -299,20 +307,20 @@ def render_email_composer(on_email_sent_callback=None, default_to: str = "", key
 
         with ai_col4:
             st.button(
-                "🗑️ Clear Form",
+                "Clear Form",
                 key=f"{key_prefix}btn_clear_composer",
                 use_container_width=True,
                 on_click=action_clear_form,
             )
 
-        st.divider()
+        st.write("")
 
         # Send Action Buttons
         btn_send_col, btn_draft_col, _ = st.columns([2, 2, 3])
         with btn_send_col:
-            send_btn = st.button("🚀 Send Email Live", key=f"{key_prefix}btn_send_live", type="primary", use_container_width=True)
+            send_btn = st.button("Send Email Live →", key=f"{key_prefix}btn_send_live", type="primary", use_container_width=True)
         with btn_draft_col:
-            draft_btn = st.button("💾 Save as Draft", key=f"{key_prefix}btn_save_draft", use_container_width=True)
+            draft_btn = st.button("Save as Draft", key=f"{key_prefix}btn_save_draft", use_container_width=True)
 
         recipient_val = st.session_state.get(k_to, "").strip()
         subject_val = st.session_state.get(k_subject, "").strip()
@@ -328,7 +336,7 @@ def render_email_composer(on_email_sent_callback=None, default_to: str = "", key
                 st.error("Please provide an email body message.")
             else:
                 recipients = [r.strip() for r in recipient_val.split(",") if r.strip()]
-                with st.spinner(f"🔒 Dispatching email via {selected_provider}..."):
+                with st.spinner(f"Dispatching email via {selected_provider}..."):
                     try:
                         if "Resend" in selected_provider:
                             tool_res = registry.execute_tool(
@@ -352,8 +360,8 @@ def render_email_composer(on_email_sent_callback=None, default_to: str = "", key
                             )
 
                         if tool_res.success:
-                            st.success(f"🎉 **Email Dispatched Successfully!**\n• Message ID: `{tool_res.external_reference_id or 'sent-ok'}`\n• Provider: `{selected_provider}`\n• Recipients: `{', '.join(recipients)}`")
-                            st.toast("Email delivered successfully", icon="✉️")
+                            st.success(f"**Email Dispatched Successfully!**\n• Message ID: `{tool_res.external_reference_id or 'sent-ok'}`\n• Provider: `{selected_provider}`\n• Recipients: `{', '.join(recipients)}`")
+                            st.toast("Email delivered successfully", icon="✓")
                             if on_email_sent_callback:
                                 on_email_sent_callback(tool_res.data)
                         else:
@@ -367,8 +375,8 @@ def render_email_composer(on_email_sent_callback=None, default_to: str = "", key
                 content=f"To: {recipient_val}\n\n{body_val}",
                 category="note",
             )
-            st.success("Draft saved to Notes and Database successfully!")
-            st.toast("Draft saved", icon="💾")
+            st.success("Draft saved to Notes successfully!")
+            st.toast("Draft saved", icon="✓")
 
     with tab_preview:
         recipient_val = st.session_state.get(k_to, "")
@@ -377,9 +385,9 @@ def render_email_composer(on_email_sent_callback=None, default_to: str = "", key
 
         st.markdown(
             f"""
-            <div style="border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; background: #ffffff; color: #0f172a; box-shadow: 0 4px 12px rgba(0,0,0,0.04);">
+            <div style="border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; background: #ffffff; color: #0f172a; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
                 <div style="border-bottom: 1px solid #f1f5f9; padding-bottom: 0.8rem; margin-bottom: 1rem;">
-                    <div style="font-size: 0.82rem; color: #64748b;"><strong>From:</strong> AIRA AI &lt;onboarding@resend.dev&gt;</div>
+                    <div style="font-size: 0.82rem; color: #64748b;"><strong>From:</strong> LUCORA AI &lt;onboarding@resend.dev&gt;</div>
                     <div style="font-size: 0.82rem; color: #64748b; margin-top: 0.2rem;"><strong>To:</strong> {recipient_val or '(No recipient specified)'}</div>
                     <div style="font-size: 1.15rem; font-weight: 700; color: #0f172a; margin-top: 0.4rem;">{subject_val or '(No subject)'}</div>
                 </div>
@@ -388,7 +396,7 @@ def render_email_composer(on_email_sent_callback=None, default_to: str = "", key
                 </div>
                 <hr style="border: none; border-top: 1px solid #f1f5f9; margin: 1.5rem 0 0.8rem 0;" />
                 <div style="font-size: 0.75rem; color: #94a3b8; text-align: center;">
-                    ⚡ Sent autonomously via <strong>AIRA Enterprise AI Agent</strong>
+                    ✦ Sent autonomously via <strong>LUCORA Enterprise AI Agent</strong>
                 </div>
             </div>
             """,

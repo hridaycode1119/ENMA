@@ -1,6 +1,6 @@
 """
 LUCORA Master Enterprise Dashboard Component.
-Renders the complete multi-widget command center matching the reference UI design.
+Ultra-clean, creative, and aesthetic command center.
 Brand tagline: "Intelligence That Gets Work Done"
 """
 
@@ -20,76 +20,75 @@ def _set_active_view(view_name: str) -> None:
     st.session_state["aira_active_view"] = view_name
 
 def render_lucora_dashboard(orchestrator: AgentOrchestrator, on_navigate_view) -> None:
-    """Renders the complete 12-widget unified LUCORA AI Agent Dashboard."""
+    """Renders the creative, aesthetic, and uncluttered LUCORA AI Dashboard."""
     
     repo = LUCORARepository()
     metrics = repo.get_task_metrics()
 
     # --------------------------------------------------------------------------
-    # 1. Top KPI Summary Cards (5 Cards)
+    # 1. Executive Metrics Ribbon (4 Cards)
     # --------------------------------------------------------------------------
-    kpi_col1, kpi_col2, kpi_col3, kpi_col4, kpi_col5 = st.columns(5)
+    kpi1, kpi2, kpi3, kpi4 = st.columns(4)
     
-    with kpi_col1:
+    with kpi1:
         st.markdown(
             f"""
             <div class="kpi-container">
-                <div class="kpi-icon-wrapper" style="background: rgba(109, 40, 217, 0.1); color: #6d28d9;">✓</div>
+                <div class="kpi-accent-bar" style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);"></div>
+                <div class="kpi-top-row">
+                    <span class="kpi-label">Tasks Automated</span>
+                    <span class="kpi-badge badge-purple">↑ 18%</span>
+                </div>
                 <div class="kpi-val">{metrics['completed']}</div>
-                <div class="kpi-label">Tasks Completed</div>
-                <div class="kpi-delta delta-purple">↑ 18% from yesterday</div>
+                <div class="kpi-delta">Processed successfully</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
 
-    with kpi_col2:
+    with kpi2:
         st.markdown(
             f"""
             <div class="kpi-container">
-                <div class="kpi-icon-wrapper" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">✉</div>
+                <div class="kpi-accent-bar" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);"></div>
+                <div class="kpi-top-row">
+                    <span class="kpi-label">Emails Delivered</span>
+                    <span class="kpi-badge badge-green">100% live</span>
+                </div>
                 <div class="kpi-val">{metrics['emails_sent']}</div>
-                <div class="kpi-label">Emails Sent</div>
-                <div class="kpi-delta delta-green">↑ 24% from yesterday</div>
+                <div class="kpi-delta">Dispatched via Resend & Gmail</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
 
-    with kpi_col3:
+    with kpi3:
         st.markdown(
             f"""
             <div class="kpi-container">
-                <div class="kpi-icon-wrapper" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">📅</div>
-                <div class="kpi-val">{metrics['events_today']}</div>
-                <div class="kpi-label">Events Today</div>
-                <div class="kpi-delta delta-orange">1 upcoming</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with kpi_col4:
-        st.markdown(
-            f"""
-            <div class="kpi-container">
-                <div class="kpi-icon-wrapper" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">📄</div>
+                <div class="kpi-accent-bar" style="background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);"></div>
+                <div class="kpi-top-row">
+                    <span class="kpi-label">Files Processed</span>
+                    <span class="kpi-badge badge-blue">Multi-Format</span>
+                </div>
                 <div class="kpi-val">{metrics['files_processed']}</div>
-                <div class="kpi-label">Files Processed</div>
-                <div class="kpi-delta delta-blue">↑ 32% from yesterday</div>
+                <div class="kpi-delta">PDF, Word, Excel, CSV</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
 
-    with kpi_col5:
+    with kpi4:
         st.markdown(
             f"""
             <div class="kpi-container">
-                <div class="kpi-icon-wrapper" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">⏱</div>
+                <div class="kpi-accent-bar" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);"></div>
+                <div class="kpi-top-row">
+                    <span class="kpi-label">Time Saved</span>
+                    <span class="kpi-badge badge-orange">This week</span>
+                </div>
                 <div class="kpi-val">{metrics['time_saved_hours']}h</div>
-                <div class="kpi-label">Time Saved</div>
-                <div class="kpi-delta delta-purple">This week</div>
+                <div class="kpi-delta">Cumulative engineering hours</div>
             </div>
             """,
             unsafe_allow_html=True,
@@ -98,135 +97,54 @@ def render_lucora_dashboard(orchestrator: AgentOrchestrator, on_navigate_view) -
     st.write("")
 
     # --------------------------------------------------------------------------
-    # 2. Middle 3-Column Workspace: Recent Activity | AI Assistant | Schedule
+    # 2. Main 2-Column Workspace: Intelligence Hub (Left) | Pulse Stream (Right)
     # --------------------------------------------------------------------------
-    mid_left, mid_center, mid_right = st.columns([3, 4, 3])
+    col_main, col_stream = st.columns([7, 4])
 
-    # A. Recent Activity
-    with mid_left:
+    with col_main:
+        # A. Cognitive AI Command Studio
         st.markdown(
             """
-            <div class="aira-card lucora-card">
-                <div class="aira-card-header lucora-card-header">
-                    <div class="aira-card-title lucora-card-title">Recent Activity</div>
-                    <span class="aira-card-link lucora-card-link">View All</span>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon" style="background: #ecfdf5; color: #10b981;">✉</div>
-                    <div>
-                        <div class="activity-title">Email sent to Chetan</div>
-                        <div class="activity-sub">Project update and next steps</div>
-                    </div>
-                    <div class="activity-time">10:30 AM <span class="status-dot" style="background: #10b981;"></span></div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon" style="background: #eff6ff; color: #3b82f6;">📄</div>
-                    <div>
-                        <div class="activity-title">Document summary created</div>
-                        <div class="activity-sub">Q1_Report.pdf</div>
-                    </div>
-                    <div class="activity-time">09:15 AM <span class="status-dot" style="background: #3b82f6;"></span></div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon" style="background: #fffbeb; color: #f59e0b;">📅</div>
-                    <div>
-                        <div class="activity-title">Meeting scheduled</div>
-                        <div class="activity-sub">Team sync on 24 May, 11:00 AM</div>
-                    </div>
-                    <div class="activity-time">09:00 AM <span class="status-dot" style="background: #f59e0b;"></span></div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon" style="background: #f5f3ff; color: #7c3aed;">📊</div>
-                    <div>
-                        <div class="activity-title">Data extracted from sales.xlsx</div>
-                        <div class="activity-sub">5 tables, 2 charts generated</div>
-                    </div>
-                    <div class="activity-time">Yesterday <span class="status-dot" style="background: #7c3aed;"></span></div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon" style="background: #ecfdf5; color: #10b981;">✓</div>
-                    <div>
-                        <div class="activity-title">Task completed</div>
-                        <div class="activity-sub">Send proposal to client</div>
-                    </div>
-                    <div class="activity-time">Yesterday <span class="status-dot" style="background: #10b981;"></span></div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon" style="background: #fdf4ff; color: #c026d3;">🎙️</div>
-                    <div>
-                        <div class="activity-title">Voice command executed</div>
-                        <div class="activity-sub">Create meeting notes</div>
-                    </div>
-                    <div class="activity-time">2 days ago <span class="status-dot" style="background: #3b82f6;"></span></div>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    # B. Central AI Assistant Interactive Hub
-    with mid_center:
-        st.markdown(
-            """
-            <div class="aira-card lucora-card">
-                <div class="aira-card-header lucora-card-header">
-                    <div class="aira-card-title lucora-card-title">✨ LUCORA AI Assistant</div>
-                </div>
-                <div class="ai-assistant-bubble">
-                    <p><strong>Hi Vaishnavi! 👋 Welcome to LUCORA</strong><br><em>Intelligence That Gets Work Done</em>. How can I assist you today?</p>
-                </div>
+            <div class="hero-prompt-card">
+                <div class="hero-welcome-badge">✦ Cognitive Engine Active</div>
+                <div class="hero-welcome-text">Hi Vaishnavi — Welcome to LUCORA</div>
+                <div class="hero-welcome-sub">Type a natural-language command to execute actions across Gmail, Resend, Calendar, and Documents with safety verification.</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
 
         # Quick action chips
-        chip_col1, chip_col2 = st.columns(2)
-        with chip_col1:
-            if st.button("📄 Summarize a document", key="lucora_chip_sum", use_container_width=True):
+        chip_c1, chip_c2, chip_c3, chip_c4 = st.columns(4)
+        with chip_c1:
+            if st.button("Draft Status Email", key="chip_email_status", use_container_width=True):
+                orchestrator.submit_instruction("Send an email to chetan@enterprise.com with project status update.")
+                st.rerun()
+        with chip_c2:
+            if st.button("Summarize Document", key="chip_doc_sum", use_container_width=True):
                 _set_active_view("documents")
                 st.rerun()
-            if st.button("📊 Analyze data", key="lucora_chip_data", use_container_width=True):
-                _set_active_view("documents")
-                st.rerun()
-        with chip_col2:
-            if st.button("📅 Schedule a meeting", key="lucora_chip_meet", use_container_width=True):
+        with chip_c3:
+            if st.button("Schedule Meeting", key="chip_meet_sync", use_container_width=True):
                 _set_active_view("calendar")
                 st.rerun()
-            if st.button("📝 Generate report", key="lucora_chip_rep", use_container_width=True):
+        with chip_c4:
+            if st.button("Analyze Data File", key="chip_data_ext", use_container_width=True):
                 _set_active_view("documents")
                 st.rerun()
 
         # Conversational Task Prompt Box
-        with st.form(key="lucora_prompt_form"):
+        with st.form(key="lucora_hero_prompt_form"):
             user_prompt = st.text_input(
                 "Command Prompt",
-                placeholder="Ask anything or give a command (e.g., 'Send email to Chetan about project update')...",
+                placeholder="Ask anything or enter a command (e.g. 'Send email to chetan@enterprise.com with project update')...",
                 label_visibility="collapsed",
             )
-            submit_prompt = st.form_submit_button("🚀 Send Command", type="primary", use_container_width=True)
+            submit_prompt = st.form_submit_button("Send Command →", type="primary", use_container_width=True)
 
             if submit_prompt and user_prompt.strip():
                 with st.spinner("LUCORA reasoning over instruction..."):
                     orchestrator.submit_instruction(user_prompt.strip())
-                st.rerun()
-
-        # Bottom Feature Pills
-        f_c1, f_c2, f_c3, f_c4 = st.columns(4)
-        with f_c1:
-            if st.button("✉️ Smart Reply", key="feat_reply", use_container_width=True):
-                st.toast("Smart Reply loaded for email drafts", icon="✉️")
-        with f_c2:
-            if st.button("📑 File Insights", key="feat_insights", use_container_width=True):
-                _set_active_view("documents")
-                st.rerun()
-        with f_c3:
-            if st.button("✅ Task Planner", key="feat_planner", use_container_width=True):
-                _set_active_view("tasks")
-                st.rerun()
-        with f_c4:
-            if st.button("⚡ Workflow", key="feat_flow", use_container_width=True):
-                _set_active_view("terminal")
                 st.rerun()
 
         # If an action plan is active, render the HITL Review card inline!
@@ -254,41 +172,101 @@ def render_lucora_dashboard(orchestrator: AgentOrchestrator, on_navigate_view) -
                 on_reset_callback=lambda: (orchestrator.reset(), st.rerun()),
             )
 
-    # C. Today's Schedule & Month Calendar
-    with mid_right:
+        st.write("")
+
+        # B. Studio Workspaces (Tabs)
+        tab_email, tab_tools, tab_terminal = st.tabs([
+            "Email Studio & Templates",
+            "Automation Toolkits",
+            "Command Center Logs",
+        ])
+
+        with tab_email:
+            render_email_composer(key_prefix="dash_")
+
+        with tab_tools:
+            st.caption("Quickly launch specialized cognitive tools:")
+            t_col1, t_col2 = st.columns(2)
+            with t_col1:
+                with st.container(border=True):
+                    st.markdown("**Document Processing & AI Editor**")
+                    st.caption("Inspect, polish, summarize, and convert PDF, DOCX, and Text documents.")
+                    if st.button("Open Document Studio →", key="dash_tool_doc", use_container_width=True):
+                        _set_active_view("documents")
+                        st.rerun()
+
+                with st.container(border=True):
+                    st.markdown("**Data Extractor & Spreadsheet AI**")
+                    st.caption("Extract structured tables, summary metrics, and insights from CSV / XLSX.")
+                    if st.button("Launch Data Tools →", key="dash_tool_data", use_container_width=True):
+                        _set_active_view("documents")
+                        st.rerun()
+
+            with t_col2:
+                with st.container(border=True):
+                    st.markdown("**Calendar & Meeting Scheduler**")
+                    st.caption("Automate calendar events and Google Meet conference links.")
+                    if st.button("Open Calendar →", key="dash_tool_cal", use_container_width=True):
+                        _set_active_view("calendar")
+                        st.rerun()
+
+                with st.container(border=True):
+                    st.markdown("**Notes & Knowledge Scratchpad**")
+                    st.caption("Persist engineering logs and research notes with Supabase cloud sync.")
+                    if st.button("Open Notes →", key="dash_tool_notes", use_container_width=True):
+                        _set_active_view("notes")
+                        st.rerun()
+
+        with tab_terminal:
+            st.markdown(
+                """
+                <div class="terminal-container">
+                    <span class="terminal-prompt">></span> <span class="terminal-cmd">LUCORA v2.4 initialized on Linux</span><br>
+                    <span class="terminal-prompt">></span> <span class="terminal-success">Loaded Gemini 1.5 Flash Cognitive Core</span><br>
+                    <span class="terminal-prompt">></span> <span class="terminal-cmd">ToolRegistry: 6 dynamic tools registered</span><br>
+                    <span class="terminal-prompt">></span> <span class="terminal-success">OAuth 2.0 PKCE & Resend API ready</span><br>
+                    <span class="terminal-prompt">></span> <span class="terminal-cmd">Supabase cloud persistence active</span>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+    # Right Column: Today's Schedule, Activity Stream & Voice
+    with col_stream:
+        # A. Today's Schedule Card
         st.markdown(
             """
-            <div class="aira-card lucora-card">
-                <div class="aira-card-header lucora-card-header">
-                    <div class="aira-card-title lucora-card-title">Today's Schedule</div>
-                    <span class="aira-card-link lucora-card-link">View Calendar</span>
+            <div class="lucora-card">
+                <div class="lucora-card-header">
+                    <div class="lucora-card-title">Today's Schedule</div>
+                    <span class="lucora-card-link">View Calendar</span>
                 </div>
-                <div class="schedule-item">
-                    <div class="schedule-time">09:00 AM</div>
+                <div class="timeline-item-clean">
+                    <div class="timeline-time-badge">09:00 AM</div>
                     <div>
-                        <div class="schedule-title">Daily Standup</div>
-                        <div class="schedule-duration">30 mins</div>
+                        <div class="timeline-title">Daily Engineering Standup</div>
+                        <div class="timeline-sub">30 mins • Team sync</div>
                     </div>
                 </div>
-                <div class="schedule-item">
-                    <div class="schedule-time">11:00 AM</div>
+                <div class="timeline-item-clean">
+                    <div class="timeline-time-badge">11:00 AM</div>
                     <div>
-                        <div class="schedule-title">Team Sync</div>
-                        <div class="schedule-duration">1 hour</div>
+                        <div class="timeline-title">Sprint Planning & Architecture Sync</div>
+                        <div class="timeline-sub">1 hour • Google Meet</div>
                     </div>
                 </div>
-                <div class="schedule-item">
-                    <div class="schedule-time">02:00 PM</div>
+                <div class="timeline-item-clean">
+                    <div class="timeline-time-badge">02:00 PM</div>
                     <div>
-                        <div class="schedule-title">Client Presentation</div>
-                        <div class="schedule-duration">1 hour</div>
+                        <div class="timeline-title">Client Demonstration</div>
+                        <div class="timeline-sub">1 hour • Live feature walk</div>
                     </div>
                 </div>
-                <div class="schedule-item">
-                    <div class="schedule-time">04:30 PM</div>
+                <div class="timeline-item-clean">
+                    <div class="timeline-time-badge">04:30 PM</div>
                     <div>
-                        <div class="schedule-title">Review & Planning</div>
-                        <div class="schedule-duration">30 mins</div>
+                        <div class="timeline-title">Review & Deliverables Wrap-up</div>
+                        <div class="timeline-sub">30 mins • Summary</div>
                     </div>
                 </div>
             </div>
@@ -296,151 +274,68 @@ def render_lucora_dashboard(orchestrator: AgentOrchestrator, on_navigate_view) -
             unsafe_allow_html=True,
         )
 
-    st.write("")
+        st.write("")
 
-    # --------------------------------------------------------------------------
-    # 2.5 Quick Email Automation & Template Studio
-    # --------------------------------------------------------------------------
-    with st.expander("✉️ **Quick Email Automation & AI Composer Studio**", expanded=True):
-        render_email_composer(key_prefix="dash_")
-
-    st.write("")
-
-    # --------------------------------------------------------------------------
-    # 3. Lower 4-Card Grid: Task Donut | File Manager | Quick Tools | Voice
-    # --------------------------------------------------------------------------
-    low_col1, low_col2, low_col3, low_col4 = st.columns(4)
-
-    # A. Task Overview Donut Chart
-    with low_col1:
+        # B. Recent Autonomous Actions
         st.markdown(
             """
-            <div class="aira-card lucora-card">
-                <div class="aira-card-header lucora-card-header">
-                    <div class="aira-card-title lucora-card-title">Task Overview</div>
+            <div class="lucora-card">
+                <div class="lucora-card-header">
+                    <div class="lucora-card-title">Recent Activity</div>
+                    <span class="lucora-card-link">Audit Logs</span>
                 </div>
-                <div style="text-align: center; margin: 0.8rem 0;">
-                    <div style="font-size: 2.2rem; font-weight: 800; color: #6d28d9; line-height: 1;">43</div>
-                    <div style="font-size: 0.76rem; color: #64748b; font-weight: 600;">Total Tasks</div>
+                <div class="activity-row-clean">
+                    <div class="activity-main">
+                        <div class="activity-bullet" style="background: #10b981;"></div>
+                        <div>
+                            <div class="activity-name">Email dispatched to Chetan</div>
+                            <div class="activity-detail">Project update and next steps</div>
+                        </div>
+                    </div>
+                    <div class="activity-timestamp">10:30 AM</div>
                 </div>
-                <div style="font-size: 0.78rem; display: flex; flex-direction: column; gap: 0.35rem; margin-top: 0.6rem;">
-                    <div style="display: flex; justify-content: space-between;">
-                        <span><span style="color: #3b82f6;">●</span> To Do</span> <strong>12</strong>
+                <div class="activity-row-clean">
+                    <div class="activity-main">
+                        <div class="activity-bullet" style="background: #3b82f6;"></div>
+                        <div>
+                            <div class="activity-name">Document summary synthesized</div>
+                            <div class="activity-detail">Q1_Report.pdf (4 takeaways)</div>
+                        </div>
                     </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span><span style="color: #06b6d4;">●</span> In Progress</span> <strong>5</strong>
+                    <div class="activity-timestamp">09:15 AM</div>
+                </div>
+                <div class="activity-row-clean">
+                    <div class="activity-main">
+                        <div class="activity-bullet" style="background: #f59e0b;"></div>
+                        <div>
+                            <div class="activity-name">Meeting scheduled</div>
+                            <div class="activity-detail">Team sync on 24 May, 11:00 AM</div>
+                        </div>
                     </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span><span style="color: #10b981;">●</span> Completed</span> <strong>24</strong>
+                    <div class="activity-timestamp">09:00 AM</div>
+                </div>
+                <div class="activity-row-clean">
+                    <div class="activity-main">
+                        <div class="activity-bullet" style="background: #8b5cf6;"></div>
+                        <div>
+                            <div class="activity-name">Data extracted from sales.xlsx</div>
+                            <div class="activity-detail">5 tables & 2 charts generated</div>
+                        </div>
                     </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span><span style="color: #ef4444;">●</span> Blocked</span> <strong>2</strong>
-                    </div>
+                    <div class="activity-timestamp">Yesterday</div>
                 </div>
             </div>
             """,
             unsafe_allow_html=True,
         )
 
-    # B. File Manager Card
-    with low_col2:
+        st.write("")
+
+        # C. Minimal Voice Assistant Capsule
         st.markdown(
             """
-            <div class="aira-card lucora-card">
-                <div class="aira-card-header lucora-card-header">
-                    <div class="aira-card-title lucora-card-title">File Manager</div>
-                    <span class="aira-card-link lucora-card-link">View All</span>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon" style="background: #fef2f2; color: #ef4444;">📄</div>
-                    <div>
-                        <div class="activity-title">Project_Proposal.pdf</div>
-                        <div class="activity-sub">1.2 MB • PDF</div>
-                    </div>
-                    <div class="activity-time">10:20 AM</div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon" style="background: #ecfdf5; color: #10b981;">📊</div>
-                    <div>
-                        <div class="activity-title">Sales_Data.xlsx</div>
-                        <div class="activity-sub">850 KB • Excel</div>
-                    </div>
-                    <div class="activity-time">Yesterday</div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon" style="background: #eff6ff; color: #3b82f6;">📝</div>
-                    <div>
-                        <div class="activity-title">Meeting_Notes.docx</div>
-                        <div class="activity-sub">450 KB • Word</div>
-                    </div>
-                    <div class="activity-time">Yesterday</div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon" style="background: #fef2f2; color: #ef4444;">📄</div>
-                    <div>
-                        <div class="activity-title">Q1_Report.pdf</div>
-                        <div class="activity-sub">2.1 MB • PDF</div>
-                    </div>
-                    <div class="activity-time">2 days ago</div>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    # C. Quick Tools 2x4 Grid
-    with low_col3:
-        st.markdown(
-            """
-            <div class="aira-card lucora-card">
-                <div class="aira-card-header lucora-card-header">
-                    <div class="aira-card-title lucora-card-title">Quick Tools</div>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        qt_r1_c1, qt_r1_c2, qt_r1_c3, qt_r1_c4 = st.columns(4)
-        with qt_r1_c1:
-            if st.button("📄\nConv", key="qt_conv", use_container_width=True, help="File Converter"):
-                _set_active_view("documents")
-                st.rerun()
-        with qt_r1_c2:
-            if st.button("📑\nPDF", key="qt_pdf", use_container_width=True, help="PDF Editor"):
-                _set_active_view("documents")
-                st.rerun()
-        with qt_r1_c3:
-            if st.button("📊\nData", key="qt_data", use_container_width=True, help="Data Extractor"):
-                _set_active_view("documents")
-                st.rerun()
-        with qt_r1_c4:
-            if st.button("📈\nChart", key="qt_chart", use_container_width=True, help="Chart Generator"):
-                st.toast("Chart Generator Ready", icon="📈")
-
-        qt_r2_c1, qt_r2_c2, qt_r2_c3, qt_r2_c4 = st.columns(4)
-        with qt_r2_c1:
-            if st.button("🖼️\nOCR", key="qt_ocr", use_container_width=True, help="Image to Text"):
-                st.toast("Image to Text OCR tool active", icon="🖼️")
-        with qt_r2_c2:
-            if st.button("🔗\nMerge", key="qt_merge", use_container_width=True, help="Merge Files"):
-                _set_active_view("documents")
-                st.rerun()
-        with qt_r2_c3:
-            if st.button("🗜️\nZip", key="qt_zip", use_container_width=True, help="Compress Files"):
-                st.toast("File Compressor Active", icon="🗜️")
-        with qt_r2_c4:
-            if st.button("✨\nMore", key="qt_more", use_container_width=True, help="More Tools"):
-                _set_active_view("documents")
-                st.rerun()
-
-    # D. Voice Assistant Card
-    with low_col4:
-        st.markdown(
-            """
-            <div class="aira-card lucora-card">
-                <div class="aira-card-header lucora-card-header">
-                    <div class="aira-card-title lucora-card-title">Voice Assistant</div>
-                </div>
+            <div class="voice-wave-capsule">
+                <div style="font-size: 0.82rem; font-weight: 700; color: #4f46e5; margin-bottom: 0.2rem;">Voice Command Engine</div>
                 <div class="soundwave-container">
                     <div class="wave-bar"></div>
                     <div class="wave-bar"></div>
@@ -450,114 +345,17 @@ def render_lucora_dashboard(orchestrator: AgentOrchestrator, on_navigate_view) -
                     <div class="wave-bar"></div>
                     <div class="wave-bar"></div>
                     <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
                 </div>
-                <div style="text-align: center; font-size: 0.78rem; font-weight: 600; color: #64748b; margin-bottom: 0.5rem;">
-                    Listening...<br><span style="font-size: 0.72rem; color: #94a3b8; font-weight: 400;">Say a command or ask something</span>
-                </div>
+                <div style="font-size: 0.74rem; color: #64748b;">Ready to transcribe speech input</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
-        if st.button("🎙️ Speak Command", key="btn_speak_voice", type="primary", use_container_width=True):
+        if st.button("🎙 Speak Natural Command", key="btn_dash_speak", type="primary", use_container_width=True):
             st.session_state["lucora_voice_listening"] = True
-            st.session_state["aira_voice_listening"] = True
-            st.toast("Transcribing voice command: 'Send email to Chetan about project update'", icon="🎙️")
+            st.toast("Transcribing voice command...", icon="🎙")
             orchestrator.submit_instruction("Send an email to chetan@enterprise.com with project update.")
             st.rerun()
-
-        st.caption("💡 *Try saying: \"Send email to Chetan about project update\"*")
-
-    st.write("")
-
-    # --------------------------------------------------------------------------
-    # 4. Bottom 3-Card Row: Command Center Terminal | Journals | Bookmarks
-    # --------------------------------------------------------------------------
-    bot_col1, bot_col2, bot_col3 = st.columns([5, 3, 3])
-
-    # A. Command Center Active Terminal
-    with bot_col1:
-        st.markdown(
-            """
-            <div class="aira-card lucora-card">
-                <div class="aira-card-header lucora-card-header">
-                    <div class="aira-card-title lucora-card-title">💻 Command Center</div>
-                    <span class="aira-card-link lucora-card-link">View All Commands</span>
-                </div>
-                <div class="terminal-container">
-                    <span class="terminal-prompt">></span> <span class="terminal-cmd">send email to chetan with project update</span><br>
-                    <span class="terminal-prompt">></span> <span class="terminal-success">email sent successfully (Msg ID: 18f9e120bc7129ac)</span><br>
-                    <span class="terminal-prompt">></span> <span class="terminal-cmd">summarize Q1_Report.pdf</span><br>
-                    <span class="terminal-prompt">></span> <span class="terminal-success">summary created (4 key takeaways extracted)</span><br>
-                    <span class="terminal-prompt">></span> <span class="terminal-cmd">schedule meeting with team tomorrow 11am</span><br>
-                    <span class="terminal-prompt">></span> <span class="terminal-success">meeting scheduled (Meet ID: evt-a1b2c3)</span>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    # B. Journals Card
-    with bot_col2:
-        st.markdown(
-            """
-            <div class="aira-card lucora-card">
-                <div class="aira-card-header lucora-card-header">
-                    <div class="aira-card-title lucora-card-title">📖 Journals</div>
-                    <span class="aira-card-link lucora-card-link">View All</span>
-                </div>
-                <div class="activity-item">
-                    <div>
-                        <div class="activity-title">21 May 2025</div>
-                        <div class="activity-sub">Worked on project automation and email integration.</div>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <div>
-                        <div class="activity-title">20 May 2025</div>
-                        <div class="activity-sub">Researched file data extraction and AI tools.</div>
-                    </div>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    # C. Bookmarks Card
-    with bot_col3:
-        st.markdown(
-            """
-            <div class="aira-card lucora-card">
-                <div class="aira-card-header lucora-card-header">
-                    <div class="aira-card-title lucora-card-title">🔖 Bookmarks</div>
-                    <span class="aira-card-link lucora-card-link">View All</span>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon" style="background: #f5f3ff; color: #7c3aed;">🔗</div>
-                    <div>
-                        <div class="activity-title"><a href="https://platform.openai.com/docs" target="_blank" style="color: inherit; text-decoration: none;">OpenAI API Documentation</a></div>
-                        <div class="activity-sub">https://platform.openai.com/docs</div>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon" style="background: #f5f3ff; color: #7c3aed;">🔗</div>
-                    <div>
-                        <div class="activity-title"><a href="https://developers.google.com/gmail/api" target="_blank" style="color: inherit; text-decoration: none;">Gmail API Quickstart</a></div>
-                        <div class="activity-sub">https://developers.google.com/gmail/api</div>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon" style="background: #f5f3ff; color: #7c3aed;">🔗</div>
-                    <div>
-                        <div class="activity-title"><a href="https://docs.streamlit.io" target="_blank" style="color: inherit; text-decoration: none;">Streamlit Docs</a></div>
-                        <div class="activity-sub">https://docs.streamlit.io</div>
-                    </div>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
 
 # Backward-compatibility alias
 render_aira_dashboard = render_lucora_dashboard

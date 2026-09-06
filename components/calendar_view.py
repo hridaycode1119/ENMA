@@ -1,5 +1,6 @@
 """
-AIRA Dedicated Calendar & Meeting Scheduling View.
+LUCORA Dedicated Calendar & Meeting Scheduling View.
+Clean, uncluttered, and aesthetic schedule management.
 """
 
 from __future__ import annotations
@@ -9,9 +10,9 @@ import datetime
 from tools.calendar.calendar_tool import CalendarScheduleTool
 
 def render_calendar_view() -> None:
-    """Renders the full Calendar & Meeting Scheduler workspace."""
-    st.markdown("### 📅 Calendar & Meeting Scheduler")
-    st.caption("Schedule enterprise meetings, sync with Google Calendar, and generate Google Meet video links.")
+    """Renders the clean, aesthetic Calendar & Meeting Scheduler workspace."""
+    st.markdown("### Calendar & Schedule")
+    st.caption("Schedule enterprise meetings, sync with Google Calendar, and generate Google Meet video conference links.")
 
     cal_tool = CalendarScheduleTool()
     events = cal_tool.list_today_events()
@@ -19,18 +20,19 @@ def render_calendar_view() -> None:
     col_sched, col_form = st.columns([5, 4])
 
     with col_sched:
-        st.markdown("#### 🕒 Today's Schedule & Agenda")
+        st.markdown("#### Today's Agenda")
         for evt in events:
             with st.container(border=True):
                 c1, c2 = st.columns([3, 1])
                 with c1:
                     st.markdown(f"**{evt['title']}**")
-                    st.caption(f"⏰ {evt['time']} ({evt['duration']}) • 👥 {', '.join(evt.get('attendees', []))}")
+                    attendees_str = ", ".join(evt.get('attendees', [])) if evt.get('attendees') else "Team"
+                    st.caption(f"Time: `{evt['time']}` ({evt['duration']}) • Attendees: {attendees_str}")
                 with c2:
-                    st.link_button("📹 Join Meet", evt.get("meet_url", "https://meet.google.com"), use_container_width=True)
+                    st.link_button("Join Meet →", evt.get("meet_url", "https://meet.google.com"), use_container_width=True)
 
     with col_form:
-        st.markdown("#### ➕ Schedule New Meeting")
+        st.markdown("#### Schedule New Meeting")
         with st.form(key="calendar_schedule_form"):
             meet_title = st.text_input("Meeting Title", placeholder="e.g., Project Sprint Review")
             meet_date = st.date_input("Date", value=datetime.date.today())
@@ -38,7 +40,7 @@ def render_calendar_view() -> None:
             meet_dur = st.selectbox("Duration", ["15 mins", "30 mins", "45 mins", "1 hour"])
             meet_attendees = st.text_input("Attendees", placeholder="e.g., chetan@enterprise.com, advisor@univ.edu")
 
-            submit = st.form_submit_button("📅 Schedule Meeting", type="primary", use_container_width=True)
+            submit = st.form_submit_button("Confirm & Schedule →", type="primary", use_container_width=True)
 
             if submit and meet_title:
                 res = cal_tool.execute({
@@ -48,5 +50,5 @@ def render_calendar_view() -> None:
                     "attendees": [a.strip() for a in meet_attendees.split(",") if a.strip()],
                 })
                 if res.success:
-                    st.success(f"🎉 **Meeting Scheduled!**\n• Link: `{res.data['meet_url']}`\n• Event ID: `{res.data['event_id']}`")
-                    st.toast("Meeting added to Google Calendar", icon="📅")
+                    st.success(f"**Meeting Scheduled!**\n• Link: `{res.data['meet_url']}`\n• Event ID: `{res.data['event_id']}`")
+                    st.toast("Meeting added to Google Calendar", icon="✓")

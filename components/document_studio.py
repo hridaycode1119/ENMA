@@ -13,17 +13,17 @@ from modules.documents.editor import DocumentEditor
 from modules.documents.converters import DocumentConverter
 
 QUICK_ACTIONS = [
-    ("📊 Executive Summary", "Generate a comprehensive executive summary with core takeaways and next steps."),
-    ("🎓 Formal Polish", "Rewrite and polish this entire document in formal, professional enterprise prose."),
-    ("📋 Action Items Checklist", "Extract all key action items, tasks, and deliverables into a structured markdown checklist."),
-    ("🌐 Translate to Formal English", "Translate and standardize any multilingual or informal sections into clear formal English."),
-    ("🧹 Grammar & Format Cleanup", "Fix all grammatical issues, standardize header capitalization, and polish punctuation."),
+    ("Executive Summary", "Generate a comprehensive executive summary with core takeaways and next steps."),
+    ("Formal Polish", "Rewrite and polish this entire document in formal, professional enterprise prose."),
+    ("Action Checklist", "Extract all key action items, tasks, and deliverables into a structured markdown checklist."),
+    ("Formal English", "Translate and standardize any informal or multilingual sections into clear formal English."),
+    ("Grammar Polish", "Fix all grammatical issues, standardize header capitalization, and polish punctuation."),
 ]
 
 def render_document_studio() -> None:
     """Renders the comprehensive Document Processing and AI File Editing Studio."""
-    st.markdown("### 📄 Universal Document & AI File Studio")
-    st.caption("Upload and edit any PDF, Word (.docx), Excel (.xlsx), CSV, Markdown, or Text file automatically.")
+    st.markdown("### Document & Data Studio")
+    st.caption("Upload and edit any PDF, Word (.docx), Excel (.xlsx), CSV, Markdown, or Text file with autonomous AI reasoning.")
 
     # Initialize studio session state
     if "doc_studio_parsed" not in st.session_state:
@@ -50,7 +50,7 @@ def render_document_studio() -> None:
         if st.session_state.doc_studio_parsed:
             st.write("")
             st.write("")
-            if st.button("🗑️ Clear File", use_container_width=True):
+            if st.button("Clear File", use_container_width=True):
                 st.session_state.doc_studio_parsed = None
                 st.session_state.doc_studio_edited_text = ""
                 st.rerun()
@@ -62,12 +62,12 @@ def render_document_studio() -> None:
 
         # Parse only if new file
         if not st.session_state.doc_studio_parsed or st.session_state.doc_studio_parsed.filename != filename:
-            with st.spinner(f"Ingesting and extracting structured content from '{filename}'..."):
+            with st.spinner(f"Ingesting structured content from '{filename}'..."):
                 try:
                     parsed = DocumentParserFactory.parse(file_bytes, filename)
                     st.session_state.doc_studio_parsed = parsed
                     st.session_state.doc_studio_edited_text = parsed.raw_text
-                    st.toast(f"Successfully parsed {filename} ({parsed.word_count} words)", icon="✅")
+                    st.toast(f"Parsed {filename} ({parsed.word_count} words)", icon="✓")
                 except Exception as ex:
                     st.error(f"Failed to parse document: {str(ex)}")
                     return
@@ -75,10 +75,10 @@ def render_document_studio() -> None:
     parsed: ParsedDocument = st.session_state.doc_studio_parsed
 
     if not parsed:
-        st.info("💡 **Get Started:** Drag & drop any PDF, Word document, CSV/Excel file, or text document above to begin editing.")
+        st.info("✦ **Get Started:** Drag & drop any PDF, Word document, CSV/Excel file, or text document above to begin editing.")
         return
 
-    # 2. Document Metrics & Badges Header
+    # 2. Document Metrics Header
     st.divider()
     m_col1, m_col2, m_col3, m_col4, m_col5 = st.columns(5)
     with m_col1:
@@ -93,8 +93,8 @@ def render_document_studio() -> None:
         st.metric("Sections", len(parsed.sections))
 
     # 3. Autonomous AI Command Console
-    st.markdown("#### 🤖 Autonomous AI Command Bar")
-    st.caption("Select a quick-action or type free-form natural language instructions to edit the document:")
+    st.markdown("#### AI Command Bar")
+    st.caption("Select a quick-action or enter natural language instructions to edit the document:")
 
     # Quick Action Chips
     chip_cols = st.columns(len(QUICK_ACTIONS))
@@ -123,7 +123,7 @@ def render_document_studio() -> None:
         with tone_col:
             selected_tone = st.selectbox("Tone", ["professional", "academic", "concise", "formal", "casual"], index=0, label_visibility="collapsed")
         with btn_col:
-            submit_cmd = st.form_submit_button("⚡ Execute AI Edit", type="primary", use_container_width=True)
+            submit_cmd = st.form_submit_button("Execute AI Edit →", type="primary", use_container_width=True)
 
         if submit_cmd and user_doc_cmd.strip():
             with st.spinner(f"Executing: '{user_doc_cmd}'..."):
@@ -137,21 +137,21 @@ def render_document_studio() -> None:
                 st.success(summary)
                 st.rerun()
 
-    # 4. Interactive Editor & Multi-Tool Studio Tabs
+    # 4. Interactive Editor & Studio Tabs
     st.divider()
     tab_edit, tab_diff, tab_find_replace, tab_sections = st.tabs([
-        "✏️ Live Document Editor",
-        "🔍 Before / After Diff",
-        "🔄 Find & Replace Tool",
-        "📑 Section Appender",
+        "Live Document Editor",
+        "Before / After Diff",
+        "Find & Replace",
+        "Section Appender",
     ])
 
     with tab_edit:
-        st.caption("Directly edit the document content in real-time below:")
+        st.caption("Directly edit document content in real-time below:")
         current_content = st.text_area(
             "Document Content",
             value=st.session_state.doc_studio_edited_text,
-            height=340,
+            height=320,
             key="doc_studio_live_textarea",
             label_visibility="collapsed",
         )
@@ -180,7 +180,7 @@ def render_document_studio() -> None:
                 replace_term = st.text_input("Replace With", placeholder="e.g., New Client Name")
             with f_col3:
                 case_sens = st.checkbox("Case Sensitive", value=False)
-                fr_submit = st.form_submit_button("🔄 Replace All", use_container_width=True)
+                fr_submit = st.form_submit_button("Replace All →", use_container_width=True)
 
             if fr_submit and find_term:
                 new_text, count = editor.search_and_replace(
@@ -200,9 +200,9 @@ def render_document_studio() -> None:
             sec_content = st.text_area("Section Content", placeholder="Enter section body text...", height=100)
             pos_col1, pos_col2 = st.columns(2)
             with pos_col1:
-                add_append = st.form_submit_button("➕ Append to End", use_container_width=True)
+                add_append = st.form_submit_button("Append to End →", use_container_width=True)
             with pos_col2:
-                add_prepend = st.form_submit_button("⬆️ Prepend to Top", use_container_width=True)
+                add_prepend = st.form_submit_button("Prepend to Top →", use_container_width=True)
 
             if add_append and sec_title and sec_content:
                 st.session_state.doc_studio_edited_text = editor.append_section(
@@ -219,7 +219,7 @@ def render_document_studio() -> None:
 
     # 5. Export & Download Center
     st.divider()
-    st.markdown("#### 💾 Export & Download Center")
+    st.markdown("#### Export & Download Center")
     st.caption("Export your edited document in any standard format with 1 click:")
 
     base_name = os.path.splitext(parsed.filename)[0]
@@ -232,33 +232,33 @@ def render_document_studio() -> None:
         try:
             pdf_bytes = DocumentConverter.text_to_pdf(final_text, title=base_name.replace("_", " ").title())
             st.download_button(
-                label="📄 Download as PDF",
+                label="Download PDF →",
                 data=pdf_bytes,
                 file_name=f"{base_name}_edited.pdf",
                 mime="application/pdf",
                 use_container_width=True,
             )
-        except Exception as ex:
-            st.button("📄 PDF Error", disabled=True, use_container_width=True)
+        except Exception:
+            st.button("PDF Unavailable", disabled=True, use_container_width=True)
 
     # B. Word DOCX Download
     with col_docx:
         try:
             docx_bytes = DocumentConverter.text_to_docx(final_text, title=base_name.replace("_", " ").title())
             st.download_button(
-                label="📝 Download as Word (.docx)",
+                label="Download Word (.docx) →",
                 data=docx_bytes,
                 file_name=f"{base_name}_edited.docx",
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 use_container_width=True,
             )
-        except Exception as ex:
-            st.button("📝 DOCX Error", disabled=True, use_container_width=True)
+        except Exception:
+            st.button("DOCX Unavailable", disabled=True, use_container_width=True)
 
     # C. Markdown Download
     with col_md:
         st.download_button(
-            label="📋 Download as Markdown",
+            label="Download Markdown →",
             data=final_text.encode("utf-8"),
             file_name=f"{base_name}_edited.md",
             mime="text/markdown",
@@ -268,7 +268,7 @@ def render_document_studio() -> None:
     # D. Plain Text Download
     with col_txt:
         st.download_button(
-            label="📄 Download as TXT",
+            label="Download Text (.txt) →",
             data=final_text.encode("utf-8"),
             file_name=f"{base_name}_edited.txt",
             mime="text/plain",

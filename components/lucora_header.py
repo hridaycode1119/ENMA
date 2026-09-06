@@ -1,22 +1,23 @@
 """
 LUCORA Top Header Bar Component.
-Renders greeting, brand tagline 'Intelligence That Gets Work Done', search bar, notifications badge, voice trigger, and New Task launcher.
+Clean, modern header with greeting, brand tagline 'Intelligence That Gets Work Done',
+search bar, notifications badge, voice trigger, and New Task launcher.
 """
 
 from __future__ import annotations
 import streamlit as st
 
 def render_lucora_header(on_new_task_click=None) -> None:
-    """Renders the top header bar with LUCORA branding and tagline."""
-    col_greeting, col_actions = st.columns([6, 5])
+    """Renders the clean, aesthetic top header bar."""
+    col_greeting, col_actions = st.columns([5, 5])
 
     with col_greeting:
         st.markdown(
             """
-            <div>
-                <h1 class="aira-greeting-title" style="font-size: 1.7rem; font-weight: 800; color: #0f172a; margin: 0; letter-spacing: -0.02em;">Good morning, Vaishnavi! 👋</h1>
-                <div class="aira-greeting-sub" style="font-size: 0.95rem; color: #6d28d9; font-weight: 600; margin-top: 0.25rem;">
-                    <strong>LUCORA</strong> — <em>Intelligence That Gets Work Done</em>
+            <div style="padding: 0.2rem 0;">
+                <h1 class="lucora-greeting-title">Good morning, Vaishnavi</h1>
+                <div class="lucora-tagline-badge">
+                    <span>✦</span> <strong>LUCORA</strong> &nbsp;•&nbsp; <span>Intelligence That Gets Work Done</span>
                 </div>
             </div>
             """,
@@ -28,24 +29,24 @@ def render_lucora_header(on_new_task_click=None) -> None:
         with search_col:
             st.text_input(
                 "Search",
-                placeholder="🔍 Type a command or ask anything... ⌘ K",
+                placeholder="Search or ask anything... ⌘ K",
                 label_visibility="collapsed",
                 key="global_search_input",
             )
         with mic_col:
-            if st.button("🎙️", key="header_mic_btn", help="Voice Command Input"):
+            if st.button("🎙", key="header_mic_btn", help="Voice Command Input"):
                 st.session_state["lucora_voice_listening"] = True
-                st.toast("Listening for voice command...", icon="🎙️")
+                st.toast("Listening for voice command...", icon="🎙")
         with notif_col:
             if st.button("🔔", key="header_notif_btn", help="3 Unread Notifications"):
                 st.toast("3 Notifications: 1 Task due, 1 Email draft ready, 1 Meeting soon.", icon="🔔")
         with btn_col:
-            if st.button("➕ New Task", key="header_new_task_btn", type="primary", use_container_width=True):
+            if st.button("＋ New Task", key="header_new_task_btn", type="primary", use_container_width=True):
                 if on_new_task_click:
                     on_new_task_click()
                 else:
                     st.session_state["lucora_active_view"] = "dashboard"
-                    st.toast("Opened New Task Command Console", icon="📝")
+                    st.toast("Opened Command Console", icon="✦")
 
     st.write("")
 

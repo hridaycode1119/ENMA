@@ -30,7 +30,7 @@ from components.email_composer import render_email_composer
 # 1. Streamlit Page Configuration
 st.set_page_config(
     page_title="LUCORA | Intelligence That Gets Work Done",
-    page_icon="✨",
+    page_icon="✦",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -73,7 +73,7 @@ def navigate_to_view(v: str):
     st.session_state.aira_active_view = v
     st.rerun()
 
-render_lucora_header(on_new_task_click=lambda: navigate_to_view("assistant"))
+render_lucora_header(on_new_task_click=lambda: navigate_to_view("tasks"))
 
 # 6. View Routing
 current_view = st.session_state.lucora_active_view
@@ -82,10 +82,10 @@ if current_view == "dashboard":
     render_lucora_dashboard(orchestrator, on_navigate_view=navigate_to_view)
 
 elif current_view in ("tasks", "assistant"):
-    st.markdown("### ✨ LUCORA AI Email Automation & Composer Studio")
-    st.caption("Compose custom emails, select prebuilt enterprise templates, or execute natural-language instructions via Resend & Gmail API.")
+    st.markdown("### Task & Email Studio")
+    st.caption("Compose custom emails, select enterprise templates, or execute natural-language instructions via Resend & Gmail API.")
     
-    tab_composer, tab_ai_chat = st.tabs(["✍️ Custom Email Composer & Prebuilt Templates", "🤖 Conversational AI Task Assistant"])
+    tab_composer, tab_ai_chat = st.tabs(["Email Composer & Templates", "Conversational AI Assistant"])
 
     with tab_composer:
         render_email_composer(key_prefix="main_")
@@ -109,7 +109,7 @@ elif current_view in ("tasks", "assistant"):
                     on_cancel=lambda: (orchestrator.cancel_current_task(), st.rerun()),
                 )
             elif orchestrator.state in (WorkflowState.COMPLETED, WorkflowState.FAILED):
-                st.info("Task execution cycle finished. Inspect results below or start a new instruction.")
+                st.info("Task execution cycle completed.")
 
             st.divider()
             render_timeline(
@@ -120,13 +120,13 @@ elif current_view in ("tasks", "assistant"):
             )
         with col_side:
             with st.container(border=True):
-                st.markdown("#### 🔗 Workspace Status")
+                st.markdown("##### Workspace Status")
                 is_auth = oauth_handler.is_authenticated()
                 if is_auth:
                     st.success(f"**Gmail API Active**\n`{oauth_handler.get_authenticated_user_email() or 'user@workspace.com'}`")
                 else:
-                    st.warning("⚠️ **Gmail API Disconnected**")
-                    if st.button("🧪 Mock Auth", use_container_width=True):
+                    st.warning("Gmail API Disconnected")
+                    if st.button("Mock Auth", use_container_width=True):
                         oauth_handler.create_mock_authenticated_session("vaishnavi.d@example.com")
                         st.rerun()
 
@@ -136,7 +136,7 @@ elif current_view in ("tasks", "assistant"):
                 if rc.is_configured():
                     st.success("**Resend API Active**\n`onboarding@resend.dev`")
                 else:
-                    st.info("⚪ **Resend Inactive**\n(Enter key in Settings)")
+                    st.info("Resend Inactive\n(Configure in Settings)")
 
 elif current_view == "calendar":
     render_calendar_view()
@@ -144,27 +144,23 @@ elif current_view == "calendar":
 elif current_view in ("files", "data", "documents"):
     render_document_studio()
 
-elif current_view == "notes":
-    render_notes_view()
-
-elif current_view == "journals":
-    render_journals_view()
-
-elif current_view == "bookmarks":
-    render_bookmarks_view()
+elif current_view in ("notes", "journals", "bookmarks"):
+    tab_n, tab_j, tab_b = st.tabs(["Notes", "Work Journals", "Bookmarks"])
+    with tab_n:
+        render_notes_view()
+    with tab_j:
+        render_journals_view()
+    with tab_b:
+        render_bookmarks_view()
 
 elif current_view in ("voice", "voice_commands"):
-    st.markdown("### 🎙️ AI Voice Assistant & Command Dispatcher")
+    st.markdown("### Voice Command Engine")
     st.caption("Voice-activated enterprise agent executing commands via speech synthesis.")
     
     st.markdown(
         """
-        <div class="aira-card lucora-card" style="max-width: 600px; margin: 2rem auto; text-align: center;">
-            <div class="soundwave-container" style="height: 60px;">
-                <div class="wave-bar" style="width: 4px;"></div>
-                <div class="wave-bar" style="width: 4px;"></div>
-                <div class="wave-bar" style="width: 4px;"></div>
-                <div class="wave-bar" style="width: 4px;"></div>
+        <div class="lucora-card" style="max-width: 540px; margin: 2rem auto; text-align: center;">
+            <div class="soundwave-container" style="height: 50px;">
                 <div class="wave-bar" style="width: 4px;"></div>
                 <div class="wave-bar" style="width: 4px;"></div>
                 <div class="wave-bar" style="width: 4px;"></div>
@@ -175,7 +171,7 @@ elif current_view in ("voice", "voice_commands"):
                 <div class="wave-bar" style="width: 4px;"></div>
             </div>
             <h4 style="margin: 0.5rem 0;">LUCORA Voice Engine Active</h4>
-            <p style="color: #64748b; font-size: 0.88rem;">Say a natural language command to execute tasks across Gmail, Calendar, and Documents.</p>
+            <p style="color: #64748b; font-size: 0.88rem;">Speak a natural language instruction to execute tasks across Gmail, Calendar, and Documents.</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -183,19 +179,19 @@ elif current_view in ("voice", "voice_commands"):
     
     col_v1, col_v2, col_v3 = st.columns([1, 2, 1])
     with col_v2:
-        if st.button("🎙️ Speak Command Now", key="voice_page_speak", type="primary", use_container_width=True):
-            st.toast("Transcribed: 'Send email to Chetan about project update'", icon="🎙️")
+        if st.button("Speak Command Now →", key="voice_page_speak", type="primary", use_container_width=True):
+            st.toast("Transcribed: 'Send email to Chetan about project update'", icon="🎙")
             orchestrator.submit_instruction("Send an email to chetan@enterprise.com with project update.")
-            navigate_to_view("assistant")
+            navigate_to_view("tasks")
 
 elif current_view in ("terminal", "integrations", "settings"):
-    st.markdown("### ⚙️ System, Integrations & Command Center")
+    st.markdown("### System & Settings")
     st.caption("Configure API keys, Google Workspace OAuth credentials, and inspect live execution logs.")
 
-    st.markdown("#### 💻 Terminal Logs")
+    st.markdown("#### Terminal Logs")
     st.markdown(
         """
-        <div class="terminal-container" style="height: 200px;">
+        <div class="terminal-container" style="height: 180px;">
             <span class="terminal-prompt">></span> <span class="terminal-cmd">LUCORA v2.4 initialized on Linux</span><br>
             <span class="terminal-prompt">></span> <span class="terminal-success">ToolRegistry loaded 6 dynamic tools</span><br>
             <span class="terminal-prompt">></span> <span class="terminal-cmd">Loaded Gemini 1.5 Flash Cognitive Core</span><br>
@@ -205,7 +201,7 @@ elif current_view in ("terminal", "integrations", "settings"):
         unsafe_allow_html=True,
     )
     st.divider()
-    st.markdown("#### 🗄️ Supabase Cloud Database")
+    st.markdown("#### Supabase Cloud Database")
     from database.supabase_client import SupabaseManager
     sb_mgr = SupabaseManager()
 
@@ -219,7 +215,7 @@ elif current_view in ("terminal", "integrations", "settings"):
         is_ok, ping_msg = sb_mgr.ping()
         st.caption(f"Status Diagnostic: `{ping_msg}`")
 
-        with st.expander("📋 Supabase SQL Schema Setup", expanded=False):
+        with st.expander("Supabase SQL Schema Setup", expanded=False):
             st.caption("Copy and run this SQL in your Supabase SQL Editor:")
             st.code(
                 """-- Quick Supabase Setup
@@ -237,7 +233,7 @@ CREATE TABLE IF NOT EXISTS aira_notes (id TEXT PRIMARY KEY, category TEXT, title
             sb_url = st.text_input("Supabase URL", value=os.getenv("SUPABASE_URL", ""), placeholder="https://xyzcompany.supabase.co")
             sb_key = st.text_input("Supabase Anon Key", value=os.getenv("SUPABASE_KEY", ""), type="password", placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
             
-            btn_save = st.form_submit_button("💾 Save & Connect Supabase", type="primary", use_container_width=True)
+            btn_save = st.form_submit_button("Save & Connect Supabase →", type="primary", use_container_width=True)
             if btn_save and sb_url and sb_key:
                 ok, msg = sb_mgr.configure(sb_url, sb_key)
                 if ok:
@@ -247,7 +243,7 @@ CREATE TABLE IF NOT EXISTS aira_notes (id TEXT PRIMARY KEY, category TEXT, title
                     st.error(msg)
 
     st.divider()
-    st.markdown("#### ✉️ Resend Email API Integration")
+    st.markdown("#### Resend Email API Integration")
     from integrations.resend_client import ResendClient
     resend_cli = ResendClient()
 
@@ -260,9 +256,9 @@ CREATE TABLE IF NOT EXISTS aira_notes (id TEXT PRIMARY KEY, category TEXT, title
             st.info("⚪ **Resend Inactive** (Enter API key to enable live transactional email dispatch)")
 
         with st.form(key="resend_test_form"):
-            st.markdown("##### 🧪 Send Test Email via Resend")
+            st.markdown("##### Send Test Email")
             test_to = st.text_input("Recipient Email", placeholder="your_email@domain.com")
-            test_btn = st.form_submit_button("⚡ Send Test Email", use_container_width=True)
+            test_btn = st.form_submit_button("Send Test Email →", use_container_width=True)
             if test_btn and test_to:
                 try:
                     res = resend_cli.send_email(
@@ -280,19 +276,19 @@ CREATE TABLE IF NOT EXISTS aira_notes (id TEXT PRIMARY KEY, category TEXT, title
             rk = st.text_input("Resend API Key", value=os.getenv("RESEND_API_KEY", ""), type="password", placeholder="re_123456789...")
             rf = st.text_input("Sender Email / Domain", value=os.getenv("RESEND_FROM_EMAIL", "LUCORA AI <onboarding@resend.dev>"), placeholder="LUCORA <onboarding@resend.dev>")
             
-            btn_save_resend = st.form_submit_button("💾 Save Resend Key", type="primary", use_container_width=True)
+            btn_save_resend = st.form_submit_button("Save Resend Key →", type="primary", use_container_width=True)
             if btn_save_resend and rk:
                 resend_cli.configure(rk, rf)
                 st.success("Resend API key saved successfully!")
                 st.rerun()
 
     st.divider()
-    st.markdown("#### 🔗 Workspace Integrations")
+    st.markdown("#### Workspace Integrations")
     is_auth = oauth_handler.is_authenticated()
     if is_auth:
         st.success(f"**Google Gmail & Calendar Connected:** `{oauth_handler.get_authenticated_user_email() or 'user@workspace.com'}`")
     else:
         st.warning("Google Workspace disconnected.")
-        if st.button("🔑 Authenticate with Google", type="primary"):
+        if st.button("Authenticate with Google →", type="primary"):
             oauth_handler.create_mock_authenticated_session("vaishnavi.d@example.com")
             st.rerun()
