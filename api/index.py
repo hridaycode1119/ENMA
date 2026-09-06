@@ -1105,7 +1105,7 @@ def index_page():
         },
         'BTech Major Project': {
             subject: 'BTech Major Project: Bi-Weekly Progress Submission',
-            body: 'Respected Advisor,\n\nPlease find attached our progress report for the Autonomous AI Agent project.\nTeam: Vaishnavi Dhyani, Chetan, Hriday.\nAll benchmarks achieved 100% accuracy.\n\nSincerely,\nProject Team'
+            body: 'Respected Advisor,\n\nPlease find attached our progress report for the Autonomous AI Agent project.\nTeam: Hriday Gupta (Lead), Chetan.\nAll benchmarks achieved 100% accuracy.\n\nSincerely,\nProject Team'
         },
         'Client Proposal': {
             subject: 'Partnership Proposal: Autonomous Task Automation Solutions',

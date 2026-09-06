@@ -68,7 +68,7 @@ class AIRARepository:
                 "event_time": "11:00 AM",
                 "duration": "1 hour",
                 "meet_url": "https://meet.google.com/klm-nopq-rst",
-                "attendees": ["vaishnavi.d@example.com", "chetan@enterprise.com"],
+                "attendees": ["hriday.code1119@gmail.com", "chetan@enterprise.com"],
             },
             {
                 "id": "evt-103",

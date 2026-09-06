@@ -46,7 +46,7 @@ class TestSupabaseRepository(unittest.TestCase):
             event_time="Tomorrow, 02:00 PM",
             duration="45 mins",
             meet_url="https://meet.google.com/test-meet-url",
-            attendees=["vaishnavi.d@example.com"],
+            attendees=["hriday.code1119@gmail.com"],
         )
         self.assertEqual(evt["title"], "Supabase Review Meeting")
 

@@ -61,7 +61,7 @@ PREBUILT_TEMPLATES: Dict[str, Dict[str, str]] = {
         "body": (
             "Respected Advisor / Project Coordinator,\n\n"
             "Please find below our progress summary for the Autonomous AI Agent for Enterprise Task Automation project:\n"
-            "1. Team Members: Vaishnavi Dhyani, Chetan, Hriday.\n"
+            "1. Team Members: Hriday Gupta (Lead), Chetan.\n"
             "2. Key Implementations: Cognitive Reasoning Engine, Gmail & Resend API tool subsystem, Universal Document Studio, and Supabase database persistence.\n"
             "3. Evaluation: 100% accuracy on cognitive reasoning benchmark tests.\n\n"
             "We would be grateful for your review and suggestions.\n\n"
@@ -130,6 +130,7 @@ PREBUILT_TEMPLATES: Dict[str, Dict[str, str]] = {
 def render_email_composer(
     key_prefix: str = "",
     on_email_sent_callback=None,
+    show_templates_picker: bool = True,
 ) -> None:
     """
     Renders an elegant, clean email composer with prebuilt templates,
@@ -211,25 +212,25 @@ def render_email_composer(
         st.session_state[k_subject] = ""
         st.session_state[k_body] = ""
 
-    # 1. Prebuilt Templates Selection
-    st.markdown("##### Select a Template")
-    t_cols = st.columns(4)
-    tmpl_list = list(PREBUILT_TEMPLATES.keys())
-    for idx, tmpl_name in enumerate(tmpl_list):
-        col_idx = idx % 4
-        with t_cols[col_idx]:
-            st.button(
-                tmpl_name,
-                key=f"{key_prefix}tmpl_btn_{idx}",
-                use_container_width=True,
-                on_click=apply_template,
-                args=(tmpl_name,),
-            )
-
-    st.write("")
+    # 1. Prebuilt Templates Selection (if enabled)
+    if show_templates_picker:
+        st.markdown("##### ✦ Select a Prebuilt Template")
+        t_cols = st.columns(4)
+        tmpl_list = list(PREBUILT_TEMPLATES.keys())
+        for idx, tmpl_name in enumerate(tmpl_list):
+            col_idx = idx % 4
+            with t_cols[col_idx]:
+                st.button(
+                    f"◇ {tmpl_name}",
+                    key=f"{key_prefix}tmpl_btn_{idx}",
+                    use_container_width=True,
+                    on_click=apply_template,
+                    args=(tmpl_name,),
+                )
+        st.write("")
 
     # 2. Main Composer Interface (Tabs: Edit vs Preview)
-    tab_compose, tab_preview = st.tabs(["Compose & AI Assistant", "Live HTML Preview"])
+    tab_compose, tab_preview = st.tabs(["✦ Compose & AI Assistant", "◈ Live HTML Preview"])
 
     with tab_compose:
         col_recipients, col_provider = st.columns([3, 1])
@@ -257,7 +258,7 @@ def render_email_composer(
         # AI Generator Toolbar
         st.markdown("**Email Message Content:***")
         
-        col_ai_btn, col_ai_hint = st.columns([2, 3])
+        col_ai_btn, col_ai_hint = st.columns([2.2, 3])
         with col_ai_btn:
             st.button(
                 "✦ Write Full Email with AI",
@@ -283,7 +284,7 @@ def render_email_composer(
         ai_col1, ai_col2, ai_col3, ai_col4 = st.columns(4)
         with ai_col1:
             st.button(
-                "Executive Polish",
+                "◈ Executive Polish",
                 key=f"{key_prefix}btn_ai_polish",
                 use_container_width=True,
                 on_click=action_polish_executive,
@@ -291,7 +292,7 @@ def render_email_composer(
 
         with ai_col2:
             st.button(
-                "Make Concise",
+                "◇ Make Concise",
                 key=f"{key_prefix}btn_ai_concise",
                 use_container_width=True,
                 on_click=action_make_concise,
@@ -299,7 +300,7 @@ def render_email_composer(
 
         with ai_col3:
             st.button(
-                "Fix Grammar",
+                "⬡ Fix Grammar",
                 key=f"{key_prefix}btn_ai_grammar",
                 use_container_width=True,
                 on_click=action_fix_grammar,
@@ -307,7 +308,7 @@ def render_email_composer(
 
         with ai_col4:
             st.button(
-                "Clear Form",
+                "⎋ Clear Form",
                 key=f"{key_prefix}btn_clear_composer",
                 use_container_width=True,
                 on_click=action_clear_form,
@@ -316,11 +317,11 @@ def render_email_composer(
         st.write("")
 
         # Send Action Buttons
-        btn_send_col, btn_draft_col, _ = st.columns([2, 2, 3])
+        btn_send_col, btn_draft_col, _ = st.columns([2.2, 2.2, 2.6])
         with btn_send_col:
-            send_btn = st.button("Send Email Live →", key=f"{key_prefix}btn_send_live", type="primary", use_container_width=True)
+            send_btn = st.button("✦ Send Email Live →", key=f"{key_prefix}btn_send_live", type="primary", use_container_width=True)
         with btn_draft_col:
-            draft_btn = st.button("Save as Draft", key=f"{key_prefix}btn_save_draft", use_container_width=True)
+            draft_btn = st.button("◲ Save as Draft", key=f"{key_prefix}btn_save_draft", use_container_width=True)
 
         recipient_val = st.session_state.get(k_to, "").strip()
         subject_val = st.session_state.get(k_subject, "").strip()
@@ -361,7 +362,7 @@ def render_email_composer(
 
                         if tool_res.success:
                             st.success(f"**Email Dispatched Successfully!**\n• Message ID: `{tool_res.external_reference_id or 'sent-ok'}`\n• Provider: `{selected_provider}`\n• Recipients: `{', '.join(recipients)}`")
-                            st.toast("Email delivered successfully", icon="✓")
+                            st.toast("Email delivered successfully", icon="✦")
                             if on_email_sent_callback:
                                 on_email_sent_callback(tool_res.data)
                         else:
@@ -376,7 +377,7 @@ def render_email_composer(
                 category="note",
             )
             st.success("Draft saved to Notes successfully!")
-            st.toast("Draft saved", icon="✓")
+            st.toast("Draft saved", icon="✦")
 
     with tab_preview:
         recipient_val = st.session_state.get(k_to, "")

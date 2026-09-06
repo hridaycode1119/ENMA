@@ -142,7 +142,7 @@ elif current_view in ("tasks", "assistant"):
                 else:
                     st.warning("Gmail API Disconnected")
                     if st.button("Mock Auth", use_container_width=True):
-                        oauth_handler.create_mock_authenticated_session("vaishnavi.d@example.com")
+                        oauth_handler.create_mock_authenticated_session("hriday.code1119@gmail.com")
                         st.rerun()
 
             with st.container(border=True):
@@ -305,5 +305,5 @@ CREATE TABLE IF NOT EXISTS aira_notes (id TEXT PRIMARY KEY, category TEXT, title
     else:
         st.warning("Google Workspace disconnected.")
         if st.button("Authenticate with Google →", type="primary"):
-            oauth_handler.create_mock_authenticated_session("vaishnavi.d@example.com")
+            oauth_handler.create_mock_authenticated_session("hriday.code1119@gmail.com")
             st.rerun()

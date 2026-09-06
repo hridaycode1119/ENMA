@@ -23,7 +23,7 @@ class TestCalendarTool(unittest.TestCase):
             "title": "BTech Major Project Defense Preparation",
             "time": "Friday, 03:00 PM",
             "duration": "45 mins",
-            "attendees": ["vaishnavi.d@example.com", "chetan@enterprise.com", "hriday@enterprise.com"],
+            "attendees": ["hriday.code1119@gmail.com", "chetan@enterprise.com", "hriday@enterprise.com"],
         }
         result = self.cal_tool.execute(params)
         self.assertTrue(result.success)

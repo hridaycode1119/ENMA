@@ -1,12 +1,11 @@
 /* ==============================================================================
    ENMA by LUCORA - Enterprise AI Workspace Design System
-   Exact Tailwind Wine/Plum/Ruby Palette & Glassmorphic Custom Decorations
+   Exact Wine/Plum/Ruby Palette & High-Contrast Typography
    ============================================================================== */
 
 @import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 :root {
-    /* Exact Wine Palette from designe/code.html */
     --wine-950: #14060d;
     --wine-900: #1a0b12;
     --wine-850: #230c18;
@@ -16,60 +15,40 @@
     --wine-600: #521f3d;
     --wine-500: #752b57;
     
-    /* Exact Ruby Palette */
     --ruby-400: #fb719e;
     --ruby-500: #f43f76;
     --ruby-600: #e11d5e;
     --ruby-700: #be124c;
     
-    /* Exact Accent Palette */
     --accent-pink: #ff4d8d;
     --accent-glow: #e23c72;
     --accent-soft: #fce7f3;
     --accent-muted: #a88094;
     
-    /* Gradients */
     --gradient-ruby-pink: linear-gradient(135deg, #e11d5e 0%, #ff4d8d 100%);
     --gradient-hero: linear-gradient(135deg, #230c18 0%, #2c0e1e 50%, #2b101f 100%);
     --gradient-card: linear-gradient(135deg, rgba(35, 12, 24, 0.75) 0%, rgba(26, 11, 18, 0.85) 100%);
 }
 
-/* Base Canvas & Streamlit Overrides */
+/* Base Canvas & Overrides */
 html, body, [class*="css"], .stApp {
     font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
     background-color: var(--wine-900) !important;
     background: linear-gradient(180deg, #1a0b12 0%, #1a0b12 60%, #12050c 100%) !important;
-    color: var(--accent-soft) !important;
+    color: #ffffff !important;
     -webkit-font-smoothing: antialiased;
 }
 
-/* Hide default streamlit header clutter */
 header[data-testid="stHeader"] {
     background-color: transparent !important;
 }
 
 [data-testid="stSidebar"] {
-    background-color: rgba(20, 6, 13, 0.9) !important;
+    background-color: rgba(20, 6, 13, 0.95) !important;
     border-right: 1px solid var(--wine-800) !important;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-::-webkit-scrollbar-track {
-    background: var(--wine-900);
-}
-::-webkit-scrollbar-thumb {
-    background: var(--wine-700);
-    border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: var(--wine-600);
-}
-
-/* Fluid Glowing Waves from designe/code.html */
+/* Fluid Glowing Waves */
 .hero-wave {
     background: radial-gradient(circle at 75% 45%, rgba(244, 63, 118, 0.45) 0%, rgba(225, 29, 94, 0.25) 35%, rgba(43, 16, 31, 0) 70%),
                 linear-gradient(135deg, transparent 40%, rgba(255, 77, 141, 0.2) 65%, rgba(226, 60, 114, 0.35) 85%);
@@ -101,7 +80,7 @@ header[data-testid="stHeader"] {
     filter: blur(12px);
 }
 
-/* Soundwave Bar Animation */
+/* Soundwave Animation */
 @keyframes wave-bounce {
     0%, 100% { height: 6px; }
     50% { height: 28px; }
@@ -119,11 +98,53 @@ header[data-testid="stHeader"] {
 .wave-bar:nth-child(9) { animation-delay: 0.35s; }
 .wave-bar:nth-child(10) { animation-delay: 0.15s; }
 
-/* Streamlit Button & Widget Theme Overrides */
-.stButton > button {
-    background-color: var(--wine-800) !important;
+/* ==============================================================================
+   Streamlit Input Labels, Text, Placeholders & Buttons Theming (High Contrast)
+   ============================================================================== */
+label, 
+[data-testid="stWidgetLabel"] p, 
+.stTextInput label p, 
+.stSelectbox label p, 
+.stTextArea label p {
+    color: #fce7f3 !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.02em !important;
+    margin-bottom: 4px !important;
+}
+
+input, 
+textarea, 
+select, 
+[data-baseweb="input"], 
+[data-baseweb="base-input"], 
+[data-baseweb="select"] {
+    background-color: rgba(20, 6, 13, 0.9) !important;
     color: #ffffff !important;
-    border: 1px solid rgba(244, 63, 118, 0.2) !important;
+    border: 1px solid #3f172e !important;
+    border-radius: 12px !important;
+    font-size: 12px !important;
+}
+
+input:focus, 
+textarea:focus, 
+select:focus,
+[data-baseweb="input"]:focus-within {
+    border-color: #f43f76 !important;
+    box-shadow: 0 0 0 1px #f43f76, 0 0 12px rgba(244, 63, 118, 0.3) !important;
+}
+
+input::placeholder, 
+textarea::placeholder {
+    color: #a88094 !important;
+    opacity: 0.85 !important;
+}
+
+/* Streamlit Buttons */
+.stButton > button {
+    background-color: #2b101f !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(244, 63, 118, 0.25) !important;
     border-radius: 12px !important;
     font-weight: 600 !important;
     font-size: 13px !important;
@@ -131,34 +152,42 @@ header[data-testid="stHeader"] {
 }
 
 .stButton > button:hover {
-    background-color: var(--wine-750) !important;
-    border-color: var(--ruby-500) !important;
+    background-color: #341426 !important;
+    border-color: #f43f76 !important;
     color: #ffffff !important;
     transform: translateY(-1px) !important;
-    box-shadow: 0 4px 14px rgba(244, 63, 118, 0.25) !important;
+    box-shadow: 0 4px 14px rgba(244, 63, 118, 0.3) !important;
 }
 
 .stButton > button[kind="primary"] {
-    background: linear-gradient(135deg, var(--ruby-600) 0%, var(--accent-pink) 100%) !important;
+    background: linear-gradient(135deg, #e11d5e 0%, #ff4d8d 100%) !important;
     color: #ffffff !important;
     border: none !important;
-    box-shadow: 0 4px 15px rgba(225, 29, 94, 0.35) !important;
+    box-shadow: 0 4px 15px rgba(225, 29, 94, 0.4) !important;
 }
 
 .stButton > button[kind="primary"]:hover {
-    background: linear-gradient(135deg, var(--ruby-500) 0%, var(--ruby-400) 100%) !important;
-    box-shadow: 0 6px 20px rgba(225, 29, 94, 0.5) !important;
+    background: linear-gradient(135deg, #f43f76 0%, #fb719e 100%) !important;
+    box-shadow: 0 6px 20px rgba(225, 29, 94, 0.6) !important;
 }
 
-/* Streamlit Input Fields */
-input, textarea, select, [data-baseweb="input"], [data-baseweb="base-input"] {
-    background-color: rgba(20, 6, 13, 0.8) !important;
+/* Streamlit Tabs */
+.stTabs [data-baseweb="tab-list"] {
+    border-bottom: 1px solid #3f172e !important;
+    gap: 1.5rem !important;
+}
+
+.stTabs [data-baseweb="tab"] {
+    color: #a88094 !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    background: transparent !important;
+    border: none !important;
+    padding-bottom: 8px !important;
+}
+
+.stTabs [aria-selected="true"] {
     color: #ffffff !important;
-    border-color: var(--wine-800) !important;
-    border-radius: 12px !important;
-}
-
-input:focus, textarea:focus, select:focus {
-    border-color: var(--ruby-500) !important;
-    box-shadow: 0 0 0 1px var(--ruby-500) !important;
+    font-weight: 700 !important;
+    border-bottom: 2px solid #f43f76 !important;
 }

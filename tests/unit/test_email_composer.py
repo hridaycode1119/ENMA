@@ -22,7 +22,7 @@ class TestEmailComposerTemplates(unittest.TestCase):
     def test_btech_major_project_template(self):
         acad_key = [k for k in PREBUILT_TEMPLATES.keys() if "Academic" in k or "BTech" in k][0]
         self.assertIn("BTech Major Project", PREBUILT_TEMPLATES[acad_key]["subject"])
-        self.assertIn("Vaishnavi", PREBUILT_TEMPLATES[acad_key]["body"])
+        self.assertIn("Hriday", PREBUILT_TEMPLATES[acad_key]["body"])
 
     def test_meeting_and_leave_templates(self):
         meet_key = [k for k in PREBUILT_TEMPLATES.keys() if "Meeting" in k][0]

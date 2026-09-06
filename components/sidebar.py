@@ -83,4 +83,4 @@ def render_sidebar(oauth_handler: GoogleOAuthHandler, registry: ToolRegistry, or
             st.caption("No past executions in current session.")
 
         st.divider()
-        st.caption("👥 **Major Project Team:**\nVaishnavi Dhyani • Chetan • Hriday")
+        st.caption("✦ **Major Project Team:**\nHriday Gupta (Lead) • Chetan")
