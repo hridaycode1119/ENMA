@@ -1,7 +1,6 @@
 """
 ENMA Master Enterprise Dashboard Component.
-Ultra-clean, creative, and aesthetic command center.
-Brand tagline: "Intelligence That Gets Work Done"
+Luxury Dark Wine / Crimson Glassmorphic Command Center with Ambient Wave Backdrop.
 """
 
 from __future__ import annotations
@@ -12,8 +11,9 @@ from agent.orchestrator import AgentOrchestrator, WorkflowState
 from components.draft_card import render_draft_card
 from components.clarification_modal import render_clarification_card
 from components.timeline import render_timeline
-from components.email_composer import render_email_composer
+from components.email_composer import render_email_composer, PREBUILT_TEMPLATES
 from database.repository import ENMARepository, LUCORARepository, AIRARepository
+from tools.calendar.calendar_tool import CalendarScheduleTool
 
 def _set_active_view(view_name: str) -> None:
     st.session_state["enma_active_view"] = view_name
@@ -21,343 +21,368 @@ def _set_active_view(view_name: str) -> None:
     st.session_state["aira_active_view"] = view_name
 
 def render_enma_dashboard(orchestrator: AgentOrchestrator, on_navigate_view) -> None:
-    """Renders the creative, aesthetic, and uncluttered ENMA AI Dashboard."""
-    
     repo = ENMARepository()
     metrics = repo.get_task_metrics()
 
-    # --------------------------------------------------------------------------
-    # 1. Executive Metrics Ribbon (4 Cards)
-    # --------------------------------------------------------------------------
-    kpi1, kpi2, kpi3, kpi4 = st.columns(4)
-    
-    with kpi1:
-        st.markdown(
-            f"""
-            <div class="kpi-container">
-                <div class="kpi-accent-bar" style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);"></div>
-                <div class="kpi-top-row">
-                    <span class="kpi-label">Tasks Automated</span>
-                    <span class="kpi-badge badge-purple">↑ 18%</span>
+    # 1. Hero Greeting Banner Card (with cursive note & command bar)
+    st.markdown(
+        """
+        <div class="enma-hero-banner">
+            <div class="enma-hero-inner">
+                <div class="enma-status-badge">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 6px #10b981;"></span>
+                    <span>ENMA is active</span>
                 </div>
-                <div class="kpi-val">{metrics['completed']}</div>
-                <div class="kpi-delta">Processed successfully</div>
+                <div class="enma-cursive-note">Less manual work, more you. ✦</div>
+                <div class="enma-hero-headline">
+                    <span style="color: #f43f5e;">✦</span> Hi Vaishnavi — Good to see you!
+                </div>
+                <div class="enma-hero-subtext">
+                    Your AI assistant is ready to help you get things done. Ask, automate, create, or just say what you need.
+                </div>
             </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    with kpi2:
-        st.markdown(
-            f"""
-            <div class="kpi-container">
-                <div class="kpi-accent-bar" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);"></div>
-                <div class="kpi-top-row">
-                    <span class="kpi-label">Emails Delivered</span>
-                    <span class="kpi-badge badge-green">100% live</span>
-                </div>
-                <div class="kpi-val">{metrics['emails_sent']}</div>
-                <div class="kpi-delta">Dispatched via Resend & Gmail</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+    # Express Interactive Prompt Console
+    with st.container():
+        col_in, col_btn = st.columns([5.5, 1.2])
+        with col_in:
+            hero_task_input = st.text_input(
+                "Command",
+                placeholder='Ask anything or enter a command (e.g. "Send email to chetan@enterprise.com with project update")...',
+                label_visibility="collapsed",
+                key="enma_hero_prompt_input",
+            )
+        with col_btn:
+            run_hero_prompt = st.button("Execute ✦", use_container_width=True, type="primary", key="enma_hero_run_btn")
 
-    with kpi3:
-        st.markdown(
-            f"""
-            <div class="kpi-container">
-                <div class="kpi-accent-bar" style="background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);"></div>
-                <div class="kpi-top-row">
-                    <span class="kpi-label">Files Processed</span>
-                    <span class="kpi-badge badge-blue">Multi-Format</span>
-                </div>
-                <div class="kpi-val">{metrics['files_processed']}</div>
-                <div class="kpi-delta">PDF, Word, Excel, CSV</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        # Action Chips Row
+        chip1, chip2, chip3, chip4, chip5 = st.columns(5)
+        with chip1:
+            if st.button("✉️ Draft Email", use_container_width=True, key="chip_email"):
+                _set_active_view("tasks")
+                st.session_state["main_composer_active_tab"] = "composer"
+                st.rerun()
+        with chip2:
+            if st.button("📄 Summarize Doc", use_container_width=True, key="chip_doc"):
+                _set_active_view("documents")
+                st.rerun()
+        with chip3:
+            if st.button("📅 Schedule Meeting", use_container_width=True, key="chip_cal"):
+                _set_active_view("calendar")
+                st.rerun()
+        with chip4:
+            if st.button("📊 Analyze Data", use_container_width=True, key="chip_data"):
+                _set_active_view("documents")
+                st.rerun()
+        with chip5:
+            if st.button("⋮⋮ More Actions", use_container_width=True, key="chip_more"):
+                _set_active_view("settings")
+                st.rerun()
 
-    with kpi4:
-        st.markdown(
-            f"""
-            <div class="kpi-container">
-                <div class="kpi-accent-bar" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);"></div>
-                <div class="kpi-top-row">
-                    <span class="kpi-label">Time Saved</span>
-                    <span class="kpi-badge badge-orange">This week</span>
-                </div>
-                <div class="kpi-val">{metrics['time_saved_hours']}h</div>
-                <div class="kpi-delta">Cumulative engineering hours</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+    if run_hero_prompt and hero_task_input:
+        with st.spinner("ENMA AI synthesizing plan..."):
+            orchestrator.submit_instruction(hero_task_input)
+        _set_active_view("tasks")
+        st.rerun()
 
     st.write("")
 
-    # --------------------------------------------------------------------------
-    # 2. Main 2-Column Workspace: Intelligence Hub (Left) | Pulse Stream (Right)
-    # --------------------------------------------------------------------------
-    col_main, col_stream = st.columns([7, 4])
+    # 2. Main Grid: Left/Center Productivity Core (68%) | Right Pulse (32%)
+    main_col, side_col = st.columns([2.1, 1.0])
 
-    with col_main:
-        # A. Cognitive AI Command Studio
-        st.markdown(
-            """
-            <div class="hero-prompt-card">
-                <div class="hero-welcome-badge">✦ Cognitive Engine Active</div>
-                <div class="hero-welcome-text">Hi Vaishnavi — Welcome to ENMA</div>
-                <div class="hero-welcome-sub">Type a natural-language command to execute actions across Gmail, Resend, Calendar, and Documents with safety verification.</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+    with main_col:
+        # 3-Column Mid Grid (Task Progress, Productivity Snapshot, AI Suggested Next)
+        sub1, sub2, sub3 = st.columns(3)
 
-        # Quick action chips
-        chip_c1, chip_c2, chip_c3, chip_c4 = st.columns(4)
-        with chip_c1:
-            if st.button("Draft Status Email", key="chip_email_status", use_container_width=True):
-                orchestrator.submit_instruction("Send an email to chetan@enterprise.com with project status update.")
-                st.rerun()
-        with chip_c2:
-            if st.button("Summarize Document", key="chip_doc_sum", use_container_width=True):
-                _set_active_view("documents")
-                st.rerun()
-        with chip_c3:
-            if st.button("Schedule Meeting", key="chip_meet_sync", use_container_width=True):
-                _set_active_view("calendar")
-                st.rerun()
-        with chip_c4:
-            if st.button("Analyze Data File", key="chip_data_ext", use_container_width=True):
-                _set_active_view("documents")
-                st.rerun()
-
-        # Conversational Task Prompt Box
-        with st.form(key="enma_hero_prompt_form"):
-            user_prompt = st.text_input(
-                "Command Prompt",
-                placeholder="Ask anything or enter a command (e.g. 'Send email to chetan@enterprise.com with project update')...",
-                label_visibility="collapsed",
-            )
-            submit_prompt = st.form_submit_button("Send Command →", type="primary", use_container_width=True)
-
-            if submit_prompt and user_prompt.strip():
-                with st.spinner("ENMA reasoning over instruction..."):
-                    orchestrator.submit_instruction(user_prompt.strip())
-                st.rerun()
-
-        # If an action plan is active, render the HITL Review card inline!
-        if orchestrator.state == WorkflowState.AWAITING_APPROVAL:
-            st.divider()
-            render_draft_card(
-                plan=orchestrator.current_plan,
-                on_approve_send=lambda p: (orchestrator.execute_confirmed_task(p), st.rerun()),
-                on_save_draft=lambda p: (orchestrator.execute_confirmed_task(p), st.rerun()),
-                on_cancel=lambda: (orchestrator.cancel_current_task(), st.rerun()),
-            )
-        elif orchestrator.state == WorkflowState.CLARIFICATION_REQUIRED:
-            st.divider()
-            render_clarification_card(
-                plan=orchestrator.current_plan,
-                on_resolve_callback=lambda res: (orchestrator.submit_clarification(res), st.rerun()),
-                on_cancel_callback=lambda: (orchestrator.cancel_current_task(), st.rerun()),
-            )
-        elif orchestrator.state in (WorkflowState.COMPLETED, WorkflowState.FAILED):
-            st.divider()
-            render_timeline(
-                state=orchestrator.state,
-                last_result=orchestrator.last_result,
-                elapsed_ms=orchestrator.last_execution_time_ms,
-                on_reset_callback=lambda: (orchestrator.reset(), st.rerun()),
-            )
-
-        st.write("")
-
-        # B. Studio Workspaces (Tabs)
-        tab_email, tab_tools, tab_terminal = st.tabs([
-            "Email Studio & Templates",
-            "Automation Toolkits",
-            "Command Center Logs",
-        ])
-
-        with tab_email:
-            render_email_composer(key_prefix="dash_")
-
-        with tab_tools:
-            st.caption("Quickly launch specialized cognitive tools:")
-            t_col1, t_col2 = st.columns(2)
-            with t_col1:
-                with st.container(border=True):
-                    st.markdown("**Document Processing & AI Editor**")
-                    st.caption("Inspect, polish, summarize, and convert PDF, DOCX, and Text documents.")
-                    if st.button("Open Document Studio →", key="dash_tool_doc", use_container_width=True):
-                        _set_active_view("documents")
-                        st.rerun()
-
-                with st.container(border=True):
-                    st.markdown("**Data Extractor & Spreadsheet AI**")
-                    st.caption("Extract structured tables, summary metrics, and insights from CSV / XLSX.")
-                    if st.button("Launch Data Tools →", key="dash_tool_data", use_container_width=True):
-                        _set_active_view("documents")
-                        st.rerun()
-
-            with t_col2:
-                with st.container(border=True):
-                    st.markdown("**Calendar & Meeting Scheduler**")
-                    st.caption("Automate calendar events and Google Meet conference links.")
-                    if st.button("Open Calendar →", key="dash_tool_cal", use_container_width=True):
-                        _set_active_view("calendar")
-                        st.rerun()
-
-                with st.container(border=True):
-                    st.markdown("**Notes & Knowledge Scratchpad**")
-                    st.caption("Persist engineering logs and research notes with Supabase cloud sync.")
-                    if st.button("Open Notes →", key="dash_tool_notes", use_container_width=True):
-                        _set_active_view("notes")
-                        st.rerun()
-
-        with tab_terminal:
+        with sub1:
             st.markdown(
                 """
-                <div class="terminal-container">
-                    <span class="terminal-prompt">></span> <span class="terminal-cmd">ENMA v2.4 initialized on Linux</span><br>
-                    <span class="terminal-prompt">></span> <span class="terminal-success">Loaded Gemini 1.5 Flash Cognitive Core</span><br>
-                    <span class="terminal-prompt">></span> <span class="terminal-cmd">ToolRegistry: 6 dynamic tools registered</span><br>
-                    <span class="terminal-prompt">></span> <span class="terminal-success">OAuth 2.0 PKCE & Resend API ready</span><br>
-                    <span class="terminal-prompt">></span> <span class="terminal-cmd">Supabase cloud persistence active</span>
+                <div class="enma-dark-card" style="height: 100%;">
+                    <div class="enma-card-header-row">
+                        <span class="enma-card-title">⚡ AI Task Progress</span>
+                        <span class="enma-status-tag enma-tag-gray">3/5</span>
+                    </div>
+                    <div class="enma-progress-bar-wrap">
+                        <div class="enma-progress-bar-fill"></div>
+                    </div>
+                    <div class="enma-task-item">
+                        <span><span class="enma-dot-green"></span>Processing 24 emails</span>
+                    </div>
+                    <div class="enma-task-item">
+                        <span><span class="enma-dot-green"></span>Summarizing client report</span>
+                    </div>
+                    <div class="enma-task-item">
+                        <span><span class="enma-dot-purple"></span>Updating tracker</span>
+                        <span class="enma-status-tag enma-tag-purple">In progress</span>
+                    </div>
+                    <div class="enma-task-item">
+                        <span><span class="enma-dot-gray"></span>Calendar sync</span>
+                        <span class="enma-status-tag enma-tag-gray">Queued</span>
+                    </div>
+                    <div class="enma-task-item">
+                        <span><span class="enma-dot-gray"></span>Doc analysis</span>
+                        <span class="enma-status-tag enma-tag-gray">Queued</span>
+                    </div>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
 
-    # Right Column: Today's Schedule, Activity Stream & Voice
-    with col_stream:
-        # A. Today's Schedule Card
-        st.markdown(
-            """
-            <div class="enma-card lucora-card">
-                <div class="enma-card-header lucora-card-header">
-                    <div class="enma-card-title lucora-card-title">Today's Schedule</div>
-                    <span class="enma-card-link lucora-card-link">View Calendar</span>
-                </div>
-                <div class="timeline-item-clean">
-                    <div class="timeline-time-badge">09:00 AM</div>
-                    <div>
-                        <div class="timeline-title">Daily Engineering Standup</div>
-                        <div class="timeline-sub">30 mins • Team sync</div>
+        with sub2:
+            st.markdown(
+                f"""
+                <div class="enma-dark-card" style="height: 100%;">
+                    <div class="enma-card-header-row">
+                        <span class="enma-card-title">📊 Productivity</span>
+                        <span class="enma-card-link">This Week →</span>
+                    </div>
+                    <div class="enma-metrics-3grid">
+                        <div class="enma-metric-mini-tile">
+                            <div class="enma-metric-mini-icon">✉️</div>
+                            <div class="enma-metric-mini-val">{metrics['emails_sent']}</div>
+                            <div class="enma-metric-mini-label">Emails</div>
+                            <div class="enma-metric-mini-delta">↑ 12%</div>
+                        </div>
+                        <div class="enma-metric-mini-tile">
+                            <div class="enma-metric-mini-icon">📋</div>
+                            <div class="enma-metric-mini-val">{metrics['completed']}</div>
+                            <div class="enma-metric-mini-label">Tasks</div>
+                            <div class="enma-metric-mini-delta">↑ 25%</div>
+                        </div>
+                        <div class="enma-metric-mini-tile">
+                            <div class="enma-metric-mini-icon">👥</div>
+                            <div class="enma-metric-mini-val">{metrics['events_today']}</div>
+                            <div class="enma-metric-mini-label">Meets</div>
+                            <div class="enma-metric-mini-delta">↑ 20%</div>
+                        </div>
+                    </div>
+                    <div class="enma-quote-banner">
+                        ✦ "Consistency builds momentum."
                     </div>
                 </div>
-                <div class="timeline-item-clean">
-                    <div class="timeline-time-badge">11:00 AM</div>
-                    <div>
-                        <div class="timeline-title">Sprint Planning & Architecture Sync</div>
-                        <div class="timeline-sub">1 hour • Google Meet</div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+        with sub3:
+            st.markdown(
+                """
+                <div class="enma-dark-card" style="height: 100%;">
+                    <div class="enma-card-header-row">
+                        <span class="enma-card-title">✦ AI Suggested Next</span>
+                        <span class="enma-status-tag enma-tag-purple">3</span>
+                    </div>
+                    <div class="enma-suggestion-tile">
+                        <div class="enma-suggestion-text">📄 Summarize today's meeting notes from 11 AM</div>
+                        <span style="color: #fda4af; font-size: 0.9rem;">›</span>
+                    </div>
+                    <div class="enma-suggestion-tile">
+                        <div class="enma-suggestion-text">✉️ Follow up with client on pending proposal</div>
+                        <span style="color: #fda4af; font-size: 0.9rem;">›</span>
+                    </div>
+                    <div class="enma-suggestion-tile">
+                        <div class="enma-suggestion-text">📈 Prepare weekly progress report (last 7 days)</div>
+                        <span style="color: #fda4af; font-size: 0.9rem;">›</span>
                     </div>
                 </div>
-                <div class="timeline-item-clean">
-                    <div class="timeline-time-badge">02:00 PM</div>
-                    <div>
-                        <div class="timeline-title">Client Demonstration</div>
-                        <div class="timeline-sub">1 hour • Live feature walk</div>
-                    </div>
-                </div>
-                <div class="timeline-item-clean">
-                    <div class="timeline-time-badge">04:30 PM</div>
-                    <div>
-                        <div class="timeline-title">Review & Deliverables Wrap-up</div>
-                        <div class="timeline-sub">30 mins • Summary</div>
-                    </div>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+                """,
+                unsafe_allow_html=True,
+            )
 
         st.write("")
 
-        # B. Recent Autonomous Actions
+        # Row 2: Email Studio & Templates (Luxury Light Card)
         st.markdown(
             """
-            <div class="enma-card lucora-card">
-                <div class="enma-card-header lucora-card-header">
-                    <div class="enma-card-title lucora-card-title">Recent Activity</div>
-                    <span class="enma-card-link lucora-card-link">Audit Logs</span>
-                </div>
-                <div class="activity-row-clean">
-                    <div class="activity-main">
-                        <div class="activity-bullet" style="background: #10b981;"></div>
-                        <div>
-                            <div class="activity-name">Email dispatched to Chetan</div>
-                            <div class="activity-detail">Project update and next steps</div>
-                        </div>
+            <div class="enma-email-studio-card">
+                <div class="enma-studio-top-header">
+                    <div class="enma-studio-title">
+                        <span>✉️</span> Email Studio & Templates
                     </div>
-                    <div class="activity-timestamp">10:30 AM</div>
                 </div>
-                <div class="activity-row-clean">
-                    <div class="activity-main">
-                        <div class="activity-bullet" style="background: #3b82f6;"></div>
-                        <div>
-                            <div class="activity-name">Document summary synthesized</div>
-                            <div class="activity-detail">Q1_Report.pdf (4 takeaways)</div>
-                        </div>
-                    </div>
-                    <div class="activity-timestamp">09:15 AM</div>
-                </div>
-                <div class="activity-row-clean">
-                    <div class="activity-main">
-                        <div class="activity-bullet" style="background: #f59e0b;"></div>
-                        <div>
-                            <div class="activity-name">Meeting scheduled</div>
-                            <div class="activity-detail">Team sync on 24 May, 11:00 AM</div>
-                        </div>
-                    </div>
-                    <div class="activity-timestamp">09:00 AM</div>
-                </div>
-                <div class="activity-row-clean">
-                    <div class="activity-main">
-                        <div class="activity-bullet" style="background: #8b5cf6;"></div>
-                        <div>
-                            <div class="activity-name">Data extracted from sales.xlsx</div>
-                            <div class="activity-detail">5 tables & 2 charts generated</div>
-                        </div>
-                    </div>
-                    <div class="activity-timestamp">Yesterday</div>
+                <div style="font-size: 0.72rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.8rem;">
+                    POPULAR PREBUILT TEMPLATES
                 </div>
             </div>
             """,
             unsafe_allow_html=True,
         )
+
+        # 8 Template Buttons in 4x2 Grid
+        t_col1, t_col2, t_col3, t_col4 = st.columns(4)
+        with t_col1:
+            if st.button("📅 Meeting Request", help="Schedule a meeting", use_container_width=True, key="btn_tmpl_meet"):
+                _set_template_and_navigate("Meeting Request")
+            if st.button("🚀 Client Proposal", help="Business", use_container_width=True, key="btn_tmpl_prop"):
+                _set_template_and_navigate("Client Proposal")
+        with t_col2:
+            if st.button("📄 Leave Application", help="HR & leave", use_container_width=True, key="btn_tmpl_leave"):
+                _set_template_and_navigate("Leave Application")
+            if st.button("⚠️ Urgent Alert", help="Important / Escalation", use_container_width=True, key="btn_tmpl_urg"):
+                _set_template_and_navigate("Urgent Alert")
+        with t_col3:
+            if st.button("📊 Project Status", help="Update stakeholders", use_container_width=True, key="btn_tmpl_stat"):
+                _set_template_and_navigate("Project Status")
+            if st.button("📑 Document Review", help="Feedback / Review", use_container_width=True, key="btn_tmpl_docr"):
+                _set_template_and_navigate("Document Review")
+        with t_col4:
+            if st.button("🎓 BTech Major Project", help="Academic / Project", use_container_width=True, key="btn_tmpl_btech"):
+                _set_template_and_navigate("BTech Major Project")
+            if st.button("👥 Weekly Sync Agenda", help="Team sync", use_container_width=True, key="btn_tmpl_synca"):
+                _set_template_and_navigate("Weekly Sync Agenda")
 
         st.write("")
+        render_email_composer(key_prefix="dash_")
 
-        # C. Minimal Voice Assistant Capsule
+    with side_col:
+        # Card 1: Today's Schedule
         st.markdown(
             """
-            <div class="voice-wave-capsule">
-                <div style="font-size: 0.82rem; font-weight: 700; color: #4f46e5; margin-bottom: 0.2rem;">Voice Command Engine</div>
-                <div class="soundwave-container">
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
+            <div class="enma-dark-card">
+                <div class="enma-card-header-row">
+                    <span class="enma-card-title">📅 Today's Schedule</span>
+                    <span class="enma-card-link">View Calendar →</span>
                 </div>
-                <div style="font-size: 0.74rem; color: #64748b;">Ready to transcribe speech input</div>
+                <div style="font-size: 0.82rem; margin-bottom: 0.75rem; border-left: 2px solid #7c1a3b; padding-left: 0.8rem;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #fda4af; font-weight: 700; font-size: 0.76rem;">09:00 AM</span>
+                        <span class="enma-status-tag enma-tag-green">Live</span>
+                    </div>
+                    <div style="font-weight: 700; color: #ffffff;">Daily Engineering Standup</div>
+                    <div style="font-size: 0.72rem; color: #e2cad2;">30 mins • Team sync</div>
+                </div>
+                <div style="font-size: 0.82rem; margin-bottom: 0.75rem; border-left: 2px solid #7c1a3b; padding-left: 0.8rem;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #fda4af; font-weight: 700; font-size: 0.76rem;">11:00 AM</span>
+                        <span class="enma-status-tag enma-tag-gray">Upcoming</span>
+                    </div>
+                    <div style="font-weight: 700; color: #ffffff;">Sprint Planning & Architecture</div>
+                    <div style="font-size: 0.72rem; color: #e2cad2;">1 hour • Google Meet</div>
+                </div>
+                <div style="font-size: 0.82rem; margin-bottom: 0.75rem; border-left: 2px solid #7c1a3b; padding-left: 0.8rem;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #fda4af; font-weight: 700; font-size: 0.76rem;">02:00 PM</span>
+                        <span class="enma-status-tag enma-tag-gray">Upcoming</span>
+                    </div>
+                    <div style="font-weight: 700; color: #ffffff;">Client Demonstration</div>
+                    <div style="font-size: 0.72rem; color: #e2cad2;">1 hour • Live feature walk</div>
+                </div>
+                <div style="font-size: 0.82rem; border-left: 2px solid #7c1a3b; padding-left: 0.8rem;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #fda4af; font-weight: 700; font-size: 0.76rem;">04:30 PM</span>
+                        <span class="enma-status-tag enma-tag-gray">Upcoming</span>
+                    </div>
+                    <div style="font-weight: 700; color: #ffffff;">Review & Deliverables Wrap-up</div>
+                    <div style="font-size: 0.72rem; color: #e2cad2;">30 mins • Summary</div>
+                </div>
             </div>
             """,
             unsafe_allow_html=True,
         )
-        if st.button("🎙 Speak Natural Command", key="btn_dash_speak", type="primary", use_container_width=True):
-            st.session_state["enma_voice_listening"] = True
-            st.toast("Transcribing voice command...", icon="🎙")
-            orchestrator.submit_instruction("Send an email to chetan@enterprise.com with project update.")
+
+        # Card 2: Recent Activity Stream
+        st.markdown(
+            """
+            <div class="enma-dark-card">
+                <div class="enma-card-header-row">
+                    <span class="enma-card-title">🕒 Recent Activity</span>
+                    <span class="enma-card-link">View All →</span>
+                </div>
+                <div class="enma-task-item" style="flex-direction: column; align-items: flex-start; gap: 2px;">
+                    <div style="display: flex; justify-content: space-between; width: 100%;">
+                        <span style="font-weight: 700; color: #ffffff;"><span class="enma-dot-green"></span>Email dispatched to Chetan</span>
+                        <span style="color: #fda4af; font-size: 0.7rem;">10:30 AM</span>
+                    </div>
+                    <div style="font-size: 0.72rem; color: #94a3b8; padding-left: 13px;">Project update and next steps</div>
+                </div>
+                <div class="enma-task-item" style="flex-direction: column; align-items: flex-start; gap: 2px;">
+                    <div style="display: flex; justify-content: space-between; width: 100%;">
+                        <span style="font-weight: 700; color: #ffffff;"><span class="enma-dot-purple"></span>Document summary synthesized</span>
+                        <span style="color: #fda4af; font-size: 0.7rem;">09:15 AM</span>
+                    </div>
+                    <div style="font-size: 0.72rem; color: #94a3b8; padding-left: 13px;">Q1_Report.pdf (4 takeaways)</div>
+                </div>
+                <div class="enma-task-item" style="flex-direction: column; align-items: flex-start; gap: 2px;">
+                    <div style="display: flex; justify-content: space-between; width: 100%;">
+                        <span style="font-weight: 700; color: #ffffff;"><span class="enma-dot-green"></span>Meeting scheduled</span>
+                        <span style="color: #fda4af; font-size: 0.7rem;">09:00 AM</span>
+                    </div>
+                    <div style="font-size: 0.72rem; color: #94a3b8; padding-left: 13px;">Team sync on 24 May, 11:00 AM</div>
+                </div>
+                <div class="enma-task-item" style="flex-direction: column; align-items: flex-start; gap: 2px;">
+                    <div style="display: flex; justify-content: space-between; width: 100%;">
+                        <span style="font-weight: 700; color: #ffffff;"><span class="enma-dot-gray"></span>Data extracted from sales.xlsx</span>
+                        <span style="color: #fda4af; font-size: 0.7rem;">Yesterday</span>
+                    </div>
+                    <div style="font-size: 0.72rem; color: #94a3b8; padding-left: 13px;">5 tables & 2 charts generated</div>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        # Card 3: Voice Command Engine
+        st.markdown(
+            """
+            <div class="enma-voice-card">
+                <div class="enma-voice-inner">
+                    <div class="enma-card-header-row">
+                        <span class="enma-card-title">🎙️ Voice Command Engine</span>
+                        <span class="enma-status-tag enma-tag-green">Listening</span>
+                    </div>
+                    <div class="enma-soundwave-wrap">
+                        <div class="enma-wave-bar"></div>
+                        <div class="enma-wave-bar"></div>
+                        <div class="enma-wave-bar"></div>
+                        <div class="enma-wave-bar"></div>
+                        <div class="enma-wave-bar"></div>
+                        <div class="enma-wave-bar"></div>
+                        <div class="enma-wave-bar"></div>
+                        <div class="enma-wave-bar"></div>
+                    </div>
+                    <div style="font-size: 0.78rem; color: #fecdd3; margin-bottom: 0.8rem;">
+                        Tap to speak or say <strong>"Hey ENMA"</strong>
+                    </div>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        if st.button("🎙️ Speak Command Now", key="btn_dash_mic_trigger", type="primary", use_container_width=True):
+            st.toast("Transcribed: 'Schedule sprint planning meeting tomorrow at 11 AM'", icon="🎙")
+            _set_active_view("calendar")
             st.rerun()
 
-# Backward-compatibility aliases
+        # Card 4: Workspace Health Footer
+        st.markdown(
+            """
+            <div class="enma-dark-card" style="padding: 0.9rem 1.1rem; display: flex; align-items: center; justify-content: space-between; margin-top: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                    <span style="font-size: 1.2rem;">🌱</span>
+                    <div>
+                        <div style="font-size: 0.82rem; font-weight: 700; color: #ffffff;">Your workspace is running smoothly</div>
+                        <div style="font-size: 0.7rem; color: #a7f3d0;">All systems operational • 99.9% uptime</div>
+                    </div>
+                </div>
+                <span style="color: #fda4af; font-size: 1rem;">›</span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+def _set_template_and_navigate(tmpl_name: str):
+    if tmpl_name in PREBUILT_TEMPLATES:
+        t = PREBUILT_TEMPLATES[tmpl_name]
+        st.session_state["dash_composer_subject"] = t["subject"]
+        st.session_state["dash_composer_body"] = t["body"]
+        st.session_state["main_composer_subject"] = t["subject"]
+        st.session_state["main_composer_body"] = t["body"]
+        st.toast(f"Loaded '{tmpl_name}' template", icon="✓")
+
+# Backward compatibility aliases
 render_lucora_dashboard = render_enma_dashboard
 render_aira_dashboard = render_enma_dashboard

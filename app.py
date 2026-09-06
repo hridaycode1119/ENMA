@@ -36,11 +36,19 @@ st.set_page_config(
 )
 
 # 2. Inject Custom Enterprise CSS
+import base64
+
 def load_css():
     css_path = os.path.join(os.path.dirname(__file__), "assets", "style.css")
     if os.path.exists(css_path):
         with open(css_path, "r", encoding="utf-8") as f:
-            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+            css_content = f.read()
+        wp_path = os.path.join(os.path.dirname(__file__), "assets", "enma-wallpaper.png")
+        if os.path.exists(wp_path):
+            with open(wp_path, "rb") as wpf:
+                b64_wp = base64.b64encode(wpf.read()).decode("utf-8")
+                css_content = css_content.replace("__WALLPAPER_BASE64__", f"data:image/png;base64,{b64_wp}")
+        st.markdown(f"<style>{css_content}</style>", unsafe_allow_html=True)
 
 load_css()
 
