@@ -43,9 +43,9 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
     with kpi1:
         st.markdown(
             f"""
-            <div style="background: rgba(35, 12, 24, 0.7); border: 1px solid rgba(43, 16, 31, 0.8); border-radius: 14px; padding: 14px; text-align: center;">
+            <div style="background: rgba(35, 12, 24, 0.85); border: 1px solid rgba(63, 23, 46, 0.9); border-radius: 14px; padding: 14px; text-align: center; box-shadow: 0 4px 12px rgba(20, 6, 13, 0.3);">
                 <span style="color: #fb719e; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 4px;">Total Members</span>
-                <span style="font-size: 22px; font-weight: 800; color: #ffffff;">{len(members)}</span>
+                <span style="font-size: 24px; font-weight: 800; color: #ffffff;">{len(members)}</span>
             </div>
             """,
             unsafe_allow_html=True,
@@ -53,9 +53,9 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
     with kpi2:
         st.markdown(
             f"""
-            <div style="background: rgba(35, 12, 24, 0.7); border: 1px solid rgba(43, 16, 31, 0.8); border-radius: 14px; padding: 14px; text-align: center;">
+            <div style="background: rgba(35, 12, 24, 0.85); border: 1px solid rgba(63, 23, 46, 0.9); border-radius: 14px; padding: 14px; text-align: center; box-shadow: 0 4px 12px rgba(20, 6, 13, 0.3);">
                 <span style="color: #34d399; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 4px;">Available Now</span>
-                <span style="font-size: 22px; font-weight: 800; color: #ffffff;">{active_count}</span>
+                <span style="font-size: 24px; font-weight: 800; color: #ffffff;">{active_count}</span>
             </div>
             """,
             unsafe_allow_html=True,
@@ -63,9 +63,9 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
     with kpi3:
         st.markdown(
             f"""
-            <div style="background: rgba(35, 12, 24, 0.7); border: 1px solid rgba(43, 16, 31, 0.8); border-radius: 14px; padding: 14px; text-align: center;">
+            <div style="background: rgba(35, 12, 24, 0.85); border: 1px solid rgba(63, 23, 46, 0.9); border-radius: 14px; padding: 14px; text-align: center; box-shadow: 0 4px 12px rgba(20, 6, 13, 0.3);">
                 <span style="color: #fbbf24; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 4px;">In Meetings</span>
-                <span style="font-size: 22px; font-weight: 800; color: #ffffff;">{in_meeting_count}</span>
+                <span style="font-size: 24px; font-weight: 800; color: #ffffff;">{in_meeting_count}</span>
             </div>
             """,
             unsafe_allow_html=True,
@@ -73,9 +73,9 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
     with kpi4:
         st.markdown(
             f"""
-            <div style="background: rgba(35, 12, 24, 0.7); border: 1px solid rgba(43, 16, 31, 0.8); border-radius: 14px; padding: 14px; text-align: center;">
+            <div style="background: rgba(35, 12, 24, 0.85); border: 1px solid rgba(63, 23, 46, 0.9); border-radius: 14px; padding: 14px; text-align: center; box-shadow: 0 4px 12px rgba(20, 6, 13, 0.3);">
                 <span style="color: #c084fc; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 4px;">Departments</span>
-                <span style="font-size: 22px; font-weight: 800; color: #ffffff;">{len(depts)}</span>
+                <span style="font-size: 24px; font-weight: 800; color: #ffffff;">{len(depts)}</span>
             </div>
             """,
             unsafe_allow_html=True,
@@ -98,14 +98,12 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
         show_add = st.checkbox("✦ Add Member", key="team_toggle_add_form")
 
     if show_add:
-        with st.container():
+        with st.container(border=True):
             st.markdown(
                 """
-                <div style="background: rgba(35, 12, 24, 0.9); border: 1px solid rgba(244, 63, 118, 0.4); border-radius: 16px; padding: 18px; margin-bottom: 20px;">
-                    <div style="font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                        <span style="color: #fb719e;">✦</span>
-                        <span>Register New Enterprise Team Member</span>
-                    </div>
+                <div style="font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                    <span style="color: #fb719e;">✦</span>
+                    <span>Register New Enterprise Team Member</span>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -160,94 +158,94 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
         st.info("No team members match the search criteria.")
         return
 
-    # 5. Member Cards (2 per row)
+    # 5. Member Cards (2 per row, rendered inside seamless dark wine containers)
     for i in range(0, len(filtered), 2):
         row_members = filtered[i:i+2]
         cols = st.columns(2)
         for c_idx, member in enumerate(row_members):
             with cols[c_idx]:
-                m_id = member.get("id", f"mem_{i+c_idx}")
-                m_name = member.get("name", "Team Member")
-                m_email = member.get("email", "user@enterprise.com")
-                m_role = member.get("role", "Engineer")
-                m_dept = member.get("department", "Engineering")
-                m_status = member.get("status", "Active")
-                m_phone = member.get("phone", "+91 98765 00000")
-                m_init = member.get("initials", m_name[:2].upper())
-                m_color = member.get("color", "#be124c")
+                with st.container(border=True):
+                    m_id = member.get("id", f"mem_{i+c_idx}")
+                    m_name = member.get("name", "Team Member")
+                    m_email = member.get("email", "user@enterprise.com")
+                    m_role = member.get("role", "Engineer")
+                    m_dept = member.get("department", "Engineering")
+                    m_status = member.get("status", "Active")
+                    m_phone = member.get("phone", "+91 98765 00000")
+                    m_init = member.get("initials", m_name[:2].upper())
+                    m_color = member.get("color", "#be124c")
 
-                # Status badge indicator color
-                status_color = "#34d399" if m_status in ("Active", "Available") else "#fbbf24" if m_status == "In Meeting" else "#a88094"
+                    status_color = "#34d399" if m_status in ("Active", "Available") else "#fbbf24" if m_status == "In Meeting" else "#a88094"
 
-                st.markdown(
-                    f"""
-                    <div style="background: rgba(35, 12, 24, 0.75); border: 1px solid rgba(43, 16, 31, 0.8); border-radius: 16px; padding: 18px; margin-bottom: 12px; box-shadow: 0 4px 16px rgba(20, 6, 13, 0.3);">
-                        <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px;">
-                            <div style="display: flex; align-items: center; gap: 12px;">
-                                <div style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, {m_color} 0%, #ff4d8d 100%); display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 15px; font-weight: 700; box-shadow: 0 0 12px rgba(244,63,118,0.4); flex-shrink: 0;">
-                                    {m_init}
-                                </div>
-                                <div>
-                                    <div style="display: flex; align-items: center; gap: 8px;">
-                                        <h3 style="font-size: 15px; font-weight: 700; color: #ffffff; margin: 0;">{m_name}</h3>
-                                        <span style="font-size: 9px; font-weight: 600; padding: 2px 8px; border-radius: 9999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #fce7f3;">{m_dept}</span>
+                    st.markdown(
+                        f"""
+                        <div style="margin-bottom: 12px;">
+                            <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, {m_color} 0%, #ff4d8d 100%); display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 15px; font-weight: 700; box-shadow: 0 0 12px rgba(244,63,118,0.4); flex-shrink: 0;">
+                                        {m_init}
                                     </div>
-                                    <p style="font-size: 11px; color: #fb719e; font-weight: 500; margin: 2px 0 0 0;">{m_role}</p>
+                                    <div>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <h3 style="font-size: 15px; font-weight: 700; color: #ffffff; margin: 0;">{m_name}</h3>
+                                            <span style="font-size: 9px; font-weight: 600; padding: 2px 8px; border-radius: 9999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #fce7f3;">{m_dept}</span>
+                                        </div>
+                                        <p style="font-size: 11px; color: #fb719e; font-weight: 500; margin: 2px 0 0 0;">{m_role}</p>
+                                    </div>
+                                </div>
+                                <div style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; border-radius: 9999px; background: rgba(20, 6, 13, 0.8); border: 1px solid rgba(43, 16, 31, 0.9); font-size: 10px;">
+                                    <span style="width: 6px; height: 6px; border-radius: 50%; background: {status_color}; box-shadow: 0 0 6px {status_color};"></span>
+                                    <span style="color: #ffffff; font-weight: 500;">{m_status}</span>
                                 </div>
                             </div>
-                            <div style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; border-radius: 9999px; background: rgba(20, 6, 13, 0.6); border: 1px solid rgba(43, 16, 31, 0.8); font-size: 10px;">
-                                <span style="width: 6px; height: 6px; border-radius: 50%; background: {status_color}; box-shadow: 0 0 6px {status_color};"></span>
-                                <span style="color: #ffffff; font-weight: 500;">{m_status}</span>
+                            <div style="display: flex; flex-direction: column; gap: 4px; font-size: 11px; color: #a88094; padding-left: 56px;">
+                                <div><span style="color: #fb719e;">✉</span> <span style="color: #fce7f3; font-family: monospace;">{m_email}</span></div>
+                                <div><span style="color: #fb719e;">📞</span> <span style="color: #fce7f3; font-family: monospace;">{m_phone}</span></div>
                             </div>
                         </div>
-                        <div style="display: flex; flex-direction: column; gap: 4px; font-size: 11px; color: #a88094; margin-bottom: 14px; padding-left: 56px;">
-                            <div>✉️ <span style="color: #fce7f3; font-family: monospace;">{m_email}</span></div>
-                            <div>📞 <span style="color: #fce7f3; font-family: monospace;">{m_phone}</span></div>
-                        </div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
-                )
+                        """,
+                        unsafe_allow_html=True,
+                    )
 
-                # Contacting Action Buttons Row
-                btn_c1, btn_c2, btn_c3, btn_c4 = st.columns(4)
-                with btn_c1:
-                    if st.button("◇ Email", key=f"btn_contact_email_{m_id}", use_container_width=True, help=f"Compose email to {m_name}"):
-                        st.session_state["main_email_to"] = m_email
-                        st.session_state["dash_exact_email_to"] = m_email
-                        st.session_state["email_to"] = m_email
-                        st.session_state["main_email_subject"] = f"Sync with {m_name}"
-                        st.toast(f"Prepared Email Composer for {m_name}", icon="✦")
-                        if on_navigate_view:
-                            on_navigate_view("tasks")
-                        else:
-                            st.session_state["enma_active_view"] = "tasks"
-                            st.rerun()
+                    # Contacting Action Buttons Row (Embedded directly inside card)
+                    btn_c1, btn_c2, btn_c3, btn_c4 = st.columns(4)
+                    with btn_c1:
+                        if st.button("◇ Email", key=f"btn_contact_email_{m_id}", use_container_width=True, help=f"Compose email to {m_name}"):
+                            st.session_state["main_email_to"] = m_email
+                            st.session_state["dash_exact_email_to"] = m_email
+                            st.session_state["email_to"] = m_email
+                            st.session_state["main_email_subject"] = f"Sync with {m_name}"
+                            st.toast(f"Prepared Email Composer for {m_name}", icon="✦")
+                            if on_navigate_view:
+                                on_navigate_view("tasks")
+                            else:
+                                st.session_state["enma_active_view"] = "tasks"
+                                st.rerun()
 
-                with btn_c2:
-                    if st.button("◈ Meet", key=f"btn_contact_meet_{m_id}", use_container_width=True, help=f"Schedule meeting with {m_name}"):
-                        st.session_state["cal_invite_attendee"] = m_email
-                        st.toast(f"Opening Calendar for meeting with {m_name}", icon="✦")
-                        if on_navigate_view:
-                            on_navigate_view("calendar")
-                        else:
-                            st.session_state["enma_active_view"] = "calendar"
-                            st.rerun()
+                    with btn_c2:
+                        if st.button("◈ Meet", key=f"btn_contact_meet_{m_id}", use_container_width=True, help=f"Schedule meeting with {m_name}"):
+                            st.session_state["cal_invite_attendee"] = m_email
+                            st.toast(f"Opening Calendar for meeting with {m_name}", icon="✦")
+                            if on_navigate_view:
+                                on_navigate_view("calendar")
+                            else:
+                                st.session_state["enma_active_view"] = "calendar"
+                                st.rerun()
 
-                with btn_c3:
-                    if st.button("◲ Note", key=f"btn_contact_note_{m_id}", use_container_width=True, help=f"Save note about {m_name}"):
-                        repo.save_note(
-                            title=f"Collaboration Notes: {m_name}",
-                            content=f"Contact: {m_email} | {m_phone}\nRole: {m_role} ({m_dept})\nStatus: {m_status}\n\nTopics to discuss:\n• ",
-                            category="note",
-                        )
-                        st.toast(f"Created draft note for {m_name}", icon="✦")
+                    with btn_c3:
+                        if st.button("◲ Note", key=f"btn_contact_note_{m_id}", use_container_width=True, help=f"Save note about {m_name}"):
+                            repo.save_note(
+                                title=f"Collaboration Notes: {m_name}",
+                                content=f"Contact: {m_email} | {m_phone}\nRole: {m_role} ({m_dept})\nStatus: {m_status}\n\nTopics to discuss:\n• ",
+                                category="note",
+                            )
+                            st.toast(f"Created draft note for {m_name}", icon="✦")
 
-                with btn_c4:
-                    if st.button("⎋ Remove", key=f"btn_remove_mem_{m_id}", use_container_width=True, help="Remove member"):
-                        if m_email != "hriday.code1119@gmail.com":
-                            repo.delete_team_member(m_id)
-                            st.toast(f"Removed {m_name}", icon="✦")
-                            st.rerun()
-                        else:
-                            st.error("Cannot delete root lead account.")
+                    with btn_c4:
+                        if st.button("⎋ Del", key=f"btn_remove_mem_{m_id}", use_container_width=True, help="Remove member"):
+                            if m_email != "hriday.code1119@gmail.com":
+                                repo.delete_team_member(m_id)
+                                st.toast(f"Removed {m_name}", icon="✦")
+                                st.rerun()
+                            else:
+                                st.error("Cannot delete root lead account.")

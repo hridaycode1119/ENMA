@@ -44,7 +44,7 @@ def render_enma_sidebar(active_view: str) -> str:
                 </div>
                 <div style="line-height: 1.1;">
                     <h1 style="font-size: 15px; font-weight: 800; letter-spacing: 0.08em; color: #ffffff; text-transform: uppercase; margin: 0;">ENMA</h1>
-                    <p style="font-size: 10px; letter-spacing: 0.15em; color: #a88094; font-weight: 600; text-transform: uppercase; margin: 0;">by LUCORA</p>
+                    <p style="font-size: 10px; letter-spacing: 0.15em; color: #a88094; font-weight: 600; text-transform: uppercase; margin: 0;">ENTERPRISE AI</p>
                 </div>
             </div>
             """,

@@ -271,7 +271,7 @@ def index_page():
     return """<!DOCTYPE html><html class="dark" lang="en" style=""><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>ENMA by LUCORA - Enterprise AI Workspace</title>
+<title>ENMA - Enterprise AI Workspace</title>
 <!-- Tailwind CSS v3 with plugins -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <!-- Tailwind Configuration for Custom Wine/Plum Palette -->
@@ -400,7 +400,7 @@ def index_page():
 </div>
 <div class="leading-tight">
 <h1 class="text-sm font-bold tracking-wider text-white uppercase flex items-center gap-1">ENMA</h1>
-<p class="text-[10px] tracking-widest text-accent-muted font-medium uppercase">by LUCORA</p>
+<p class="text-[10px] tracking-widest text-accent-muted font-medium uppercase">Enterprise AI</p>
 </div>
 </div>
 <!-- Main Navigation Menu -->
