@@ -67,7 +67,7 @@ def render_document_studio() -> None:
                     parsed = DocumentParserFactory.parse(file_bytes, filename)
                     st.session_state.doc_studio_parsed = parsed
                     st.session_state.doc_studio_edited_text = parsed.raw_text
-                    st.toast(f"Parsed {filename} ({parsed.word_count} words)", icon="✓")
+                    st.toast(f"Parsed {filename} ({parsed.word_count} words)")
                 except Exception as ex:
                     st.error(f"Failed to parse document: {str(ex)}")
                     return

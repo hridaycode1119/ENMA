@@ -113,7 +113,7 @@ def render_enma_sidebar(active_view: str) -> str:
         )
 
         if st.button("Upgrade Plan →", key="btn_upgrade_sidebar_clean", use_container_width=True, type="primary"):
-            st.toast("ENMA Pro plan activation link ready", icon="✦")
+            st.toast("ENMA Pro plan activation link ready")
 
         # User Profile Card (Hriday Gupta / HG)
         st.markdown(

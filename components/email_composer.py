@@ -412,7 +412,7 @@ def render_email_composer(
 
                         if tool_res.success:
                             st.success(f"**Email Dispatched Successfully!**\n• Message ID: `{tool_res.external_reference_id or 'sent-ok'}`\n• Provider: `{selected_provider}`\n• Recipients: `{', '.join(recipients)}`")
-                            st.toast("Email delivered successfully", icon="✦")
+                            st.toast("Email delivered successfully")
                             if on_email_sent_callback:
                                 on_email_sent_callback(tool_res.data)
                         else:
@@ -427,7 +427,7 @@ def render_email_composer(
                 category="note",
             )
             st.success("Draft saved to Notes successfully!")
-            st.toast("Draft saved", icon="✦")
+            st.toast("Draft saved")
 
     with tab_preview:
         recipient_val = st.session_state.get(k_to, "")

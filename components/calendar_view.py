@@ -51,4 +51,4 @@ def render_calendar_view() -> None:
                 })
                 if res.success:
                     st.success(f"**Meeting Scheduled!**\n• Link: `{res.data['meet_url']}`\n• Event ID: `{res.data['event_id']}`")
-                    st.toast("Meeting added to Google Calendar", icon="✓")
+                    st.toast("Meeting added to Google Calendar")

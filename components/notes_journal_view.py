@@ -45,7 +45,7 @@ def render_notes_view() -> None:
                         category="note",
                         date_str=datetime.date.today().strftime("%d %b %Y"),
                     )
-                    st.toast("Note saved to database", icon="✓")
+                    st.toast("Note saved to database")
                     st.rerun()
 
 def render_journals_view() -> None:

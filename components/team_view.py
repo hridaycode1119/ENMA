@@ -138,7 +138,7 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
                             status=new_status,
                         )
                         st.success(f"Team member '{new_name}' registered successfully!")
-                        st.toast(f"Added {new_name} to enterprise directory", icon="✦")
+                        st.toast(f"Added {new_name} to enterprise directory")
                         st.rerun()
 
     # 4. Filter Members
@@ -215,7 +215,7 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
                             st.session_state["dash_exact_email_to"] = m_email
                             st.session_state["email_to"] = m_email
                             st.session_state["main_email_subject"] = f"Sync with {m_name}"
-                            st.toast(f"Prepared Email Composer for {m_name}", icon="✦")
+                            st.toast(f"Prepared Email Composer for {m_name}")
                             if on_navigate_view:
                                 on_navigate_view("tasks")
                             else:
@@ -225,7 +225,7 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
                     with btn_c2:
                         if st.button("◈ Meet", key=f"btn_contact_meet_{m_id}", use_container_width=True, help=f"Schedule meeting with {m_name}"):
                             st.session_state["cal_invite_attendee"] = m_email
-                            st.toast(f"Opening Calendar for meeting with {m_name}", icon="✦")
+                            st.toast(f"Opening Calendar for meeting with {m_name}")
                             if on_navigate_view:
                                 on_navigate_view("calendar")
                             else:
@@ -239,13 +239,13 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
                                 content=f"Contact: {m_email} | {m_phone}\nRole: {m_role} ({m_dept})\nStatus: {m_status}\n\nTopics to discuss:\n• ",
                                 category="note",
                             )
-                            st.toast(f"Created draft note for {m_name}", icon="✦")
+                            st.toast(f"Created draft note for {m_name}")
 
                     with btn_c4:
                         if st.button("⎋ Del", key=f"btn_remove_mem_{m_id}", use_container_width=True, help="Remove member"):
                             if m_email != "hriday.code1119@gmail.com":
                                 repo.delete_team_member(m_id)
-                                st.toast(f"Removed {m_name}", icon="✦")
+                                st.toast(f"Removed {m_name}")
                                 st.rerun()
                             else:
                                 st.error("Cannot delete root lead account.")

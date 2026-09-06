@@ -443,7 +443,7 @@ def render_enma_dashboard(orchestrator: AgentOrchestrator, on_navigate_view) -> 
         )
 
         if st.button("⍾ Speak Command Now", key="btn_dash_mic_trigger_exact", type="primary", use_container_width=True):
-            st.toast("Transcribed: 'Schedule sprint planning meeting tomorrow at 11 AM'", icon="✦")
+            st.toast("Transcribed: 'Schedule sprint planning meeting tomorrow at 11 AM'")
             _set_active_view("calendar")
             st.rerun()
 
@@ -476,7 +476,7 @@ def _set_template_and_navigate(tmpl_name: str):
         st.session_state["main_email_body"] = t["body"]
         st.session_state["main_composer_subject"] = t["subject"]
         st.session_state["main_composer_body"] = t["body"]
-        st.toast(f"Loaded '{tmpl_name}' template", icon="✦")
+        st.toast(f"Loaded '{tmpl_name}' template")
 # Backward compatibility aliases
 render_lucora_dashboard = render_enma_dashboard
 render_aira_dashboard = render_enma_dashboard
