@@ -4,9 +4,9 @@ from .clarification_modal import render_clarification_card
 from .draft_card import render_draft_card
 from .timeline import render_timeline
 from .document_studio import render_document_studio
-from .lucora_sidebar import render_lucora_sidebar, render_aira_sidebar
-from .lucora_header import render_lucora_header, render_aira_header
-from .lucora_dashboard import render_lucora_dashboard, render_aira_dashboard
+from .enma_sidebar import render_enma_sidebar, render_lucora_sidebar, render_aira_sidebar
+from .enma_header import render_enma_header, render_lucora_header, render_aira_header
+from .enma_dashboard import render_enma_dashboard, render_lucora_dashboard, render_aira_dashboard
 from .calendar_view import render_calendar_view
 from .notes_journal_view import render_notes_view, render_journals_view, render_bookmarks_view
 from .email_composer import render_email_composer, PREBUILT_TEMPLATES
@@ -18,6 +18,9 @@ __all__ = [
     "render_draft_card",
     "render_timeline",
     "render_document_studio",
+    "render_enma_sidebar",
+    "render_enma_header",
+    "render_enma_dashboard",
     "render_lucora_sidebar",
     "render_lucora_header",
     "render_lucora_dashboard",

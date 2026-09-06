@@ -1,5 +1,5 @@
 """
-LUCORA: Autonomous Enterprise AI Task Automation Platform.
+ENMA: Autonomous Enterprise AI Task Automation Platform.
 Tagline: Intelligence That Gets Work Done
 Main Streamlit Application Entrypoint.
 """
@@ -11,9 +11,9 @@ import streamlit as st
 from agent.orchestrator import AgentOrchestrator, WorkflowState
 from integrations.oauth_handler import GoogleOAuthHandler
 from tools.registry import ToolRegistry
-from components.lucora_sidebar import render_lucora_sidebar
-from components.lucora_header import render_lucora_header
-from components.lucora_dashboard import render_lucora_dashboard
+from components.enma_sidebar import render_enma_sidebar
+from components.enma_header import render_enma_header
+from components.enma_dashboard import render_enma_dashboard
 from components.calendar_view import render_calendar_view
 from components.document_studio import render_document_studio
 from components.notes_journal_view import (
@@ -29,7 +29,7 @@ from components.email_composer import render_email_composer
 
 # 1. Streamlit Page Configuration
 st.set_page_config(
-    page_title="LUCORA | Intelligence That Gets Work Done",
+    page_title="ENMA | Intelligence That Gets Work Done",
     page_icon="✦",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -53,33 +53,40 @@ if "orchestrator" not in st.session_state:
         oauth_handler=st.session_state.oauth_handler,
     )
 
-if "lucora_active_view" not in st.session_state:
-    st.session_state.lucora_active_view = st.session_state.get("aira_active_view", "dashboard")
+if "enma_active_view" not in st.session_state:
+    st.session_state.enma_active_view = st.session_state.get(
+        "lucora_active_view",
+        st.session_state.get("aira_active_view", "dashboard")
+    )
+st.session_state.lucora_active_view = st.session_state.enma_active_view
+st.session_state.aira_active_view = st.session_state.enma_active_view
 
 orchestrator: AgentOrchestrator = st.session_state.orchestrator
 oauth_handler: GoogleOAuthHandler = st.session_state.oauth_handler
 tool_registry: ToolRegistry = st.session_state.tool_registry
 
-# 4. Render Master LUCORA Sidebar
-selected_view = render_lucora_sidebar(st.session_state.lucora_active_view)
-if selected_view != st.session_state.lucora_active_view:
+# 4. Render Master ENMA Sidebar
+selected_view = render_enma_sidebar(st.session_state.enma_active_view)
+if selected_view != st.session_state.enma_active_view:
+    st.session_state.enma_active_view = selected_view
     st.session_state.lucora_active_view = selected_view
     st.session_state.aira_active_view = selected_view
     st.rerun()
 
 # 5. Render Top Header Bar
 def navigate_to_view(v: str):
+    st.session_state.enma_active_view = v
     st.session_state.lucora_active_view = v
     st.session_state.aira_active_view = v
     st.rerun()
 
-render_lucora_header(on_new_task_click=lambda: navigate_to_view("tasks"))
+render_enma_header(on_new_task_click=lambda: navigate_to_view("tasks"))
 
 # 6. View Routing
-current_view = st.session_state.lucora_active_view
+current_view = st.session_state.enma_active_view
 
 if current_view == "dashboard":
-    render_lucora_dashboard(orchestrator, on_navigate_view=navigate_to_view)
+    render_enma_dashboard(orchestrator, on_navigate_view=navigate_to_view)
 
 elif current_view in ("tasks", "assistant"):
     st.markdown("### Task & Email Studio")
@@ -159,7 +166,7 @@ elif current_view in ("voice", "voice_commands"):
     
     st.markdown(
         """
-        <div class="lucora-card" style="max-width: 540px; margin: 2rem auto; text-align: center;">
+        <div class="enma-card lucora-card" style="max-width: 540px; margin: 2rem auto; text-align: center;">
             <div class="soundwave-container" style="height: 50px;">
                 <div class="wave-bar" style="width: 4px;"></div>
                 <div class="wave-bar" style="width: 4px;"></div>
@@ -170,7 +177,7 @@ elif current_view in ("voice", "voice_commands"):
                 <div class="wave-bar" style="width: 4px;"></div>
                 <div class="wave-bar" style="width: 4px;"></div>
             </div>
-            <h4 style="margin: 0.5rem 0;">LUCORA Voice Engine Active</h4>
+            <h4 style="margin: 0.5rem 0;">ENMA Voice Engine Active</h4>
             <p style="color: #64748b; font-size: 0.88rem;">Speak a natural language instruction to execute tasks across Gmail, Calendar, and Documents.</p>
         </div>
         """,
@@ -192,7 +199,7 @@ elif current_view in ("terminal", "integrations", "settings"):
     st.markdown(
         """
         <div class="terminal-container" style="height: 180px;">
-            <span class="terminal-prompt">></span> <span class="terminal-cmd">LUCORA v2.4 initialized on Linux</span><br>
+            <span class="terminal-prompt">></span> <span class="terminal-cmd">ENMA v2.4 initialized on Linux</span><br>
             <span class="terminal-prompt">></span> <span class="terminal-success">ToolRegistry loaded 6 dynamic tools</span><br>
             <span class="terminal-prompt">></span> <span class="terminal-cmd">Loaded Gemini 1.5 Flash Cognitive Core</span><br>
             <span class="terminal-prompt">></span> <span class="terminal-success">OAuth 2.0 PKCE session active</span>
@@ -263,8 +270,8 @@ CREATE TABLE IF NOT EXISTS aira_notes (id TEXT PRIMARY KEY, category TEXT, title
                 try:
                     res = resend_cli.send_email(
                         to=test_to.strip(),
-                        subject="LUCORA AI Agent - Resend Integration Test",
-                        text="Congratulations! Your Resend API integration with LUCORA Autonomous AI Agent is working perfectly.",
+                        subject="ENMA AI Agent - Resend Integration Test",
+                        text="Congratulations! Your Resend API integration with ENMA Autonomous AI Agent is working perfectly.",
                     )
                     st.success(f"Email dispatched! ID: `{res.get('id')}` ({res.get('mode')} mode)")
                 except Exception as ex:
@@ -274,7 +281,7 @@ CREATE TABLE IF NOT EXISTS aira_notes (id TEXT PRIMARY KEY, category TEXT, title
         with st.form(key="resend_config_form"):
             st.markdown("##### Configure Resend API Key")
             rk = st.text_input("Resend API Key", value=os.getenv("RESEND_API_KEY", ""), type="password", placeholder="re_123456789...")
-            rf = st.text_input("Sender Email / Domain", value=os.getenv("RESEND_FROM_EMAIL", "LUCORA AI <onboarding@resend.dev>"), placeholder="LUCORA <onboarding@resend.dev>")
+            rf = st.text_input("Sender Email / Domain", value=os.getenv("RESEND_FROM_EMAIL", "ENMA AI <onboarding@resend.dev>"), placeholder="ENMA AI <onboarding@resend.dev>")
             
             btn_save_resend = st.form_submit_button("Save Resend Key →", type="primary", use_container_width=True)
             if btn_save_resend and rk:

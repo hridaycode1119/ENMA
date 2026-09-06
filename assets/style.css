@@ -68,7 +68,7 @@ header[data-testid="stHeader"] {
 /* ==============================================================================
    1. Clean Top Header Bar
    ============================================================================== */
-.lucora-header, .aira-header {
+.enma-header, .lucora-header, .aira-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -76,7 +76,7 @@ header[data-testid="stHeader"] {
     margin-bottom: 0.5rem;
 }
 
-.lucora-greeting-title, .aira-greeting-title {
+.enma-greeting-title, .lucora-greeting-title, .aira-greeting-title {
     font-family: 'Outfit', sans-serif !important;
     font-size: 1.65rem;
     font-weight: 700;
@@ -86,7 +86,7 @@ header[data-testid="stHeader"] {
     line-height: 1.2;
 }
 
-.lucora-tagline-badge {
+.enma-tagline-badge, .lucora-tagline-badge {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
@@ -100,7 +100,7 @@ header[data-testid="stHeader"] {
     margin-top: 0.35rem;
 }
 
-.lucora-status-pill {
+.enma-status-pill, .lucora-status-pill {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
@@ -198,7 +198,7 @@ header[data-testid="stHeader"] {
 /* ==============================================================================
    3. Universal Clean Cards
    ============================================================================== */
-.lucora-card, .aira-card {
+.enma-card, .lucora-card, .aira-card {
     background: var(--bg-surface);
     border-radius: var(--radius-md);
     padding: 1.4rem;
@@ -209,11 +209,11 @@ header[data-testid="stHeader"] {
     transition: all 0.2s ease;
 }
 
-.lucora-card:hover {
+.enma-card, .lucora-card:hover {
     box-shadow: var(--shadow-lg);
 }
 
-.lucora-card-header, .aira-card-header {
+.enma-card, .lucora-card-header, .aira-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -222,7 +222,7 @@ header[data-testid="stHeader"] {
     border-bottom: 1px solid var(--border-subtle);
 }
 
-.lucora-card-title, .aira-card-title {
+.enma-card, .lucora-card-title, .aira-card-title {
     font-family: 'Outfit', sans-serif !important;
     font-size: 1.05rem;
     font-weight: 700;
@@ -230,7 +230,7 @@ header[data-testid="stHeader"] {
     letter-spacing: -0.01em;
 }
 
-.lucora-card-link, .aira-card-link {
+.enma-card, .lucora-card-link, .aira-card-link {
     font-size: 0.78rem;
     font-weight: 600;
     color: var(--primary);
@@ -239,7 +239,7 @@ header[data-testid="stHeader"] {
     transition: color 0.15s ease;
 }
 
-.lucora-card-link:hover {
+.enma-card, .lucora-card-link:hover {
     color: var(--accent);
 }
 

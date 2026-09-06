@@ -1,6 +1,6 @@
 """
-LUCORA / AIRA Sidebar Component (Compatibility redirect).
+ENMA / AIRA Sidebar Component (Compatibility redirect).
 """
-from components.lucora_sidebar import render_lucora_sidebar, render_aira_sidebar
+from components.enma_sidebar import render_enma_sidebar, render_lucora_sidebar, render_aira_sidebar
 
-__all__ = ["render_lucora_sidebar", "render_aira_sidebar"]
+__all__ = ["render_enma_sidebar", "render_lucora_sidebar", "render_aira_sidebar"]

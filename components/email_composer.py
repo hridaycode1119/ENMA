@@ -1,5 +1,5 @@
 """
-LUCORA Email Composer & Prebuilt Templates Component for Streamlit.
+ENMA Email Composer & Prebuilt Templates Component for Streamlit.
 Provides clean fields for recipient emails, subject, custom body, prebuilt templates,
 and instant on_click AI writing & polishing callbacks.
 """
@@ -10,7 +10,7 @@ from typing import Dict, Any, Optional
 
 from integrations.resend_client import ResendClient
 from tools.registry import ToolRegistry
-from database.repository import LUCORARepository, AIRARepository
+from database.repository import ENMARepository, ENMARepository, AIRARepository
 from modules.documents.editor import DocumentEditor
 
 PREBUILT_TEMPLATES: Dict[str, Dict[str, str]] = {
@@ -26,7 +26,7 @@ PREBUILT_TEMPLATES: Dict[str, Dict[str, str]] = {
             "Proposed Time: Tomorrow at 3:00 PM IST (Google Meet)\n\n"
             "Please let me know if this time works for you.\n\n"
             "Best regards,\n"
-            "LUCORA Project Team"
+            "ENMA Project Team"
         ),
     },
     "Leave Application": {
@@ -94,7 +94,7 @@ PREBUILT_TEMPLATES: Dict[str, Dict[str, str]] = {
             "• Affected Component: Enterprise Task Worker\n"
             "• Action Required: Please verify credentials and restore worker process.\n\n"
             "Thank you,\n"
-            "LUCORA Monitoring System"
+            "ENMA Monitoring System"
         ),
     },
     "Document Review": {
@@ -135,7 +135,7 @@ def render_email_composer(
     Renders an elegant, clean email composer with prebuilt templates,
     instant AI generation callbacks, and multi-provider dispatch.
     """
-    repo = LUCORARepository()
+    repo = ENMARepository()
     resend_client = ResendClient()
     registry = ToolRegistry()
     editor = DocumentEditor()
@@ -387,7 +387,7 @@ def render_email_composer(
             f"""
             <div style="border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; background: #ffffff; color: #0f172a; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
                 <div style="border-bottom: 1px solid #f1f5f9; padding-bottom: 0.8rem; margin-bottom: 1rem;">
-                    <div style="font-size: 0.82rem; color: #64748b;"><strong>From:</strong> LUCORA AI &lt;onboarding@resend.dev&gt;</div>
+                    <div style="font-size: 0.82rem; color: #64748b;"><strong>From:</strong> ENMA AI &lt;onboarding@resend.dev&gt;</div>
                     <div style="font-size: 0.82rem; color: #64748b; margin-top: 0.2rem;"><strong>To:</strong> {recipient_val or '(No recipient specified)'}</div>
                     <div style="font-size: 1.15rem; font-weight: 700; color: #0f172a; margin-top: 0.4rem;">{subject_val or '(No subject)'}</div>
                 </div>
@@ -396,7 +396,7 @@ def render_email_composer(
                 </div>
                 <hr style="border: none; border-top: 1px solid #f1f5f9; margin: 1.5rem 0 0.8rem 0;" />
                 <div style="font-size: 0.75rem; color: #94a3b8; text-align: center;">
-                    ✦ Sent autonomously via <strong>LUCORA Enterprise AI Agent</strong>
+                    ✦ Sent autonomously via <strong>ENMA Enterprise AI Agent</strong>
                 </div>
             </div>
             """,

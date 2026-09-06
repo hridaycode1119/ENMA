@@ -1,18 +1,18 @@
 """
-LUCORA Notes, Journals, and Bookmarks Views.
+ENMA Notes, Journals, and Bookmarks Views.
 Aesthetic editorial style with Lora serif typography and Supabase persistence.
 """
 
 from __future__ import annotations
 import streamlit as st
 import datetime
-from database.repository import LUCORARepository, AIRARepository
+from database.repository import ENMARepository, LUCORARepository, AIRARepository
 
 def render_notes_view() -> None:
     st.markdown("### Notes & Knowledge")
     st.caption("Clean editorial scratchpad and persistent research notes synced with Supabase cloud database.")
 
-    repo = LUCORARepository()
+    repo = ENMARepository()
     notes = repo.get_notes(category="note")
 
     n_col1, n_col2 = st.columns([5, 4])
@@ -52,12 +52,12 @@ def render_journals_view() -> None:
     st.markdown("### Work Journals & Logs")
     st.caption("Engineering work logs and task summaries synced with Supabase.")
 
-    repo = LUCORARepository()
+    repo = ENMARepository()
     journals = repo.get_notes(category="journal")
 
     if not journals:
         default_journals = [
-            ("21 May 2025", "Worked on project automation, email integration, LUCORA dashboard UI, and Supabase backend."),
+            ("21 May 2025", "Worked on project automation, email integration, ENMA dashboard UI, and Supabase backend."),
             ("20 May 2025", "Researched file data extraction, PDF editing, and AI tools for enterprise document processing."),
             ("19 May 2025", "Implemented OAuth 2.0 PKCE authorization manager with token caching."),
         ]

@@ -375,5 +375,6 @@ class AIRARepository:
 
         return record
 
-# Modern Rebranded Alias
+# Modern Rebranded Aliases
+ENMARepository = AIRARepository
 LUCORARepository = AIRARepository

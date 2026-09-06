@@ -1,5 +1,5 @@
 """
-LUCORA Dedicated Calendar & Meeting Scheduling View.
+ENMA Dedicated Calendar & Meeting Scheduling View.
 Clean, uncluttered, and aesthetic schedule management.
 """
 
