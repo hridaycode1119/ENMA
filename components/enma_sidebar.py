@@ -12,7 +12,7 @@ MENU_ITEMS = [
     ("◈ Calendar & Events", "calendar"),
     ("⬡ Document & Data Studio", "documents"),
     ("◲ Notes & Knowledge", "notes"),
-    ("◫ Task & Email Studio", "tasks"),
+    ("👥 Enterprise Team", "team"),
 ]
 
 SYSTEM_ITEMS = [

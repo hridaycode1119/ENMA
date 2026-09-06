@@ -103,6 +103,53 @@ class DocumentEditor:
         # Intelligent Deterministic Fallback Engine
         return self._heuristic_ai_transform(document_text, instruction, tone)
 
+    def generate_email_content(
+        self,
+        instruction: str,
+        recipient_name: str = "Team",
+        tone: str = "professional",
+    ) -> str:
+        """
+        Generates a full professional email based on an instruction or rough notes.
+        Uses LLM if available, with an intelligent deterministic fallback.
+        """
+        clean_inst = instruction.strip()
+        prompt = (
+            f"You are ENMA, an elite autonomous enterprise AI executive assistant.\n\n"
+            f"TASK: Write a complete, polished, and professional email.\n"
+            f"RECIPIENT: {recipient_name}\n"
+            f"INPUT INSTRUCTION / NOTES: \"{clean_inst}\"\n"
+            f"TONE: {tone}\n\n"
+            f"RULES:\n"
+            f"1. Include an appropriate greeting for '{recipient_name}', well-structured body paragraphs or bullet points, a clear call to action, and a professional sign-off.\n"
+            f"2. Return ONLY the email body text without markdown backticks, meta commentary, or extra explanations.\n"
+        )
+
+        try:
+            if hasattr(self.llm, "generate_text") and not getattr(self.llm, "is_mock", False):
+                res = self.llm.generate_text(prompt)
+                if res and res.strip():
+                    return res.strip()
+        except Exception:
+            pass
+
+        # Intelligent Deterministic Fallback
+        cleaned = self._fix_grammar_and_typos(clean_inst)
+        if not cleaned:
+            cleaned = "Operational updates and sprint deliverables"
+
+        return (
+            f"Dear {recipient_name},\n\n"
+            f"I hope this message finds you well.\n\n"
+            f"I am writing to share an update regarding the following matter:\n\n"
+            f"• Key Detail: {cleaned}\n"
+            f"• Current Status: All deliverables and active milestone tracks are progressing on schedule.\n"
+            f"• Next Action: Please review this update and let me know if any further details or action items are needed.\n\n"
+            f"Thank you for your time and continued support.\n\n"
+            f"Best regards,\n"
+            f"ENMA Project Team"
+        )
+
     @staticmethod
     def _fix_grammar_and_typos(text: str) -> str:
         """Grammar, typo, and punctuation correction engine."""
@@ -130,7 +177,8 @@ class DocumentEditor:
             (r"\bhriday\b", "Hriday"),
             (r"\bvaishnavi\b", "Vaishnavi"),
             (r"\bchetan\b", "Chetan"),
-            (r"\baira\b", "AIRA"),
+            (r"\benma\b", "ENMA"),
+            (r"\baira\b", "ENMA"),
             (r"\bi\b", "I"),
         ]
         for pat, rep in subs:
@@ -172,7 +220,7 @@ class DocumentEditor:
                 f"• Next Action: Please review the information and let me know if any further clarification is required.\n\n"
                 f"Thank you for your time and continued support.\n\n"
                 f"Best regards,\n"
-                f"AIRA Project Team"
+                f"ENMA Project Team"
             )
             return full_email, "Generated complete professional email from input notes."
 

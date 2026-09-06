@@ -78,6 +78,14 @@ class ResendEmailRequest(BaseModel):
     from_email: Optional[str] = None
     reply_to: Optional[str] = None
 
+class TeamMemberRequest(BaseModel):
+    name: str
+    email: str
+    role: str
+    department: Optional[str] = "Engineering"
+    phone: Optional[str] = ""
+    status: Optional[str] = "Active"
+
 # ------------------------------------------------------------------------------
 # 1. Health & Status
 # ------------------------------------------------------------------------------
@@ -230,7 +238,25 @@ def send_resend_email(req: ResendEmailRequest):
         raise HTTPException(status_code=500, detail=str(ex))
 
 # ------------------------------------------------------------------------------
-# 8. Prebuilt Email Templates & Custom Composer
+# 8. Enterprise Team Directory
+# ------------------------------------------------------------------------------
+@app.get("/api/team")
+def get_team_members():
+    return {"members": repo.get_team_members()}
+
+@app.post("/api/team")
+def add_team_member(req: TeamMemberRequest):
+    return repo.add_team_member(
+        name=req.name,
+        email=req.email,
+        role=req.role,
+        department=req.department or "Engineering",
+        phone=req.phone or "",
+        status=req.status or "Active",
+    )
+
+# ------------------------------------------------------------------------------
+# 9. Prebuilt Email Templates & Custom Composer
 # ------------------------------------------------------------------------------
 @app.get("/api/templates")
 def get_email_templates():

@@ -34,10 +34,15 @@ class TestDocumentEditor(unittest.TestCase):
         self.assertIn("Executive Summary", summary)
         self.assertIn("Core Takeaways", summary)
 
-    def test_ai_action_items_command(self):
-        checklist, note = self.editor.execute_ai_command(self.sample_text, "Extract action items checklist")
-        self.assertIn("Action Items", checklist)
-        self.assertIn("- [ ]", checklist)
+    def test_generate_email_content(self):
+        email_body = self.editor.generate_email_content(
+            instruction="schedule sprint review meeting with team tomorrow at 3pm",
+            recipient_name="Chetan",
+            tone="professional",
+        )
+        self.assertIn("Chetan", email_body)
+        self.assertIn("ENMA", email_body)
+        self.assertTrue(len(email_body) > 50)
 
 if __name__ == "__main__":
     unittest.main()

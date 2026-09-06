@@ -126,7 +126,7 @@ class AIRARepository:
                 "id": "note-01",
                 "category": "note",
                 "title": "BTech Major Project Milestones",
-                "content": "1. AI Cognitive Core\n2. Gmail REST Tool\n3. Document Studio\n4. AIRA UI Redesign\n5. Supabase Backend",
+                "content": "1. AI Cognitive Core\n2. Gmail REST Tool\n3. Document Studio\n4. ENMA UI Redesign\n5. Supabase Backend",
                 "date_str": "21 May 2025",
             },
             {
@@ -135,6 +135,74 @@ class AIRARepository:
                 "title": "OAuth 2.0 PKCE Checklist",
                 "content": "Ensure scopes for gmail.send, compose, and userinfo.email are enabled in GCP.",
                 "date_str": "20 May 2025",
+            },
+        ]
+        self._local_team_members: List[Dict[str, Any]] = [
+            {
+                "id": "mem-01",
+                "name": "Hriday Gupta",
+                "email": "hriday.code1119@gmail.com",
+                "role": "AI / LLM Lead & Founder",
+                "department": "AI Engineering",
+                "status": "Active",
+                "phone": "+91 98765 43210",
+                "initials": "HG",
+                "color": "#be124c",
+            },
+            {
+                "id": "mem-02",
+                "name": "Chetan",
+                "email": "chetan@enterprise.com",
+                "role": "Cloud & Backend Architect",
+                "department": "Engineering",
+                "status": "Available",
+                "phone": "+91 98765 43211",
+                "initials": "CT",
+                "color": "#f43f76",
+            },
+            {
+                "id": "mem-03",
+                "name": "Priya Sharma",
+                "email": "priya.s@enterprise.com",
+                "role": "Product Strategy Lead",
+                "department": "Product",
+                "status": "In Meeting",
+                "phone": "+91 98765 43212",
+                "initials": "PS",
+                "color": "#a855f7",
+            },
+            {
+                "id": "mem-04",
+                "name": "Alex Vance",
+                "email": "alex.v@enterprise.com",
+                "role": "Security & Infra Lead",
+                "department": "Security",
+                "status": "Active",
+                "phone": "+91 98765 43213",
+                "initials": "AV",
+                "color": "#3b82f6",
+            },
+            {
+                "id": "mem-05",
+                "name": "Sophia Chen",
+                "email": "sophia.c@enterprise.com",
+                "role": "Frontend UX Architect",
+                "department": "Design",
+                "status": "Available",
+                "phone": "+91 98765 43214",
+                "initials": "SC",
+                "color": "#10b981",
+            },
+            {
+                "id": "mem-06",
+                "name": "David Miller",
+                "email": "david.m@enterprise.com",
+                "role": "QA & Operations Manager",
+                "department": "Operations",
+                "status": "Active",
+                "phone": "+91 98765 43215",
+                "initials": "DM",
+                "color": "#f59e0b",
             },
         ]
         self._local_audit_logs: List[Dict[str, Any]] = []
@@ -374,6 +442,85 @@ class AIRARepository:
                 pass
 
         return record
+
+    # --------------------------------------------------------------------------
+    # 6. Enterprise Team Members Management
+    # --------------------------------------------------------------------------
+    def get_team_members(self) -> List[Dict[str, Any]]:
+        """Returns all enterprise registered team members."""
+        client = self.sb_manager.get_client()
+        if client:
+            try:
+                res = client.table("aira_team_members").select("*").order("name", desc=False).execute()
+                if res.data:
+                    return res.data
+            except Exception:
+                pass
+        return self._local_team_members
+
+    def add_team_member(
+        self,
+        name: str,
+        email: str,
+        role: str,
+        department: str = "Engineering",
+        phone: str = "",
+        status: str = "Active",
+    ) -> Dict[str, Any]:
+        """Registers a new enterprise team member."""
+        name_parts = name.strip().split()
+        initials = (name_parts[0][0] + (name_parts[1][0] if len(name_parts) > 1 else "")).upper() if name_parts else "EM"
+        
+        palette = ["#be124c", "#f43f76", "#a855f7", "#3b82f6", "#10b981", "#f59e0b", "#ec4899", "#8b5cf6"]
+        color = palette[len(self._local_team_members) % len(palette)]
+
+        record = {
+            "id": f"mem-{uuid.uuid4().hex[:6]}",
+            "name": name.strip(),
+            "email": email.strip().lower(),
+            "role": role.strip(),
+            "department": department.strip(),
+            "status": status.strip(),
+            "phone": phone.strip() or "+91 98765 00000",
+            "initials": initials,
+            "color": color,
+            "created_at": datetime.datetime.now().isoformat(),
+        }
+        self._local_team_members.append(record)
+
+        client = self.sb_manager.get_client()
+        if client:
+            try:
+                client.table("aira_team_members").insert(record).execute()
+            except Exception:
+                pass
+
+        return record
+
+    def delete_team_member(self, member_id: str) -> bool:
+        """Deletes an enterprise team member by ID."""
+        initial_len = len(self._local_team_members)
+        self._local_team_members = [m for m in self._local_team_members if m["id"] != member_id]
+        deleted = len(self._local_team_members) < initial_len
+
+        client = self.sb_manager.get_client()
+        if client and deleted:
+            try:
+                client.table("aira_team_members").delete().eq("id", member_id).execute()
+            except Exception:
+                pass
+
+        return deleted
+
+    def search_team_members(self, query: str) -> List[Dict[str, Any]]:
+        """Filters registered team members by name, email, or role matching the query."""
+        if not query or not query.strip():
+            return self.get_team_members()
+        q = query.strip().lower()
+        return [
+            m for m in self.get_team_members()
+            if q in m.get("name", "").lower() or q in m.get("email", "").lower() or q in m.get("role", "").lower()
+        ]
 
 # Modern Rebranded Aliases
 ENMARepository = AIRARepository

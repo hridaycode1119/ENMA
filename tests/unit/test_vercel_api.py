@@ -61,5 +61,17 @@ class TestVercelServerlessAPI(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("edited_text", response.json())
 
+    def test_team_endpoints(self):
+        get_res = self.client.get("/api/team")
+        self.assertEqual(get_res.status_code, 200)
+        self.assertIn("members", get_res.json())
+
+        post_res = self.client.post(
+            "/api/team",
+            json={"name": "API Tester", "email": "api.tester@enterprise.com", "role": "Tester", "department": "QA"},
+        )
+        self.assertEqual(post_res.status_code, 200)
+        self.assertEqual(post_res.json()["name"], "API Tester")
+
 if __name__ == "__main__":
     unittest.main()

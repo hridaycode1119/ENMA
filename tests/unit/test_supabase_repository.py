@@ -75,5 +75,25 @@ class TestSupabaseRepository(unittest.TestCase):
         recent_docs = self.repo.get_recent_documents(limit=5)
         self.assertTrue(any(d["id"] == "test-doc-01" for d in recent_docs))
 
+    def test_repository_team_members(self):
+        members = self.repo.get_team_members()
+        self.assertGreaterEqual(len(members), 1)
+        self.assertTrue(any("Hriday" in m["name"] for m in members))
+
+        new_mem = self.repo.add_team_member(
+            name="Testing Member",
+            email="test.member@enterprise.com",
+            role="QA Automation Engineer",
+            department="Operations",
+        )
+        self.assertEqual(new_mem["name"], "Testing Member")
+        self.assertEqual(new_mem["initials"], "TM")
+
+        search_res = self.repo.search_team_members("Testing")
+        self.assertTrue(any(m["id"] == new_mem["id"] for m in search_res))
+
+        deleted = self.repo.delete_team_member(new_mem["id"])
+        self.assertTrue(deleted)
+
 if __name__ == "__main__":
     unittest.main()

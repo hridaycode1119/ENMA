@@ -212,6 +212,20 @@ def render_email_composer(
         st.session_state[k_subject] = ""
         st.session_state[k_body] = ""
 
+    def add_recipient(email_val: str):
+        existing_val = st.session_state.get(k_to, "").strip()
+        if not existing_val:
+            st.session_state[k_to] = email_val
+        else:
+            parts = [p.strip() for p in existing_val.split(",") if p.strip()]
+            if email_val not in parts:
+                last_p = parts[-1] if parts else ""
+                if "@" not in last_p:
+                    parts[-1] = email_val
+                else:
+                    parts.append(email_val)
+                st.session_state[k_to] = ", ".join(parts)
+
     # 1. Prebuilt Templates Selection (if enabled)
     if show_templates_picker:
         st.markdown("##### ✦ Select a Prebuilt Template")
@@ -248,6 +262,42 @@ def render_email_composer(
                 index=default_prov,
                 key=k_provider,
             )
+
+        # Real-time Team Member Auto-Suggestions
+        all_members = repo.get_team_members()
+        cur_to_text = st.session_state.get(k_to, "").strip()
+        last_chunk = cur_to_text.split(",")[-1].strip().lower() if cur_to_text else ""
+
+        if last_chunk and "@" not in last_chunk:
+            matches = [m for m in all_members if last_chunk in m.get("name", "").lower() or last_chunk in m.get("email", "").lower() or last_chunk in m.get("role", "").lower()]
+            if matches:
+                st.caption(f"✦ Suggested team members matching '{last_chunk}':")
+                s_cols = st.columns(min(len(matches), 4))
+                for m_i, mem in enumerate(matches[:4]):
+                    with s_cols[m_i % len(s_cols)]:
+                        st.button(
+                            f"+ {mem['name']} ({mem['email']})",
+                            key=f"{key_prefix}match_sug_{mem['id']}_{m_i}",
+                            on_click=add_recipient,
+                            args=(mem['email'],),
+                            use_container_width=True,
+                        )
+        else:
+            current_emails = [p.strip().lower() for p in cur_to_text.split(",") if p.strip()]
+            available_sug = [m for m in all_members if m.get("email", "").lower() not in current_emails]
+            if available_sug:
+                st.caption("✦ Quick Add Team Member:")
+                q_cols = st.columns(min(len(available_sug), 5))
+                for m_i, mem in enumerate(available_sug[:5]):
+                    with q_cols[m_i % len(q_cols)]:
+                        st.button(
+                            f"+ {mem['name'].split()[0]}",
+                            key=f"{key_prefix}quick_sug_{mem['id']}_{m_i}",
+                            help=f"Add {mem['name']} ({mem['email']})",
+                            on_click=add_recipient,
+                            args=(mem['email'],),
+                            use_container_width=True,
+                        )
 
         st.text_input(
             "Subject Line*",
