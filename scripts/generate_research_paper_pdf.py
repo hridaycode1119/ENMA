@@ -247,7 +247,7 @@ def build_pdf(output_path: str):
         [Paragraph(
             "Modern enterprise workflows remain deeply fragmented across heterogeneous communication channels, calendar systems, unstructured document repositories, and organizational directories. While Large Language Models (LLMs) demonstrate remarkable generative capabilities, standard zero-shot conversational agents frequently suffer from non-deterministic execution, state drift, context hallucination, and catastrophic failure when interacting with strict enterprise APIs. "
             "In this paper, we present <b>ENMA</b> (<i>Enterprise Networked Multi-Agent</i>), an autonomous cognitive operating architecture designed for deterministic, context-aware workflow automation across enterprise environments. ENMA integrates a four-tier architecture consisting of: (1) a Perception & Disambiguation Engine utilizing formal intent scoring and state-machine context resolution; (2) a Cognitive Orchestrator driven by a Self-Healing Execution and Fallback Cascade (SH-EFC) that guarantees graceful degradation under stochastic LLM or API errors; (3) an Action & Tool Registry Layer managing deterministic integrations with Google Calendar v3, Resend communications, multimodal Abstract Syntax Tree (AST) document transformations, and Supabase relational persistence; and (4) a Synchronous Presentation Layer implementing a luxury dark-wine glassmorphic reactive interface. "
-            "We formalize the cognitive execution loop through mathematical optimization models and provide four discrete algorithmic procedures governing intent classification, self-healing execution cascades, multimodal document ingestion, and enterprise team directory graph filtering. We conduct extensive empirical evaluations across 20 complex enterprise task benchmarks, demonstrating that ENMA achieves a <b>100.0% task completion accuracy rate</b>, eliminates execution-halting exceptions, and reduces average multi-step task completion latency by <b>64.2%</b> compared to traditional manual operations. Finally, we provide comprehensive real-time system snapshots, architectural analyses, and security governance frameworks.<br/><br/>"
+            "We formalize the cognitive execution loop through mathematical optimization models and provide four discrete algorithmic procedures governing intent classification, self-healing execution cascades, multimodal document ingestion, and enterprise team directory graph filtering. We conduct extensive empirical evaluations across 20 complex enterprise task benchmarks, demonstrating that ENMA achieves a <b>100.0% task completion accuracy rate</b>, eliminates execution-halting exceptions, and reduces average multi-step task completion latency by <b>64.2%</b> compared to traditional manual operations. Finally, we provide comprehensive real-time system snapshots, architectural flowcharts, and security governance frameworks.<br/><br/>"
             "<b>Keywords:</b> Autonomous Agents, Cognitive Architectures, Enterprise Task Automation, Self-Healing Fallbacks, Multimodal Document AST, Human-in-the-Loop AI, Glassmorphism.",
             abstract_text
         )]
@@ -307,7 +307,7 @@ def build_pdf(output_path: str):
 
     story.append(Spacer(1, 8))
 
-    # SECTION 3
+    # SECTION 3: SYSTEM ARCHITECTURE & FLOWCHARTS
     story.append(Paragraph("3. System Architecture and Design Principles", h1_style))
     story.append(Paragraph(
         "ENMA is structured into four tightly decoupled architectural tiers designed for high concurrency, fault tolerance, and human-in-the-loop oversight:",
@@ -335,11 +335,29 @@ def build_pdf(output_path: str):
     story.append(t1)
     story.append(Spacer(1, 8))
 
+    # Embed Flowchart 2: System Architecture
+    if os.path.exists("docs/figures/flowcharts/flowchart2_system_architecture.png"):
+        story.append(Image("docs/figures/flowcharts/flowchart2_system_architecture.png", width=6.8*inch, height=3.2*inch))
+        story.append(Paragraph(
+            "<b>Flowchart 1 (Architecture): Four-Tier System Architecture & Communication Topology.</b> Comprehensive topology illustrating perception pre-filtering, cognitive state-machine orchestration, Pydantic tool registration, and reactive glassmorphism presentation.",
+            caption_style
+        ))
+        story.append(Spacer(1, 6))
+
     story.append(Paragraph("3.1 Tier 1: Perception and Disambiguation Engine", h2_style))
     story.append(Paragraph(
         "The Perception Layer processes incoming multi-modal requests (natural language text commands, voice transcriptions from microphone audio, or structured UI action buttons). It executes a two-stage evaluation: (1) deterministic regex pre-filtering to extract dates, times, emails, and member mentions with zero LLM token overhead; and (2) semantic intent classification against pre-registered enterprise intent schemas. If classification confidence falls below a calibrated threshold $\\Gamma_{\\text{threshold}}$, the engine pauses execution and requests disambiguation via an interactive modal.",
         body_style
     ))
+
+    # Embed Flowchart 1: Cognitive Loop
+    if os.path.exists("docs/figures/flowcharts/flowchart1_cognitive_loop.png"):
+        story.append(Image("docs/figures/flowcharts/flowchart1_cognitive_loop.png", width=6.8*inch, height=3.2*inch))
+        story.append(Paragraph(
+            "<b>Flowchart 2 (Cognitive Loop): Perception-Action Intent Disambiguation Engine.</b> Multi-stage intent parsing pipeline showing entity pre-filtering, dual-vector scoring, confidence threshold branching, and DAG execution plan dispatch.",
+            caption_style
+        ))
+        story.append(Spacer(1, 6))
 
     story.append(Paragraph("3.2 Tier 2: Cognitive Orchestration Core", h2_style))
     story.append(Paragraph(
@@ -480,7 +498,7 @@ Output: Target Intent I*, Parameter Dict P*, Disambiguation Required Flag d
     story.append(t_algo1)
     story.append(Spacer(1, 8))
 
-    # ALGORITHM 2
+    # ALGORITHM 2 & FLOWCHART 3
     story.append(Paragraph("5.2 Algorithm 2: Self-Healing Execution with Dynamic Fallback Cascade (SH-EFC)", h2_style))
     story.append(Paragraph(
         "Algorithm 2 enforces the Self-Healing Fallback Cascade. In the event of transient network partitions or upstream schema validation faults, the engine applies iterative parameter repair before falling back to local deterministic execution routines.",
@@ -528,7 +546,16 @@ Output: Execution Result R = <success, data, log, fallback_used>
     story.append(t_algo2)
     story.append(Spacer(1, 8))
 
-    # ALGORITHM 3
+    # Embed Flowchart 3: Fallback Cascade
+    if os.path.exists("docs/figures/flowcharts/flowchart3_fallback_cascade.png"):
+        story.append(Image("docs/figures/flowcharts/flowchart3_fallback_cascade.png", width=6.8*inch, height=3.1*inch))
+        story.append(Paragraph(
+            "<b>Flowchart 3 (Self-Healing): Dynamic Fallback Cascade & Parameter Repair.</b> Fault-tolerant workflow showing Pydantic schema validation, LLM auto-repair loops, and deterministic local fallback execution guaranteeing zero runtime crashes.",
+            caption_style
+        ))
+        story.append(Spacer(1, 6))
+
+    # ALGORITHM 3 & FLOWCHART 4
     story.append(Paragraph("5.3 Algorithm 3: Multimodal Document AST Ingestion and Transformation", h2_style))
     story.append(Paragraph(
         "Algorithm 3 describes the AST transformation engine. Unlike naive flat text extraction, this procedure constructs a hierarchical tree preserving document geometry, paragraph indices, and tabular grid structures.",
@@ -577,6 +604,15 @@ Output: Parsed AST Object Omega, Transmuted Output Payload B_out
     ]))
     story.append(t_algo3)
     story.append(Spacer(1, 8))
+
+    # Embed Flowchart 4: Document AST
+    if os.path.exists("docs/figures/flowcharts/flowchart4_document_ast.png"):
+        story.append(Image("docs/figures/flowcharts/flowchart4_document_ast.png", width=6.8*inch, height=3.1*inch))
+        story.append(Paragraph(
+            "<b>Flowchart 4 (Document AST): Multimodal Document Ingestion & Transmutation Pipeline.</b> Multi-format ingestion (PDF, DOCX, XLSX, CSV) transforming into unified AST structures for in-memory semantic transformation and high-fidelity serialization.",
+            caption_style
+        ))
+        story.append(Spacer(1, 6))
 
     # ALGORITHM 4
     story.append(Paragraph("5.4 Algorithm 4: Enterprise Team Directory Prefix-Graph Filtering", h2_style))
@@ -629,7 +665,7 @@ Output: Suggested Member Set Sigma_res
 
     # Figure 1
     if os.path.exists("docs/figures/fig1_dashboard_hud.png"):
-        story.append(Image("docs/figures/fig1_dashboard_hud.png", width=6.8*inch, height=3.0*inch))
+        story.append(Image("docs/figures/fig1_dashboard_hud.png", width=6.8*inch, height=2.9*inch))
         story.append(Paragraph(
             "<b>Figure 1: Autonomous Executive Dashboard (HUD).</b> Live display of executive metrics (Active Agents, Pending Approvals, Total Workflows), real-time voice input transcription trigger (<code>⍾ Speak Command Now</code>), pending action items, and synchronized calendar resolution widgets.",
             caption_style
@@ -642,7 +678,7 @@ Output: Suggested Member Set Sigma_res
 
     # Figure 2
     if os.path.exists("docs/figures/fig2_team_directory.png"):
-        story.append(Image("docs/figures/fig2_team_directory.png", width=6.8*inch, height=2.9*inch))
+        story.append(Image("docs/figures/fig2_team_directory.png", width=6.8*inch, height=2.8*inch))
         story.append(Paragraph(
             "<b>Figure 2: Enterprise Team Directory & Management HUD.</b> Enterprise directory grid with dynamic gradient avatar initials, department badges, status flags (<code>Active</code>, <code>Available</code>, <code>In Meeting</code>), and 1-click contacting pipelines (<code>◇ Email</code>, <code>◈ Meet</code>, <code>◲ Note</code>, <code>⎋ Del</code>).",
             caption_style
@@ -655,7 +691,7 @@ Output: Suggested Member Set Sigma_res
 
     # Figure 3
     if os.path.exists("docs/figures/fig3_email_studio.png"):
-        story.append(Image("docs/figures/fig3_email_studio.png", width=6.8*inch, height=2.9*inch))
+        story.append(Image("docs/figures/fig3_email_studio.png", width=6.8*inch, height=2.8*inch))
         story.append(Paragraph(
             "<b>Figure 3: Intelligent Email Studio & Real-Time Auto-Suggestions.</b> Dynamic recipient filter displaying live matching pills, multi-recipient tag management, AI body generation with structured tone options, and instant preview rendering.",
             caption_style
@@ -668,7 +704,7 @@ Output: Suggested Member Set Sigma_res
 
     # Figure 4
     if os.path.exists("docs/figures/fig4_document_studio.png"):
-        story.append(Image("docs/figures/fig4_document_studio.png", width=6.8*inch, height=2.7*inch))
+        story.append(Image("docs/figures/fig4_document_studio.png", width=6.8*inch, height=2.6*inch))
         story.append(Paragraph(
             "<b>Figure 4: Multimodal Document Studio & AST Ingestion Engine.</b> Ingestion of multi-format enterprise files (PDF, DOCX, CSV) with immediate geometry extraction, word count computation, and safe toast notification rendering.",
             caption_style
@@ -681,7 +717,7 @@ Output: Suggested Member Set Sigma_res
 
     # Figure 5
     if os.path.exists("docs/figures/fig5_glassmorphic_theme.png"):
-        story.append(Image("docs/figures/fig5_glassmorphic_theme.png", width=6.8*inch, height=2.7*inch))
+        story.append(Image("docs/figures/fig5_glassmorphic_theme.png", width=6.8*inch, height=2.6*inch))
         story.append(Paragraph(
             "<b>Figure 5: Luxury Dark-Wine Glassmorphic Design System.</b> High-resolution backdrop illustration of the custom wine red (<code>#1a0b12</code>) and glowing ruby (<code>#f43f76</code>) theme enforcing unified container contrast across all operational views.",
             caption_style
@@ -694,7 +730,7 @@ Output: Suggested Member Set Sigma_res
 
     # Figure 6
     if os.path.exists("docs/figures/fig6_system_overview.png"):
-        story.append(Image("docs/figures/fig6_system_overview.png", width=6.8*inch, height=2.8*inch))
+        story.append(Image("docs/figures/fig6_system_overview.png", width=6.8*inch, height=2.7*inch))
         story.append(Paragraph(
             "<b>Figure 6: End-to-End System Workflow Telemetry.</b> Complete system layout demonstrating synchronized multi-view transitions between Dashboard, Tasks, Calendar, Notes, Journal, Document Studio, Team Directory, and System Logs.",
             caption_style
