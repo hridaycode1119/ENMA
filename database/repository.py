@@ -10,6 +10,7 @@ import uuid
 from typing import Any, Dict, List, Optional
 
 from .supabase_client import SupabaseManager
+from .sample_data import SAMPLE_TEAM_MEMBERS
 
 class AIRARepository:
     """
@@ -137,74 +138,8 @@ class AIRARepository:
                 "date_str": "20 May 2025",
             },
         ]
-        self._local_team_members: List[Dict[str, Any]] = [
-            {
-                "id": "mem-01",
-                "name": "Hriday Gupta",
-                "email": "hriday.code1119@gmail.com",
-                "role": "AI / LLM Lead & Founder",
-                "department": "AI Engineering",
-                "status": "Active",
-                "phone": "+91 98765 43210",
-                "initials": "HG",
-                "color": "#be124c",
-            },
-            {
-                "id": "mem-02",
-                "name": "Chetan",
-                "email": "chetan@enterprise.com",
-                "role": "Cloud & Backend Architect",
-                "department": "Engineering",
-                "status": "Available",
-                "phone": "+91 98765 43211",
-                "initials": "CT",
-                "color": "#f43f76",
-            },
-            {
-                "id": "mem-03",
-                "name": "Priya Sharma",
-                "email": "priya.s@enterprise.com",
-                "role": "Product Strategy Lead",
-                "department": "Product",
-                "status": "In Meeting",
-                "phone": "+91 98765 43212",
-                "initials": "PS",
-                "color": "#a855f7",
-            },
-            {
-                "id": "mem-04",
-                "name": "Alex Vance",
-                "email": "alex.v@enterprise.com",
-                "role": "Security & Infra Lead",
-                "department": "Security",
-                "status": "Active",
-                "phone": "+91 98765 43213",
-                "initials": "AV",
-                "color": "#3b82f6",
-            },
-            {
-                "id": "mem-05",
-                "name": "Sophia Chen",
-                "email": "sophia.c@enterprise.com",
-                "role": "Frontend UX Architect",
-                "department": "Design",
-                "status": "Available",
-                "phone": "+91 98765 43214",
-                "initials": "SC",
-                "color": "#10b981",
-            },
-            {
-                "id": "mem-06",
-                "name": "David Miller",
-                "email": "david.m@enterprise.com",
-                "role": "QA & Operations Manager",
-                "department": "Operations",
-                "status": "Active",
-                "phone": "+91 98765 43215",
-                "initials": "DM",
-                "color": "#f59e0b",
-            },
-        ]
+        # In-memory storage for offline / fallback mode initialized with 50 enterprise team members
+        self._local_team_members: List[Dict[str, Any]] = [dict(m) for m in SAMPLE_TEAM_MEMBERS]
         self._local_audit_logs: List[Dict[str, Any]] = []
 
     # --------------------------------------------------------------------------
@@ -512,14 +447,24 @@ class AIRARepository:
 
         return deleted
 
+    def reset_team_members(self) -> List[Dict[str, Any]]:
+        """Resets local team members to the baseline sample enterprise directory (50 members)."""
+        self._local_team_members = [dict(m) for m in SAMPLE_TEAM_MEMBERS]
+        return self._local_team_members
+
     def search_team_members(self, query: str) -> List[Dict[str, Any]]:
-        """Filters registered team members by name, email, or role matching the query."""
+        """Filters registered team members by name, email, role, or department matching the query."""
         if not query or not query.strip():
             return self.get_team_members()
         q = query.strip().lower()
         return [
             m for m in self.get_team_members()
-            if q in m.get("name", "").lower() or q in m.get("email", "").lower() or q in m.get("role", "").lower()
+            if (
+                q in m.get("name", "").lower()
+                or q in m.get("email", "").lower()
+                or q in m.get("role", "").lower()
+                or q in m.get("department", "").lower()
+            )
         ]
 
 # Modern Rebranded Aliases
