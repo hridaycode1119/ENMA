@@ -13,6 +13,7 @@ MENU_ITEMS = [
     ("⬡ Document & Data Studio", "documents"),
     ("◲ Notes & Knowledge", "notes"),
     ("👥 Enterprise Team", "team"),
+    ("🎫 Support & Tickets", "tickets"),
 ]
 
 SYSTEM_ITEMS = [
@@ -60,6 +61,8 @@ def render_enma_sidebar(active_view: str) -> str:
             current_normalized = "documents"
         elif active_view in ("journals", "bookmarks"):
             current_normalized = "notes"
+        elif active_view in ("helpdesk", "support", "ticket"):
+            current_normalized = "tickets"
         elif active_view in ("terminal", "integrations"):
             current_normalized = "settings"
 

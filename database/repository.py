@@ -141,6 +141,64 @@ class AIRARepository:
         # In-memory storage for offline / fallback mode initialized with 50 enterprise team members
         self._local_team_members: List[Dict[str, Any]] = [dict(m) for m in SAMPLE_TEAM_MEMBERS]
         self._local_audit_logs: List[Dict[str, Any]] = []
+        self._local_tickets: List[Dict[str, Any]] = [
+            {
+                "id": "tkt-101",
+                "title": "GPU Cluster Allocation Bottleneck for LLM Fine-Tuning",
+                "category": "Workflow / Operational Bottleneck",
+                "priority": "High",
+                "status": "In Progress",
+                "created_by_name": "Elena Rostova",
+                "created_by_email": "elena.r@enterprise.com",
+                "department": "AI Engineering",
+                "description": "Training jobs are queued for over 6 hours due to lack of concurrent A100 GPU instance allocation in the primary Kubernetes cluster.",
+                "resolution_note": "Provisioning secondary spot instance cluster on Google Cloud Vertex AI.",
+                "created_at": datetime.datetime.now().isoformat(),
+                "updated_at": datetime.datetime.now().isoformat(),
+            },
+            {
+                "id": "tkt-102",
+                "title": "Discrepancy in October Travel Reimbursement & Payroll Slip",
+                "category": "Salary / Compensation / Payroll",
+                "priority": "Medium",
+                "status": "Open",
+                "created_by_name": "Arjun Reddy",
+                "created_by_email": "arjun.r@enterprise.com",
+                "department": "Engineering",
+                "description": "Client on-site travel allowance for Bangalore conference was omitted from the October end-of-month pay slip.",
+                "resolution_note": "",
+                "created_at": datetime.datetime.now().isoformat(),
+                "updated_at": datetime.datetime.now().isoformat(),
+            },
+            {
+                "id": "tkt-103",
+                "title": "Annual Leave Application for Dec 24 - Jan 2 Holiday Period",
+                "category": "Holiday / Leave Request",
+                "priority": "Low",
+                "status": "Resolved",
+                "created_by_name": "Sophia Chen",
+                "created_by_email": "sophia.c@enterprise.com",
+                "department": "Design",
+                "description": "Requesting 6 days of annual paid leave during the winter shutdown. Handover docs uploaded to Document Studio.",
+                "resolution_note": "Approved by HR & Design department lead.",
+                "created_at": datetime.datetime.now().isoformat(),
+                "updated_at": datetime.datetime.now().isoformat(),
+            },
+            {
+                "id": "tkt-104",
+                "title": "Delayed Stakeholder Sign-Off on Sprint 14 Deliverables",
+                "category": "Workflow / Operational Bottleneck",
+                "priority": "Urgent",
+                "status": "Open",
+                "created_by_name": "Priya Sharma",
+                "created_by_email": "priya.s@enterprise.com",
+                "department": "Product",
+                "description": "Release pipeline is blocked waiting for executive stakeholder sign-off. Needs expedited review meeting.",
+                "resolution_note": "",
+                "created_at": datetime.datetime.now().isoformat(),
+                "updated_at": datetime.datetime.now().isoformat(),
+            },
+        ]
 
     # --------------------------------------------------------------------------
     # 1. Tasks Management
@@ -466,6 +524,131 @@ class AIRARepository:
                 or q in m.get("department", "").lower()
             )
         ]
+
+    # --------------------------------------------------------------------------
+    # 7. Enterprise Helpdesk & Issue Tickets Management
+    # --------------------------------------------------------------------------
+    def get_tickets(
+        self,
+        category: Optional[str] = None,
+        status: Optional[str] = None,
+        priority: Optional[str] = None,
+        search_query: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
+        """Returns enterprise tickets filtered by category, status, priority, or search query."""
+        client = self.sb_manager.get_client()
+        if client:
+            try:
+                res = client.table("aira_tickets").select("*").order("created_at", desc=True).execute()
+                if res.data:
+                    results = res.data
+                else:
+                    results = self._local_tickets
+            except Exception:
+                results = self._local_tickets
+        else:
+            results = self._local_tickets
+
+        filtered = list(results)
+        if category and category != "All Categories":
+            filtered = [t for t in filtered if t.get("category") == category]
+        if status and status != "All Statuses":
+            filtered = [t for t in filtered if t.get("status") == status]
+        if priority and priority != "All Priorities":
+            filtered = [t for t in filtered if t.get("priority") == priority]
+        if search_query and search_query.strip():
+            q = search_query.strip().lower()
+            filtered = [
+                t for t in filtered
+                if (
+                    q in t.get("title", "").lower()
+                    or q in t.get("description", "").lower()
+                    or q in t.get("created_by_name", "").lower()
+                    or q in t.get("created_by_email", "").lower()
+                    or q in t.get("department", "").lower()
+                )
+            ]
+        return filtered
+
+    def get_ticket_by_id(self, ticket_id: str) -> Optional[Dict[str, Any]]:
+        """Retrieves a single ticket by its unique identifier."""
+        return next((t for t in self._local_tickets if t["id"] == ticket_id), None)
+
+    def create_ticket(
+        self,
+        title: str,
+        category: str,
+        description: str,
+        created_by_name: str,
+        created_by_email: str,
+        department: str = "Engineering",
+        priority: str = "Medium",
+    ) -> Dict[str, Any]:
+        """Creates and persists a new enterprise inconvenience/workflow ticket."""
+        record = {
+            "id": f"tkt-{uuid.uuid4().hex[:6]}",
+            "title": title.strip(),
+            "category": category.strip(),
+            "description": description.strip(),
+            "created_by_name": created_by_name.strip(),
+            "created_by_email": created_by_email.strip().lower(),
+            "department": department.strip(),
+            "priority": priority.strip() if priority in ("Low", "Medium", "High", "Urgent") else "Medium",
+            "status": "Open",
+            "resolution_note": "",
+            "created_at": datetime.datetime.now().isoformat(),
+            "updated_at": datetime.datetime.now().isoformat(),
+        }
+        self._local_tickets.insert(0, record)
+
+        client = self.sb_manager.get_client()
+        if client:
+            try:
+                client.table("aira_tickets").insert(record).execute()
+            except Exception:
+                pass
+
+        return record
+
+    def update_ticket_status(
+        self,
+        ticket_id: str,
+        status: str,
+        resolution_note: Optional[str] = None,
+    ) -> Optional[Dict[str, Any]]:
+        """Updates the status and optional resolution note of an issue ticket."""
+        ticket = self.get_ticket_by_id(ticket_id)
+        if not ticket:
+            return None
+
+        ticket["status"] = status
+        ticket["updated_at"] = datetime.datetime.now().isoformat()
+        if resolution_note is not None:
+            ticket["resolution_note"] = resolution_note.strip()
+
+        client = self.sb_manager.get_client()
+        if client:
+            try:
+                client.table("aira_tickets").update({
+                    "status": status,
+                    "resolution_note": ticket.get("resolution_note", ""),
+                    "updated_at": ticket["updated_at"],
+                }).eq("id", ticket_id).execute()
+            except Exception:
+                pass
+
+        return ticket
+
+    def get_ticket_stats(self) -> Dict[str, int]:
+        """Returns real-time aggregate statistics for enterprise tickets."""
+        tickets = self._local_tickets
+        return {
+            "total": len(tickets),
+            "open": sum(1 for t in tickets if t.get("status") == "Open"),
+            "in_progress": sum(1 for t in tickets if t.get("status") == "In Progress"),
+            "resolved": sum(1 for t in tickets if t.get("status") in ("Resolved", "Closed")),
+            "urgent": sum(1 for t in tickets if t.get("priority") == "Urgent" and t.get("status") != "Closed"),
+        }
 
 # Modern Rebranded Aliases
 ENMARepository = AIRARepository

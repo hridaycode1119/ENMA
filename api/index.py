@@ -86,6 +86,19 @@ class TeamMemberRequest(BaseModel):
     phone: Optional[str] = ""
     status: Optional[str] = "Active"
 
+class TicketCreateRequest(BaseModel):
+    title: str
+    category: str
+    description: str
+    created_by_name: str
+    created_by_email: str
+    department: Optional[str] = "Engineering"
+    priority: Optional[str] = "Medium"
+
+class TicketUpdateRequest(BaseModel):
+    status: str
+    resolution_note: Optional[str] = None
+
 # ------------------------------------------------------------------------------
 # 1. Health & Status
 # ------------------------------------------------------------------------------
@@ -264,7 +277,56 @@ def get_email_templates():
     return {"templates": PREBUILT_TEMPLATES}
 
 # ------------------------------------------------------------------------------
-# 9. Web Dashboard UI Route
+# 10. Helpdesk & Enterprise Issue Tickets
+# ------------------------------------------------------------------------------
+@app.get("/api/tickets")
+def get_tickets(
+    category: Optional[str] = None,
+    status: Optional[str] = None,
+    priority: Optional[str] = None,
+    search: Optional[str] = None,
+):
+    tickets = repo.get_tickets(
+        category=category,
+        status=status,
+        priority=priority,
+        search_query=search,
+    )
+    stats = repo.get_ticket_stats()
+    return {"tickets": tickets, "stats": stats}
+
+@app.get("/api/tickets/{ticket_id}")
+def get_ticket(ticket_id: str):
+    ticket = repo.get_ticket_by_id(ticket_id)
+    if not ticket:
+        raise HTTPException(status_code=404, detail=f"Ticket {ticket_id} not found")
+    return ticket
+
+@app.post("/api/tickets")
+def create_ticket(req: TicketCreateRequest):
+    return repo.create_ticket(
+        title=req.title,
+        category=req.category,
+        description=req.description,
+        created_by_name=req.created_by_name,
+        created_by_email=req.created_by_email,
+        department=req.department or "Engineering",
+        priority=req.priority or "Medium",
+    )
+
+@app.patch("/api/tickets/{ticket_id}")
+def update_ticket(ticket_id: str, req: TicketUpdateRequest):
+    updated = repo.update_ticket_status(
+        ticket_id=ticket_id,
+        status=req.status,
+        resolution_note=req.resolution_note,
+    )
+    if not updated:
+        raise HTTPException(status_code=404, detail=f"Ticket {ticket_id} not found")
+    return updated
+
+# ------------------------------------------------------------------------------
+# 11. Web Dashboard UI Route
 # ------------------------------------------------------------------------------
 @app.get("/", response_class=HTMLResponse)
 def index_page():

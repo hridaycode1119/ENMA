@@ -10,6 +10,7 @@ from .enma_dashboard import render_enma_dashboard, render_lucora_dashboard, rend
 from .calendar_view import render_calendar_view
 from .notes_journal_view import render_notes_view, render_journals_view, render_bookmarks_view
 from .email_composer import render_email_composer, PREBUILT_TEMPLATES
+from .tickets_view import render_tickets_view
 
 __all__ = [
     "render_sidebar",
@@ -33,4 +34,5 @@ __all__ = [
     "render_bookmarks_view",
     "render_email_composer",
     "PREBUILT_TEMPLATES",
+    "render_tickets_view",
 ]

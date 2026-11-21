@@ -27,6 +27,7 @@ from components.clarification_modal import render_clarification_card
 from components.timeline import render_timeline
 from components.email_composer import render_email_composer
 from components.team_view import render_team_view
+from components.tickets_view import render_tickets_view
 
 # 1. Streamlit Page Configuration
 st.set_page_config(
@@ -171,6 +172,9 @@ elif current_view in ("notes", "journals", "bookmarks"):
 
 elif current_view in ("team", "members"):
     render_team_view(on_navigate_view=navigate_to_view)
+
+elif current_view in ("tickets", "helpdesk", "support"):
+    render_tickets_view(on_navigate_view=navigate_to_view)
 
 elif current_view in ("voice", "voice_commands"):
     st.markdown("### Voice Command Engine")
