@@ -58,7 +58,7 @@ def render_timeline(state: WorkflowState, last_result, elapsed_ms: float = 0.0, 
             icon = "✅" if (is_done and not is_current) else ("⏳" if is_current else "⚪")
             border_style = "box-shadow: 0 0 10px rgba(79, 70, 229, 0.4);" if is_current else ""
             st.markdown(
-                f"<div style='text-align: center; padding: 0.6rem 0.4rem; background: var(--neu-surface); border-radius: var(--radius-md); box-shadow: var(--neu-shadow-flat-sm); {border_style} font-size: 0.78rem; font-weight: {'700' if is_current else '500'};'>"
+                f"<div style='text-align: center; padding: 0.6rem 0.4rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; color: #0f172a; box-shadow: 0 1px 2px rgba(15,23,42,0.04); {border_style} font-size: 0.78rem; font-weight: {'700' if is_current else '500'};'>"
                 f"{icon}<br>{label}</div>",
                 unsafe_allow_html=True,
             )

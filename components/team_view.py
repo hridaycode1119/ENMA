@@ -1,5 +1,6 @@
 """
 ENMA Enterprise Team & Directory Component.
+Bright, Clean & Light Formal Corporate Palette.
 Provides interactive enterprise member cards, registration of new members,
 real-time multi-filtering, pagination for 50+ members, stress-test benchmarks,
 and 1-click contacting actions (Direct Email, Schedule Meeting, Quick Note).
@@ -15,29 +16,29 @@ from database.repository import ENMARepository
 from database.security_vault import DatabaseSecurityVault
 
 def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -> None:
-    """Renders the comprehensive Enterprise Team Directory & Management View with 50-member scalability."""
+    """Renders the comprehensive Enterprise Team Directory & Management View with 50-member scalability in light formal theme."""
     repo = ENMARepository()
     members = repo.get_team_members()
 
-    # 1. Header Banner
+    # 1. Header Banner (Light Formal Theme)
     st.markdown(
         """
-        <div style="position: relative; border-radius: 16px; background: linear-gradient(135deg, #230c18 0%, #2c0e1e 50%, #2b101f 100%); border: 1px solid rgba(244, 63, 118, 0.25); padding: 22px; overflow: hidden; box-shadow: 0 10px 30px rgba(20, 6, 13, 0.4); margin-bottom: 20px;">
+        <div style="position: relative; border-radius: 16px; background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 60%, #e0e7ff 100%); border: 1px solid #bfdbfe; padding: 22px; overflow: hidden; box-shadow: 0 4px 20px rgba(37, 99, 235, 0.08); margin-bottom: 20px;">
             <div class="hero-wave"></div>
             <div style="position: relative; z-index: 10;">
                 <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
                     <div>
                         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
-                            <span style="color: #fb719e; font-size: 22px;">👥</span>
-                            <h2 style="font-size: 24px; font-weight: 700; letter-spacing: -0.01em; color: #ffffff; margin: 0;">Enterprise Team Directory</h2>
+                            <span style="color: #2563eb; font-size: 22px;">👥</span>
+                            <h2 style="font-size: 24px; font-weight: 800; letter-spacing: -0.01em; color: #0f172a; margin: 0;">Enterprise Team Directory</h2>
                         </div>
-                        <p style="font-size: 12px; color: rgba(252, 231, 243, 0.8); max-width: 680px; line-height: 1.5; margin: 0;">
+                        <p style="font-size: 13px; color: #475569; max-width: 680px; line-height: 1.5; margin: 0;">
                             Scalable directory of 50 enterprise personnel across AI, Engineering, Security, Product, Legal, and Operations.
                         </p>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 9999px; background: rgba(244, 63, 118, 0.15); border: 1px solid rgba(244, 63, 118, 0.35); font-size: 11px; color: #fce7f3; font-weight: 600;">
-                            <span style="width: 7px; height: 7px; border-radius: 50%; background: #34d399; box-shadow: 0 0 8px #34d399;"></span>
+                        <span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 9999px; background: #ecfdf5; border: 1px solid #a7f3d0; font-size: 11px; color: #047857; font-weight: 700;">
+                            <span style="width: 7px; height: 7px; border-radius: 50%; background: #059669; box-shadow: 0 0 6px #059669;"></span>
                             Scale Tested: 50 Members Active
                         </span>
                     </div>
@@ -58,9 +59,9 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
     with kpi1:
         st.markdown(
             f"""
-            <div style="background: rgba(35, 12, 24, 0.85); border: 1px solid rgba(63, 23, 46, 0.9); border-radius: 14px; padding: 14px; text-align: center; box-shadow: 0 4px 12px rgba(20, 6, 13, 0.3);">
-                <span style="color: #fb719e; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 4px;">Total Enterprise Size</span>
-                <span style="font-size: 24px; font-weight: 800; color: #ffffff;">{len(members)}</span>
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; text-align: center; box-shadow: 0 1px 3px rgba(15,23,42,0.04);">
+                <span style="color: #64748b; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 4px;">Total Enterprise Size</span>
+                <span style="font-size: 24px; font-weight: 800; color: #0f172a;">{len(members)}</span>
             </div>
             """,
             unsafe_allow_html=True,
@@ -68,9 +69,9 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
     with kpi2:
         st.markdown(
             f"""
-            <div style="background: rgba(35, 12, 24, 0.85); border: 1px solid rgba(63, 23, 46, 0.9); border-radius: 14px; padding: 14px; text-align: center; box-shadow: 0 4px 12px rgba(20, 6, 13, 0.3);">
-                <span style="color: #34d399; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 4px;">Available / Active</span>
-                <span style="font-size: 24px; font-weight: 800; color: #ffffff;">{active_count}</span>
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; text-align: center; box-shadow: 0 1px 3px rgba(15,23,42,0.04);">
+                <span style="color: #059669; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 4px;">Available / Active</span>
+                <span style="font-size: 24px; font-weight: 800; color: #047857;">{active_count}</span>
             </div>
             """,
             unsafe_allow_html=True,
@@ -78,9 +79,9 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
     with kpi3:
         st.markdown(
             f"""
-            <div style="background: rgba(35, 12, 24, 0.85); border: 1px solid rgba(63, 23, 46, 0.9); border-radius: 14px; padding: 14px; text-align: center; box-shadow: 0 4px 12px rgba(20, 6, 13, 0.3);">
-                <span style="color: #fbbf24; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 4px;">In Meetings / Away</span>
-                <span style="font-size: 24px; font-weight: 800; color: #ffffff;">{in_meeting_count + away_count}</span>
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; text-align: center; box-shadow: 0 1px 3px rgba(15,23,42,0.04);">
+                <span style="color: #d97706; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 4px;">In Meetings / Away</span>
+                <span style="font-size: 24px; font-weight: 800; color: #b45309;">{in_meeting_count + away_count}</span>
             </div>
             """,
             unsafe_allow_html=True,
@@ -88,9 +89,9 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
     with kpi4:
         st.markdown(
             f"""
-            <div style="background: rgba(35, 12, 24, 0.85); border: 1px solid rgba(63, 23, 46, 0.9); border-radius: 14px; padding: 14px; text-align: center; box-shadow: 0 4px 12px rgba(20, 6, 13, 0.3);">
-                <span style="color: #c084fc; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 4px;">Active Departments</span>
-                <span style="font-size: 24px; font-weight: 800; color: #ffffff;">{len(depts)}</span>
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; text-align: center; box-shadow: 0 1px 3px rgba(15,23,42,0.04);">
+                <span style="color: #2563eb; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 4px;">Active Departments</span>
+                <span style="font-size: 24px; font-weight: 800; color: #1e40af;">{len(depts)}</span>
             </div>
             """,
             unsafe_allow_html=True,
@@ -136,8 +137,8 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
         with st.container(border=True):
             st.markdown(
                 """
-                <div style="font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                    <span style="color: #fb719e;">✦</span>
+                <div style="font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                    <span style="color: #2563eb;">✦</span>
                     <span>Register New Enterprise Team Member</span>
                 </div>
                 """,
@@ -213,15 +214,15 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
 
     query_latency_ms = (time.perf_counter() - t0) * 1000
 
-    # 6. Telemetry & Efficiency Benchmark Strip
+    # 6. Telemetry & Efficiency Benchmark Strip (Light Formal Style)
     telemetry_col, bench_col = st.columns([3, 1.2])
     with telemetry_col:
         st.markdown(
             f"""
-            <div style="display: flex; align-items: center; gap: 14px; font-size: 11px; color: #a88094; padding: 6px 0;">
-                <span>⚡ <b>Directory Filter Latency:</b> <code style="color: #34d399; background: rgba(52,211,153,0.1); padding: 2px 6px; border-radius: 4px;">{query_latency_ms:.2f} ms</code></span>
-                <span>📦 <b>Matched:</b> <span style="color: #ffffff; font-weight: 700;">{len(filtered)}</span> of {len(members)}</span>
-                <span>🏢 <b>Depts Filtered:</b> <span style="color: #fb719e;">{dept_filter}</span></span>
+            <div style="display: flex; align-items: center; gap: 14px; font-size: 12px; color: #64748b; padding: 6px 0;">
+                <span>⚡ <b>Directory Filter Latency:</b> <code style="color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 2px 6px; border-radius: 4px; font-weight: 700;">{query_latency_ms:.2f} ms</code></span>
+                <span>📦 <b>Matched:</b> <span style="color: #0f172a; font-weight: 700;">{len(filtered)}</span> of {len(members)}</span>
+                <span>🏢 <b>Depts Filtered:</b> <span style="color: #2563eb; font-weight: 600;">{dept_filter}</span></span>
             </div>
             """,
             unsafe_allow_html=True,
@@ -234,8 +235,8 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
         with st.container(border=True):
             st.markdown(
                 """
-                <div style="font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 8px;">
-                    <span style="color: #fb719e;">✦</span> Directory Efficiency & Stress-Test Results (1,000 Iterations)
+                <div style="font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">
+                    <span style="color: #2563eb;">✦</span> Directory Efficiency & Stress-Test Results (1,000 Iterations)
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -313,9 +314,9 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
         end_idx = min(start_idx + page_size, len(filtered))
         st.markdown(
             f"""
-            <div style="text-align: center; font-size: 12px; color: #fce7f3; font-weight: 600; padding-top: 8px;">
-                Page <span style="color: #fb719e;">{cur_page}</span> of {total_pages} &nbsp;·&nbsp;
-                Showing <span style="color: #34d399;">{start_idx + 1}–{end_idx}</span> of {len(filtered)} members
+            <div style="text-align: center; font-size: 12px; color: #334155; font-weight: 600; padding-top: 8px;">
+                Page <span style="color: #2563eb; font-weight: 700;">{cur_page}</span> of {total_pages} &nbsp;·&nbsp;
+                Showing <span style="color: #047857; font-weight: 700;">{start_idx + 1}–{end_idx}</span> of {len(filtered)} members
             </div>
             """,
             unsafe_allow_html=True,
@@ -345,34 +346,35 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
                     m_status = member.get("status", "Active")
                     m_phone = member.get("phone", "+91 98765 00000")
                     m_init = member.get("initials", m_name[:2].upper())
-                    m_color = member.get("color", "#be124c")
 
-                    status_color = "#34d399" if m_status in ("Active", "Available") else "#fbbf24" if m_status == "In Meeting" else "#a88094"
+                    status_color = "#047857" if m_status in ("Active", "Available") else "#b45309" if m_status == "In Meeting" else "#64748b"
+                    status_bg = "#ecfdf5" if m_status in ("Active", "Available") else "#fffbeb" if m_status == "In Meeting" else "#f1f5f9"
+                    status_border = "#a7f3d0" if m_status in ("Active", "Available") else "#fde68a" if m_status == "In Meeting" else "#cbd5e1"
 
                     st.markdown(
                         f"""
                         <div style="margin-bottom: 12px;">
                             <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px;">
                                 <div style="display: flex; align-items: center; gap: 12px;">
-                                    <div style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, {m_color} 0%, #ff4d8d 100%); display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 15px; font-weight: 700; box-shadow: 0 0 12px rgba(244,63,118,0.4); flex-shrink: 0;">
+                                    <div style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%); display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 15px; font-weight: 700; box-shadow: 0 2px 8px rgba(37,99,235,0.25); flex-shrink: 0;">
                                         {m_init}
                                     </div>
                                     <div>
                                         <div style="display: flex; align-items: center; gap: 8px;">
-                                            <h3 style="font-size: 15px; font-weight: 700; color: #ffffff; margin: 0;">{m_name}</h3>
-                                            <span style="font-size: 9px; font-weight: 600; padding: 2px 8px; border-radius: 9999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #fce7f3;">{m_dept}</span>
+                                            <h3 style="font-size: 15px; font-weight: 700; color: #0f172a; margin: 0;">{m_name}</h3>
+                                            <span style="font-size: 9px; font-weight: 600; padding: 2px 8px; border-radius: 9999px; background: #f1f5f9; border: 1px solid #cbd5e1; color: #334155;">{m_dept}</span>
                                         </div>
-                                        <p style="font-size: 11px; color: #fb719e; font-weight: 500; margin: 2px 0 0 0;">{m_role}</p>
+                                        <p style="font-size: 11px; color: #2563eb; font-weight: 600; margin: 2px 0 0 0;">{m_role}</p>
                                     </div>
                                 </div>
-                                <div style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; border-radius: 9999px; background: rgba(20, 6, 13, 0.8); border: 1px solid rgba(43, 16, 31, 0.9); font-size: 10px;">
-                                    <span style="width: 6px; height: 6px; border-radius: 50%; background: {status_color}; box-shadow: 0 0 6px {status_color};"></span>
-                                    <span style="color: #ffffff; font-weight: 500;">{m_status}</span>
+                                <div style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; border-radius: 9999px; background: {status_bg}; border: 1px solid {status_border}; font-size: 10px;">
+                                    <span style="width: 6px; height: 6px; border-radius: 50%; background: {status_color};"></span>
+                                    <span style="color: {status_color}; font-weight: 700;">{m_status}</span>
                                 </div>
                             </div>
-                            <div style="display: flex; flex-direction: column; gap: 4px; font-size: 11px; color: #a88094; padding-left: 56px;">
-                                <div><span style="color: #fb719e;">✉</span> <span style="color: #fce7f3; font-family: monospace;">{m_email}</span></div>
-                                <div><span style="color: #fb719e;">📞</span> <span style="color: #fce7f3; font-family: monospace;">{m_phone}</span></div>
+                            <div style="display: flex; flex-direction: column; gap: 4px; font-size: 11px; color: #64748b; padding-left: 56px;">
+                                <div><span style="color: #2563eb;">✉</span> <span style="color: #1e293b; font-family: monospace;">{m_email}</span></div>
+                                <div><span style="color: #2563eb;">📞</span> <span style="color: #1e293b; font-family: monospace;">{m_phone}</span></div>
                             </div>
                         </div>
                         """,
@@ -421,4 +423,3 @@ def render_team_view(on_navigate_view: Optional[Callable[[str], None]] = None) -
                                 st.rerun()
                             else:
                                 st.error("Cannot delete root lead account.")
-

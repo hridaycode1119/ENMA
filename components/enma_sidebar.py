@@ -1,6 +1,6 @@
 """
 ENMA Master Sidebar Navigation Component.
-Wine/Plum/Ruby Glassmorphic Palette, Custom ENMA Nexus Logo & Aesthetic Icons.
+Bright, Clean & Light Formal Corporate Palette.
 """
 
 from __future__ import annotations
@@ -21,19 +21,19 @@ SYSTEM_ITEMS = [
 ]
 
 def render_enma_sidebar(active_view: str) -> str:
-    """Renders the sleek, emoji-free ENMA sidebar navigation with cool custom logo."""
+    """Renders the sleek, light formal ENMA sidebar navigation."""
     with st.sidebar:
-        # App Brand Logo (Bespoke ENMA Hyper-Nexus Logo)
+        # App Brand Logo (Bespoke ENMA Hyper-Nexus Logo - Royal Executive Blue)
         st.markdown(
             """
             <div style="display: flex; align-items: center; gap: 12px; padding: 6px 8px 18px 8px;">
                 <div style="width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;">
-                    <svg style="width: 32px; height: 32px; filter: drop-shadow(0 0 10px rgba(244,63,118,0.8));" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg style="width: 32px; height: 32px; filter: drop-shadow(0 2px 6px rgba(37,99,235,0.4));" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                             <linearGradient id="enmaLogoGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#ff4d8d"/>
-                                <stop offset="50%" stop-color="#f43f76"/>
-                                <stop offset="100%" stop-color="#be124c"/>
+                                <stop offset="0%" stop-color="#3b82f6"/>
+                                <stop offset="50%" stop-color="#2563eb"/>
+                                <stop offset="100%" stop-color="#1d4ed8"/>
                             </linearGradient>
                         </defs>
                         <circle cx="24" cy="24" r="21" stroke="url(#enmaLogoGlow)" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
@@ -43,8 +43,8 @@ def render_enma_sidebar(active_view: str) -> str:
                     </svg>
                 </div>
                 <div style="line-height: 1.1;">
-                    <h1 style="font-size: 15px; font-weight: 800; letter-spacing: 0.08em; color: #ffffff; text-transform: uppercase; margin: 0;">ENMA</h1>
-                    <p style="font-size: 10px; letter-spacing: 0.15em; color: #a88094; font-weight: 600; text-transform: uppercase; margin: 0;">ENTERPRISE AI</p>
+                    <h1 style="font-size: 15px; font-weight: 800; letter-spacing: 0.08em; color: #0f172a; text-transform: uppercase; margin: 0;">ENMA</h1>
+                    <p style="font-size: 10px; letter-spacing: 0.15em; color: #2563eb; font-weight: 700; text-transform: uppercase; margin: 0;">ENTERPRISE AI</p>
                 </div>
             </div>
             """,
@@ -77,8 +77,8 @@ def render_enma_sidebar(active_view: str) -> str:
         # System & Engine Section
         st.markdown(
             """
-            <div style="padding-top: 14px; margin-top: 10px; border-top: 1px solid rgba(43, 16, 31, 0.6);">
-                <div style="padding-left: 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: rgba(168, 128, 148, 0.7); text-transform: uppercase; margin-bottom: 6px;">
+            <div style="padding-top: 14px; margin-top: 10px; border-top: 1px solid #e2e8f0;">
+                <div style="padding-left: 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: #64748b; text-transform: uppercase; margin-bottom: 6px;">
                     SYSTEM &amp; ENGINE
                 </div>
             </div>
@@ -96,16 +96,16 @@ def render_enma_sidebar(active_view: str) -> str:
             ):
                 selected = view_key
 
-        # ENMA Pro Banner
+        # ENMA Pro Banner (Light Formal Style)
         st.markdown(
             """
-            <div style="position: relative; margin-top: 20px; padding: 14px; border-radius: 16px; background: rgba(35, 12, 24, 0.9); border: 1px solid rgba(244, 63, 118, 0.25); box-shadow: 0 4px 20px rgba(20, 6, 13, 0.5);">
-                <div style="display: flex; align-items: center; gap: 6px; color: #fb719e; font-weight: 700; font-size: 12px; margin-bottom: 4px;">
+            <div style="position: relative; margin-top: 20px; padding: 14px; border-radius: 12px; background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%); border: 1px solid #bfdbfe; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.06);">
+                <div style="display: flex; align-items: center; gap: 6px; color: #1d4ed8; font-weight: 700; font-size: 12px; margin-bottom: 4px;">
                     <span>✦</span>
                     <span style="letter-spacing: 0.05em;">ENMA PRO</span>
                 </div>
-                <p style="font-size: 11px; color: #a88094; line-height: 1.4; margin-bottom: 10px;">
-                    Unlock advanced features, more AI models &amp; higher limits.
+                <p style="font-size: 11px; color: #475569; line-height: 1.4; margin-bottom: 10px;">
+                    Unlock advanced models, higher API quotas &amp; enterprise features.
                 </p>
             </div>
             """,
@@ -118,17 +118,17 @@ def render_enma_sidebar(active_view: str) -> str:
         # User Profile Card (Hriday Gupta / HG)
         st.markdown(
             """
-            <div style="margin-top: 14px; display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 12px; background: rgba(35, 12, 24, 0.4); border: 1px solid rgba(43, 16, 31, 0.4);">
+            <div style="margin-top: 14px; display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 10px; background: #f8fafc; border: 1px solid #e2e8f0;">
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #be124c 0%, #ff4d8d 100%); display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 11px; font-weight: 700; box-shadow: 0 0 8px rgba(244,63,118,0.4);">
+                    <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%); display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 11px; font-weight: 700; box-shadow: 0 1px 3px rgba(37,99,235,0.3);">
                         HG
                     </div>
                     <div style="line-height: 1.1; overflow: hidden;">
-                        <h3 style="font-size: 12px; font-weight: 600; color: #ffffff; margin: 0; white-space: nowrap;">Hriday Gupta</h3>
-                        <p style="font-size: 10px; color: #a88094; margin: 0; white-space: nowrap;">hriday.code1119@gmail.com</p>
+                        <h3 style="font-size: 12px; font-weight: 600; color: #0f172a; margin: 0; white-space: nowrap;">Hriday Gupta</h3>
+                        <p style="font-size: 10px; color: #64748b; margin: 0; white-space: nowrap;">hriday.code1119@gmail.com</p>
                     </div>
                 </div>
-                <div style="color: #a88094; font-size: 14px;">•••</div>
+                <div style="color: #94a3b8; font-size: 14px;">•••</div>
             </div>
             """,
             unsafe_allow_html=True,

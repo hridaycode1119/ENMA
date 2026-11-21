@@ -1,57 +1,68 @@
 /* ==============================================================================
    ENMA Enterprise AI Workspace Design System
-   Exact Wine/Plum/Ruby Palette & High-Contrast Typography
+   Bright, Crisp & Light Formal Executive Palette (Slate, Pearl & Royal Blue)
    ============================================================================== */
 
 @import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 :root {
-    --wine-950: #14060d;
-    --wine-900: #1a0b12;
-    --wine-850: #230c18;
-    --wine-800: #2b101f;
-    --wine-750: #341426;
-    --wine-700: #3f172e;
-    --wine-600: #521f3d;
-    --wine-500: #752b57;
+    --canvas-bg: #f8fafc;
+    --canvas-subtle: #f1f5f9;
+    --card-bg: #ffffff;
+    --card-border: #e2e8f0;
+    --card-hover-border: #cbd5e1;
     
-    --ruby-400: #fb719e;
-    --ruby-500: #f43f76;
-    --ruby-600: #e11d5e;
-    --ruby-700: #be124c;
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --text-light: #94a3b8;
     
-    --accent-pink: #ff4d8d;
-    --accent-glow: #e23c72;
-    --accent-soft: #fce7f3;
-    --accent-muted: #a88094;
-    
-    --gradient-ruby-pink: linear-gradient(135deg, #e11d5e 0%, #ff4d8d 100%);
-    --gradient-hero: linear-gradient(135deg, #230c18 0%, #2c0e1e 50%, #2b101f 100%);
-    --gradient-card: linear-gradient(135deg, rgba(35, 12, 24, 0.75) 0%, rgba(26, 11, 18, 0.85) 100%);
+    --formal-blue-900: #1e3a8a;
+    --formal-blue-800: #1e40af;
+    --formal-blue-700: #1d4ed8;
+    --formal-blue-600: #2563eb;
+    --formal-blue-500: #3b82f6;
+    --formal-blue-400: #60a5fa;
+    --formal-blue-100: #dbeafe;
+    --formal-blue-50: #eff6ff;
+
+    --status-success: #059669;
+    --status-success-bg: #ecfdf5;
+    --status-warning: #d97706;
+    --status-warning-bg: #fffbeb;
+    --status-info: #4f46e5;
+    --status-info-bg: #eef2ff;
+
+    --gradient-primary: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+    --gradient-hero: linear-gradient(135deg, #ffffff 0%, #f0f7ff 60%, #e0e7ff 100%);
+    --gradient-card: #ffffff;
 }
 
 /* Base Canvas & Overrides */
 html, body, [class*="css"], .stApp {
     font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-    background-color: var(--wine-900) !important;
-    background: linear-gradient(180deg, #1a0b12 0%, #1a0b12 60%, #12050c 100%) !important;
-    color: #ffffff !important;
+    background-color: var(--canvas-bg) !important;
+    background: #f8fafc !important;
+    color: var(--text-primary) !important;
     -webkit-font-smoothing: antialiased;
 }
 
 header[data-testid="stHeader"] {
-    background-color: transparent !important;
+    background-color: rgba(248, 250, 252, 0.8) !important;
+    backdrop-filter: blur(8px) !important;
+    border-bottom: 1px solid #e2e8f0 !important;
 }
 
 [data-testid="stSidebar"] {
-    background-color: rgba(20, 6, 13, 0.95) !important;
-    border-right: 1px solid var(--wine-800) !important;
+    background-color: #ffffff !important;
+    border-right: 1px solid #e2e8f0 !important;
+    box-shadow: 2px 0 12px rgba(15, 23, 42, 0.03) !important;
 }
 
-/* Fluid Glowing Waves */
+/* Subtle Fluid Ambient Waves (Light Theme) */
 .hero-wave {
-    background: radial-gradient(circle at 75% 45%, rgba(244, 63, 118, 0.45) 0%, rgba(225, 29, 94, 0.25) 35%, rgba(43, 16, 31, 0) 70%),
-                linear-gradient(135deg, transparent 40%, rgba(255, 77, 141, 0.2) 65%, rgba(226, 60, 114, 0.35) 85%);
+    background: radial-gradient(circle at 75% 45%, rgba(191, 219, 254, 0.5) 0%, rgba(224, 231, 255, 0.3) 35%, rgba(255, 255, 255, 0) 70%),
+                linear-gradient(135deg, transparent 40%, rgba(219, 234, 254, 0.35) 65%, rgba(191, 219, 254, 0.45) 85%);
     position: absolute;
     inset: 0;
     pointer-events: none;
@@ -59,7 +70,7 @@ header[data-testid="stHeader"] {
 }
 
 .sidebar-wave {
-    background: radial-gradient(ellipse at bottom right, rgba(226, 60, 114, 0.4) 0%, rgba(190, 18, 76, 0.25) 40%, transparent 75%);
+    background: radial-gradient(ellipse at bottom right, rgba(191, 219, 254, 0.4) 0%, rgba(224, 231, 255, 0.2) 40%, transparent 75%);
     position: absolute;
     bottom: 60px;
     left: 0;
@@ -70,7 +81,7 @@ header[data-testid="stHeader"] {
 }
 
 .footer-wave {
-    background: radial-gradient(ellipse at 85% 100%, rgba(244, 63, 118, 0.45) 0%, rgba(190, 18, 76, 0.15) 50%, transparent 75%);
+    background: radial-gradient(ellipse at 85% 100%, rgba(191, 219, 254, 0.5) 0%, rgba(224, 231, 255, 0.2) 50%, transparent 75%);
     position: absolute;
     bottom: 0;
     right: 0;
@@ -83,10 +94,11 @@ header[data-testid="stHeader"] {
 /* Soundwave Animation */
 @keyframes wave-bounce {
     0%, 100% { height: 6px; }
-    50% { height: 28px; }
+    50% { height: 26px; }
 }
 .wave-bar {
     animation: wave-bounce 1.2s ease-in-out infinite;
+    background: var(--formal-blue-600) !important;
 }
 .wave-bar:nth-child(2) { animation-delay: 0.1s; }
 .wave-bar:nth-child(3) { animation-delay: 0.2s; }
@@ -99,17 +111,17 @@ header[data-testid="stHeader"] {
 .wave-bar:nth-child(10) { animation-delay: 0.15s; }
 
 /* ==============================================================================
-   Streamlit Input Labels, Text, Placeholders & Buttons Theming (High Contrast)
+   Streamlit Input Labels, Text, Placeholders & Inputs (Light Formal Theme)
    ============================================================================== */
 label, 
 [data-testid="stWidgetLabel"] p, 
 .stTextInput label p, 
 .stSelectbox label p, 
 .stTextArea label p {
-    color: #fce7f3 !important;
+    color: var(--text-secondary) !important;
     font-size: 12px !important;
     font-weight: 600 !important;
-    letter-spacing: 0.02em !important;
+    letter-spacing: 0.01em !important;
     margin-bottom: 4px !important;
 }
 
@@ -120,26 +132,26 @@ select,
 [data-baseweb="base-input"], 
 [data-baseweb="select"],
 [data-baseweb="select"] > div {
-    background-color: rgba(20, 6, 13, 0.9) !important;
-    background: rgba(20, 6, 13, 0.9) !important;
-    color: #ffffff !important;
-    border: 1px solid #3f172e !important;
-    border-radius: 12px !important;
-    font-size: 12px !important;
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: var(--text-primary) !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    font-size: 13px !important;
 }
 
 input:focus, 
 textarea:focus, 
 select:focus,
 [data-baseweb="input"]:focus-within {
-    border-color: #f43f76 !important;
-    box-shadow: 0 0 0 1px #f43f76, 0 0 12px rgba(244, 63, 118, 0.3) !important;
+    border-color: var(--formal-blue-600) !important;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15) !important;
 }
 
 input::placeholder, 
 textarea::placeholder {
-    color: #a88094 !important;
-    opacity: 0.85 !important;
+    color: var(--text-light) !important;
+    opacity: 0.9 !important;
 }
 
 /* Popover & Select Dropdown Menu Theming */
@@ -147,20 +159,21 @@ textarea::placeholder {
 [data-baseweb="menu"],
 ul[role="listbox"],
 li[role="option"] {
-    background-color: #230c18 !important;
-    background: #230c18 !important;
-    color: #ffffff !important;
-    border: 1px solid rgba(244, 63, 118, 0.25) !important;
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: var(--text-primary) !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08) !important;
 }
 
 li[role="option"]:hover,
 li[aria-selected="true"] {
-    background-color: #3f172e !important;
-    color: #ff4d8d !important;
+    background-color: var(--formal-blue-50) !important;
+    color: var(--formal-blue-700) !important;
 }
 
 /* ==============================================================================
-   Streamlit Universal Button Theming (Strict Dark Wine Red Palette)
+   Streamlit Universal Button Theming (Formal Executive Blue Palette)
    ============================================================================== */
 button,
 .stButton > button,
@@ -169,16 +182,16 @@ button,
 button[kind="secondary"],
 div.stButton button,
 [data-testid="stFormSubmitButton"] button {
-    background-color: #2b101f !important;
-    background: rgba(43, 16, 31, 0.85) !important;
-    color: #fce7f3 !important;
-    border: 1px solid rgba(244, 63, 118, 0.28) !important;
-    border-radius: 12px !important;
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: var(--text-secondary) !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
     font-weight: 600 !important;
     font-size: 12px !important;
     padding: 6px 14px !important;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    box-shadow: 0 2px 8px rgba(20, 6, 13, 0.4) !important;
+    transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05) !important;
 }
 
 button:hover,
@@ -187,12 +200,12 @@ button:hover,
 [data-testid="baseButton-secondary"]:hover,
 button[kind="secondary"]:hover,
 div.stButton button:hover {
-    background-color: #3f172e !important;
-    background: rgba(63, 23, 46, 0.95) !important;
-    border-color: #f43f76 !important;
-    color: #ffffff !important;
+    background-color: var(--canvas-subtle) !important;
+    background: #f8fafc !important;
+    border-color: #94a3b8 !important;
+    color: var(--text-primary) !important;
     transform: translateY(-1px) !important;
-    box-shadow: 0 4px 14px rgba(244, 63, 118, 0.35) !important;
+    box-shadow: 0 3px 8px rgba(15, 23, 42, 0.08) !important;
 }
 
 button[kind="primary"],
@@ -201,35 +214,60 @@ button[kind="primary"],
 [data-testid="baseButton-primary"],
 div.stButton button[kind="primary"],
 [data-testid="stFormSubmitButton"] button[kind="primary"] {
-    background: linear-gradient(135deg, #e11d5e 0%, #ff4d8d 100%) !important;
+    background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%) !important;
     color: #ffffff !important;
-    border: 1px solid rgba(255, 77, 141, 0.5) !important;
-    box-shadow: 0 4px 15px rgba(225, 29, 94, 0.4) !important;
+    border: 1px solid #1e40af !important;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25) !important;
 }
 
 button[kind="primary"]:hover,
 .stButton > button[kind="primary"]:hover,
 [data-testid="stBaseButton-primary"]:hover,
 [data-testid="baseButton-primary"]:hover {
-    background: linear-gradient(135deg, #f43f76 0%, #fb719e 100%) !important;
-    box-shadow: 0 6px 20px rgba(225, 29, 94, 0.6) !important;
+    background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%) !important;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
+    transform: translateY(-1px) !important;
 }
 
 /* Streamlit Containers & Vertical Blocks */
 [data-testid="stVerticalBlockBorderWrapper"] > div {
-    background: rgba(35, 12, 24, 0.7) !important;
-    border: 1px solid rgba(43, 16, 31, 0.8) !important;
-    border-radius: 16px !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03), 0 4px 12px rgba(15, 23, 42, 0.02) !important;
+}
+
+/* Streamlit Metric Containers */
+[data-testid="stMetric"] {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    padding: 12px 14px !important;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03) !important;
+}
+
+[data-testid="stMetricLabel"] p {
+    color: var(--text-muted) !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+}
+
+[data-testid="stMetricValue"] div {
+    color: var(--text-primary) !important;
+    font-weight: 800 !important;
 }
 
 /* Streamlit Tabs */
 .stTabs [data-baseweb="tab-list"] {
-    border-bottom: 1px solid #3f172e !important;
+    border-bottom: 1px solid #e2e8f0 !important;
     gap: 1.5rem !important;
 }
 
 .stTabs [data-baseweb="tab"] {
-    color: #a88094 !important;
+    color: var(--text-muted) !important;
     font-size: 13px !important;
     font-weight: 500 !important;
     background: transparent !important;
@@ -238,7 +276,40 @@ button[kind="primary"]:hover,
 }
 
 .stTabs [aria-selected="true"] {
-    color: #ffffff !important;
+    color: var(--formal-blue-600) !important;
     font-weight: 700 !important;
-    border-bottom: 2px solid #f43f76 !important;
+    border-bottom: 2px solid var(--formal-blue-600) !important;
+}
+
+/* Custom Status Badges */
+.status-badge {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+.badge-idle {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+}
+.badge-parsing, .badge-executing {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+}
+.badge-approval, .badge-clarification {
+    background: #fffbeb;
+    color: #b45309;
+    border: 1px solid #fde68a;
+}
+.badge-completed {
+    background: #ecfdf5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+}
+.badge-failed {
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
 }
